@@ -20,16 +20,15 @@ struct LTree {
 
 	LTree(int n = 0) : s(2*n, tneut), l(2*n, lneut), n(n) {}
 
-	pair<int, int> range(int i) const {
-    if (i >= n) {
-			return {i - n, i - n + 1};
-		} else {
-			return {range(i * 2).first, range(i * 2 + 1).second};
+	void upd(int p) {
+		if (p < n) {
+			s[p] = f(s[p*2], s[p*2+1]);
 		}
 	}
 
-	void push(int p) {
+	void push(int p, L a) {
 		assert(p < 2 * n);
+		l[p] = comb(l[p], a);
 		s[p] = apply(s[p], l[p]);
 		if (p < n) {
 			l[p*2] = comb(l[p*2], l[p]);
@@ -40,60 +39,45 @@ struct LTree {
 
 	void pull(int p) {
 		assert(p < 2 * n);
-    //cerr << "pulling " << p << " (range [" << range(p).fst << ", " << range(p).snd << "))" << endl;
-		if (p > 0) {
-			pull(p/2);
+		for (int h = __lg(p) + 1; h >= 0; h--) {
+			push(p >> h, lneut);
 		}
-		push(p);
 	}
 
-  void pushUp(int p) {
-    while (p > 0) {
-      s[p] = f(s[p*2], s[p*2+1]);
-      p /= 2;
-    }
-  }
-
 	void update(int b, int e, L a) { // Update [b, e)
-		for (b += n, e += n; b < e; b /= 2, e /= 2) {
+		pull(b + n);
+    pull(e - 1 + n);
+    for (b += n, e += n; b < e; b /= 2, e /= 2) {
 			if (b % 2) {
-				pull(b);
-				l[b] = comb(l[b], a);
-        push(b);
-        pushUp(b/2);
+        push(b, a);
 				b++;
+			} else {
+				upd(b);
 			}
 			if (e % 2) {
         --e;
-				pull(e);
-				l[e] = comb(l[e], a);
-        push(e);
-        pushUp(e/2);
+        push(e, a);
+			} else {
+				upd(e);
 			}
 		}
     assert(b == e);
-    while (b > 0) {
-      if (b < n) {
-        s[b] = f(s[b*2], s[b*2+1]);
-      }
-      b /= 2;
+    for (; b > 0; b /= 2) {
+      upd(b);
     }
-    s[0] = f(s[1], s[2]);
 	}
 	T query(int b, int e) { // query [b, e)
 		T ra = tneut, rb = tneut;
+		pull(b + n);
+    pull(e - 1 + n);
 		for (b += n, e += n; b < e; b /= 2, e /= 2) {
 			if (b % 2) {
-				pull(b);
-				//cerr << "b: " << b << " s[b]: " << s[b] << " (range: [" << range(b).fst << ", " << range(b).snd << "))" << endl;
 				ra = f(ra, s[b]);
         b++;
 			}
 			if (e % 2) {
         --e;
-				pull(e);
 				rb = f(s[e], rb);
-				//cerr << "e: " << e << " s[e]: " << s[e] << " (range: [" << range(e).fst << ", " << range(e).snd << "))" << endl;
 			}
 		}
 		return f(ra, rb);
