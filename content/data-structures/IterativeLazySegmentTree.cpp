@@ -14,20 +14,19 @@ struct LTree {
 		return {a.mset, a.madd + b.madd};
 	} // Combine lazy
 
+	int n;
 	vector<T> s;
 	vector<L> l;
-	int n;
 
-	LTree(int n = 0) : s(2*n, tneut), l(2*n, lneut), n(n) {}
-
-	void upd(int p) {
-		if (p < n) {
-			s[p] = f(s[p*2], s[p*2+1]);
-		}
+	LTree(int n = 0) : n(n), s(2*n, tneut), l(2*n, lneut) {}
+	LTree(const vector<T>& vals) : n(vals.size()), s(2*n), l(2*n, lneut) {
+		copy(all(vals), begin(s) + n);
+		for (int i = n - 1; i > 0; i--) upd(i);
 	}
-
+	void upd(int p) {
+		if (p < n) s[p] = f(s[p*2], s[p*2+1]);
+	}
 	void push(int p, L a) {
-		assert(p < 2 * n);
 		l[p] = comb(l[p], a);
 		s[p] = apply(s[p], l[p]);
 		if (p < n) {
@@ -36,49 +35,27 @@ struct LTree {
 		}
 		l[p] = lneut;
 	}
-
 	void pull(int p) {
-		assert(p < 2 * n);
-		for (int h = __lg(p) + 1; h >= 0; h--) {
-			push(p >> h, lneut);
-		}
+		for (int h = __lg(p) + 1; h >= 0; h--) push(p >> h, lneut);
 	}
-
-	void update(int b, int e, L a) { // Update [b, e)
-		pull(b + n);
-    pull(e - 1 + n);
-    for (b += n, e += n; b < e; b /= 2, e /= 2) {
-			if (b % 2) {
-        push(b, a);
-				b++;
-			} else {
-				upd(b);
-			}
-			if (e % 2) {
-        --e;
-        push(e, a);
-			} else {
-				upd(e);
-			}
+	void update(int b, int e, L a) { // update [b, e)
+		pull(b += n);
+    pull((e += n) - 1);
+    for (; b < e; b /= 2, e /= 2) {
+			if (b % 2) push(b++, a);
+			else upd(b);
+			if (e % 2) push(--e, a);
+			else upd(e);
 		}
-    assert(b == e);
-    for (; b > 0; b /= 2) {
-      upd(b);
-    }
+    for (; b > 0; b /= 2) upd(b);
 	}
 	T query(int b, int e) { // query [b, e)
 		T ra = tneut, rb = tneut;
-		pull(b + n);
-    pull(e - 1 + n);
-		for (b += n, e += n; b < e; b /= 2, e /= 2) {
-			if (b % 2) {
-				ra = f(ra, s[b]);
-        b++;
-			}
-			if (e % 2) {
-        --e;
-				rb = f(s[e], rb);
-			}
+		pull(b += n);
+    pull((e += n) - 1);
+		for (; b < e; b /= 2, e /= 2) {
+			if (b % 2) ra = f(ra, s[b++]);
+			if (e % 2) rb = f(s[--e], rb);
 		}
 		return f(ra, rb);
 	}
