@@ -14,14 +14,14 @@ ll rdiv(ll x, ll y) {
 
 ll modsum_naive(ll to, ll c, ll k, ll m) {
 	ll res = 0;
-	for (int i = 0; i < (int)to; ++i)
+	for (ll i = 0; i < (ll)to; ++i)
 		res += rmod(c + k * i, m);
 	return res;
 }
 
 ll divsum_naive(ll to, ll c, ll k, ll m) {
 	ll res = 0;
-	for (int i = 0; i < (int)to; ++i)
+	for (ll i = 0; i < (ll)to; ++i)
 		res += rdiv(c + k * i, m);
 	return res;
 }

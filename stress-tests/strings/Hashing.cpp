@@ -7,8 +7,8 @@ int main() {
 	assert((H(1)*2+1-3).get() == 0);
 
 	rep(it,0,10000) {
-		int n = rand() % 10;
-		int alpha = rand() % 10 + 1;
+		ll n = rand() % 10;
+		ll alpha = rand() % 10 + 1;
 		string s;
 		rep(i,0,n) s += (char)('a' + rand() % alpha);
 		HashInterval hi(s);
