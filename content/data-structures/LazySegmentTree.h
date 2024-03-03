@@ -11,7 +11,7 @@
  *  st.init(x);
  *  st.upd(s, e, v);
  *  st.query(s, e);
- * Status: untested
+ * Status: stress-tested a bit
  */
 #pragma once
 
