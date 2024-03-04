@@ -14,7 +14,7 @@
 
 #include "../various/BumpAllocator.h"
 
-const ll inf = 1e9;
+const ll inf = 1e18;
 struct Node {
 	typedef ll T; // data type
 	struct L { ll mset, madd; }; // lazy type
