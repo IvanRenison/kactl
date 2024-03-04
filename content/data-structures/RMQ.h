@@ -25,7 +25,7 @@ struct RMQ {
 	}
 	T query(ll a, ll b) {
 		assert(a < b); // or return inf if a == b
-		ll dep = 31 - __builtin_clz(b - a);
+		ll dep = 63 - __builtin_clzll(b - a);
 		return min(jmp[dep][a], jmp[dep][b - (1 << dep)]);
 	}
 };

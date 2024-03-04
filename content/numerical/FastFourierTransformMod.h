@@ -19,7 +19,7 @@ typedef vector<ll> vl;
 template<ll M> vl convMod(const vl &a, const vl &b) {
 	if (a.empty() || b.empty()) return {};
 	vl res(sz(a) + sz(b) - 1);
-	ll B=32-__builtin_clz(sz(res)), n=1<<B, cut=ll(sqrt(M));
+	ll B=64-__builtin_clzll(sz(res)), n=1<<B, cut=ll(sqrt(M));
 	vector<C> L(n), R(n), outs(n), outl(n);
 	rep(i,0,sz(a)) L[i] = C((ll)a[i] / cut, (ll)a[i] % cut);
 	rep(i,0,sz(b)) R[i] = C((ll)b[i] / cut, (ll)b[i] % cut);

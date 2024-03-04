@@ -38,7 +38,7 @@ void testCorrect() {
 				if (n != 0) do {
 					rep(bi,0,(1 << sz(ed))) {
 						if (bi) {
-							ll ind = __builtin_ctz(bi);
+							ll ind = __builtin_ctzll(bi);
 							swap(ed[ind].first, ed[ind].second);
 						}
 						test(n, ed);
