@@ -164,7 +164,7 @@ db polygon_union(vector<cpoi> py[], ll n) {
 
 P randPt(ll lim) { return P(randRange(-lim, lim), randRange(-lim, lim)); }
 
-P rndUlp(ll lim, long long ulps = 5) { return P(randNearIntUlps(lim, ulps), randNearIntUlps(lim, ulps)); }
+P rndUlp(ll lim, ll ulps = 5) { return P(randNearIntUlps(lim, ulps), randNearIntUlps(lim, ulps)); }
 
 P rndEps(ll lim, double eps) { return P(randNearIntEps(lim, eps), randNearIntEps(lim, eps)); }
 

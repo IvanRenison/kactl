@@ -8,7 +8,7 @@
 #pragma once
 
 typedef ll Flow;
-Flow inf = 1<<28;
+Flow inf = 1ll << 56;
 
 struct FlowEdge {
 	ll dest, back;
