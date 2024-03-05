@@ -15,7 +15,7 @@
  */
 #pragma once
 
-#include "../data-structures/LazySegmentTree.h"
+#include "../data-structures/MemoryLazySegmentTree.h"
 
 template <bool VALS_EDGES> struct HLD {
 	ll N, tim = 0;
