@@ -1,11 +1,11 @@
 /**
  * Author: Pietro Palombini
- * Date: 2024-03-
+ * Date: 2024-03-03
  * License: CC0
  * Source: folklore
  * Description: Finds MST of weighted graph. Returns only cost by default.
  * Time: $O(m)$
- * Status: Tested on https://cses.fi/problemset/result/8586074/
+ * Status: Tested on CSES: Road Reparation
  */
 #pragma once
 
