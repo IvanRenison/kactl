@@ -4,7 +4,7 @@
 #define trav(a, x) for (auto& a : x)
 
 template<class F>
-void gen(string& s, int at, int alpha, F f) {
+void gen(string& s, ll at, ll alpha, F f) {
 	if (at == sz(s)) f();
 	else {
 		rep(i,0,alpha) {
