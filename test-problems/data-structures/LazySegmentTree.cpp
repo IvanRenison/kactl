@@ -1,19 +1,18 @@
-/**
- * Author: Iván Renison
- * Date: 2024-03-05
- * License: CC0
- * Source: notebook el vasito
- * Description: Segment tree with ability to add values of large intervals, and compute the sum of intervals.
- * Ranges are [s, e).
- * Can be changed to other things.
- * Time: O(\log N).
- * Usage: STree st(n);
- *  st.init(x);
- *  st.upd(s, e, v);
- *  st.query(s, e);
- * Status: Tested on SPOJ HORRIBLE, stress-tested a bit
- */
-#pragma once
+// Problem: https://www.spoj.com/problems/HORRIBLE/
+// Status: accepted
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fst first
+#define snd second
+#define pb push_back
+#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
+#define ALL(x) begin(x), end(x)
+#define SZ(x) (ll)(x).size()
+#define mset(a, v) memset((a), (v), sizeof(a))
+typedef long long ll;
+typedef pair<ll, ll> ii;
+typedef vector<ll> vi;
 
 struct STree { // example: range sum with range addition
 	typedef ll T; typedef ll L; // T: data type, L: lazy type
@@ -68,3 +67,36 @@ struct STree { // example: range sum with range addition
 	void upd(ll a, ll b, L v) { upd(1, 0, n, a, b, v); }
 	T query(ll a, ll b) { return query(1, 0, n, a, b); }
 };
+
+void solveCase() {
+  ll N, C;
+  cin >> N >> C;
+
+  STree st(N);
+
+  fore(_, 0, C) {
+    ll ty, p, q;
+    cin >> ty >> p >> q;
+    p--;
+
+    if (ty == 0) { // Update
+      ll v;
+      cin >> v;
+      st.upd(p, q, v);
+    } else { // Query
+      ll ans = st.query(p, q);
+      cout << ans << '\n';
+    }
+  }
+}
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+
+  ll T;
+  cin >> T;
+
+  fore(_, 0, T) {
+    solveCase();
+  }
+}

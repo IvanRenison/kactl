@@ -2,45 +2,60 @@
 
 #include "../../content/data-structures/LazySegmentTree.h"
 
-static unsigned R;
-ll ra() {
-	R *= 791231;
-	R += 1231;
-	return (ll)(R >> 1);
-}
+// Slow version with the same interface
+struct Slow {
+	vi elems;
+	ll n;
+	Slow(ll n) : elems(n), n(n) {}
+	void init(const vector<ll> &a) {
+		elems = a;
+	}
+	void upd(ll a, ll b, ll v) {
+		fore(i, a, b) {
+			elems[i] += v;
+		}
+	}
+	ll query(ll a, ll b) {
+		ll ans = 0;
+		fore(i, a, b) {
+			ans += elems[i];
+		}
+		return ans;
+	}
+};
 
-volatile ll res;
 int main() {
-	ll N = 10;
-	vi v(N);
-	iota(all(v), 0);
-	random_shuffle(all(v), [](ll x) { return ra() % x; });
-	Node* tr = new Node(v,0,N);
-	rep(i,0,N) rep(j,0,N) if (i <= j) {
-		ll ma = -inf;
-		rep(k,i,j) ma = max(ma, v[k]);
-		assert(ma == tr->query(i,j));
-	}
-	rep(it,0,1000000) {
-		ll i = ra() % (N+1), j = ra() % (N+1);
-		if (i > j) swap(i, j);
-		ll x = (ra() % 10) - 5;
 
-		ll r = ra() % 100;
-		if (r < 30) {
-			::res = tr->query(i, j);
-			ll ma = -inf;
-			rep(k,i,j) ma = max(ma, v[k]);
-			assert(ma == ::res);
+	fore(_, 0, 100) {
+		ll n = rand() % 99 + 1;
+		vector<ll> a(n);
+		fore(i, 0, n) {
+			a[i] = rand() * (rand() % 2 ? 1 : -1);
 		}
-		else if (r < 70) {
-			tr->add(i, j, x);
-			rep(k,i,j) v[k] += x;
-		}
-		else {
-			tr->set(i, j, x);
-			rep(k,i,j) v[k] = x;
+		STree st(n);
+		assert(st.n == n);
+		assert(st.query(0, n) == 0);
+		Slow slow(n);
+		st.init(a);
+		slow.init(a);
+
+		assert(st.query(0, n) == slow.query(0, n));
+
+		fore(_, 0, 100) {
+			ll t = rand() % 2;
+			ll l = rand() % n, r = rand() % n;
+			if (l > r) swap(l, r);
+			if (t == 0) {
+				ll v = rand() * (rand() % 2 ? 1 : -1);
+				st.upd(l, r, v);
+				slow.upd(l, r, v);
+			} else {
+				ll ans = st.query(l, r);
+				ll slowAns = slow.query(l, r);
+				assert(ans == slowAns);
+			}
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+
+	cout << "Tests passed!" << endl;
 }
