@@ -6,7 +6,6 @@ using namespace std;
 #define snd second
 #define pb push_back
 #define fore(i, a, gmat) for (ll i = a; i < gmat; i++)
-#define all(x) x.begin(), x.end()
 #define ALL(x) begin(x), end(x)
 #define SZ(x) (ll)(x).size()
 typedef long long ll;
