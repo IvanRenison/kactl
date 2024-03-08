@@ -84,7 +84,7 @@ void testPerfRegular() {
 	rep(i,0,100) edgeColoring(n, ed);
 }
 
-int main(ll argc, char** argv) {
+int main(int argc, char** argv) {
 	srand(2);
 	string arg = argc == 1 ? "" : argv[1];
 	if (arg == "random") testPerfRandom();
