@@ -12,15 +12,15 @@
 #include "../data-structures/UnionFind.h"
 
 ll kruskal(vector<pair<ll, ii>>& es, ll n) {
-    sort(ALL(es));
-    UF uf(n);
-    ll r = 0;
-    for (auto [w, p] : es) {
-        auto [u, v] = p;
-        if (uf.join(u, v)) {
-            r += w;
-            // {w, {u, v}} is in MST
-        }
-    }
-    return r;
+	sort(ALL(es));
+	UF uf(n);
+	ll r = 0;
+	for (auto [w, p] : es) {
+		auto [u, v] = p;
+		if (uf.join(u, v)) {
+			r += w;
+			// {w, {u, v}} is in MST
+		}
+	}
+	return r;
 }

@@ -48,6 +48,11 @@ test-session.pdf: content/test-session/test-session.tex content/test-session/cha
 	$(LATEXCMD) content/test-session/test-session.tex
 	cp build/test-session.pdf test-session.pdf
 
+test-style:
+	python stress-tests/utilities/styleCheck.py --path=./content --tabs --lineLength 63
+	python stress-tests/utilities/styleCheck.py --path=./stress-tests --tabs
+	python stress-tests/utilities/styleCheck.py --path=./test-problems --tabs
+
 showexcluded: build
 	grep -RoPh '^\s*\\kactlimport{\K.*' content/ | sed 's/.$$//' > build/headers_included
 	find ./content -name "*.h" -o -name "*.py" -o -name "*.java" | grep -vFf build/headers_included
