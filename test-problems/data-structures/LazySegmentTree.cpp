@@ -69,34 +69,34 @@ struct STree { // example: range sum with range addition
 };
 
 void solveCase() {
-  ll N, C;
-  cin >> N >> C;
+	ll N, C;
+	cin >> N >> C;
 
-  STree st(N);
+	STree st(N);
 
-  fore(_, 0, C) {
-    ll ty, p, q;
-    cin >> ty >> p >> q;
-    p--;
+	fore(_, 0, C) {
+		ll ty, p, q;
+		cin >> ty >> p >> q;
+		p--;
 
-    if (ty == 0) { // Update
-      ll v;
-      cin >> v;
-      st.upd(p, q, v);
-    } else { // Query
-      ll ans = st.query(p, q);
-      cout << ans << '\n';
-    }
-  }
+		if (ty == 0) { // Update
+			ll v;
+			cin >> v;
+			st.upd(p, q, v);
+		} else { // Query
+			ll ans = st.query(p, q);
+			cout << ans << '\n';
+		}
+	}
 }
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 
-  ll T;
-  cin >> T;
+	ll T;
+	cin >> T;
 
-  fore(_, 0, T) {
-    solveCase();
-  }
+	fore(_, 0, T) {
+		solveCase();
+	}
 }
