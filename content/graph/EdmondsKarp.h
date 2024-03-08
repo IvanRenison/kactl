@@ -9,7 +9,8 @@
  */
 #pragma once
 
-template<class T> T edmondsKarp(vector<unordered_map<ll, T>>& graph, ll source, ll sink) {
+template<class T> T edmondsKarp(vector<unordered_map<ll, T>>&
+		graph, ll source, ll sink) {
 	assert(source != sink);
 	T flow = 0;
 	vi par(sz(graph)), q = par;
