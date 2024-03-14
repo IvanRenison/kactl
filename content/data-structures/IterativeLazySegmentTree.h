@@ -1,3 +1,17 @@
+/**
+ * Author: Iván Renison
+ * Date: 2024-03-14
+ * License: CC0
+ * Source: https://codeforces.com/blog/entry/18051
+ * Description: Segment tree with ability to add or set values of large intervals, and compute max of intervals.
+ * Can be changed to other things.
+ * Ranges are [s, e).
+ * Can be changed to other things.
+ * Time: O(\log N).
+ * Status: stress-tested a bit
+ */
+#pragma once
+
 const ll inf = 1ll << 60;
 
 struct Tree {
