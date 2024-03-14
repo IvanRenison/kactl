@@ -19,8 +19,8 @@ struct Tree {
 	vector<L> d;
 
 	Tree(ll n = 0) : n(n), s(2*n, tneut), d(n, lneut) {}
-	Tree(const vector<T>& vals) : n(vals.size()), s(2*n), d(n, lneut) {
-		copy(all(vals), begin(s) + n);
+	Tree(vector<T>& vals) : n(SZ(vals)), s(2*n), d(n, lneut) {
+		copy(ALL(vals), begin(s) + n);
 		for (ll i = n - 1; i > 0; i--) s[i] = f(s[2*i], s[2*i+1]);
 	}
 	void apply_(ll p, L value) {
@@ -29,7 +29,8 @@ struct Tree {
 	}
 
 	void build(ll p) {
-		while (p > 1) p >>= 1, s[p] = apply(f(s[p<<1], s[p<<1|1]), d[p]);
+		while (p > 1)
+			p >>= 1, s[p] = apply(f(s[p<<1], s[p<<1|1]), d[p]);
 	}
 
 	void push(ll p) {
