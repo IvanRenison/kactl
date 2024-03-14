@@ -49,7 +49,7 @@ struct Tree {
 	}
 
 	void push(ll p) {
-		for (ll s = 65 - __builtin_clzll(n); s > 0; s--) {
+		for (ll s = 63 - __builtin_clzll(n); s > 0; s--) {
 			ll i = p >> s;
 			apply_(2*i, d[i]);
 			apply_(2*i+1, d[i]);
