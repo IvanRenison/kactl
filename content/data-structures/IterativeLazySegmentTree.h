@@ -19,7 +19,7 @@ struct Tree {
 	vector<L> d;
 
 	Tree(int n = 0) : n(n), s(2*n, tneut), d(n, lneut) {}
-	Tree(const vector<T>& vals) : n(vals.size()), s(2*n), d(2*n, lneut) {
+	Tree(const vector<T>& vals) : n(vals.size()), s(2*n), d(n, lneut) {
 		copy(all(vals), begin(s) + n);
 		for (int i = n - 1; i > 0; i--) s[i] = f(s[2*i], s[2*i+1]);
 	}
@@ -33,7 +33,7 @@ struct Tree {
 	}
 
 	void push(int p) {
-		for (int s = sizeof(int) * 8 - __builtin_clz(n) + 1; s > 0; --s) {
+		for (int s = 32 - __builtin_clz(n) + 1; s > 0; --s) {
 			int i = p >> s;
 			//if (d[i] != lneut) {
 				apply_(i<<1, d[i]);
@@ -60,11 +60,11 @@ struct Tree {
 		l += n, r += n;
 		push(l);
 		push(r - 1);
-		int res = -2e9;
+		int ans = -inf;
 		for (; l < r; l >>= 1, r >>= 1) {
-			if (l&1) res = max(res, s[l++]);
-			if (r&1) res = max(s[--r], res);
+			if (l&1) ans = f(ans, s[l++]);
+			if (r&1) ans = f(s[--r], ans);
 		}
-		return res;
+		return ans;
 	}
 };
