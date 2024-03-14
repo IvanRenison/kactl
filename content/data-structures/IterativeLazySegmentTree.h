@@ -70,11 +70,11 @@ struct Tree {
 		build(r0 - 1);
 	}
 
-	ll query(ll l, ll r) {
+	T query(ll l, ll r) {
 		l += n, r += n;
 		push(l);
 		push(r - 1);
-		ll ans = -inf;
+		T ans = tneut;
 		for (; l < r; l /= 2, r /= 2) {
 			if (l&1) ans = f(ans, s[l++]);
 			if (r&1) ans = f(s[--r], ans);
