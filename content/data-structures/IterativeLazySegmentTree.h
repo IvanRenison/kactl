@@ -16,47 +16,55 @@ struct Tree {
 
 	int n;
 	vector<T> s;
-	vector<L> l;
+	vector<L> d;
 
-	Tree(int n = 0) : n(n), s(2*n, tneut), l(2*n, lneut) {}
-	Tree(const vector<T>& vals) : n(vals.size()), s(2*n), l(2*n, lneut) {
+	Tree(int n = 0) : n(n), s(2*n, tneut), d(n, lneut) {}
+	Tree(const vector<T>& vals) : n(vals.size()), s(2*n), d(2*n, lneut) {
 		copy(all(vals), begin(s) + n);
-		for (int i = n - 1; i > 0; i--) upd(i);
+		for (int i = n - 1; i > 0; i--) s[i] = f(s[2*i], s[2*i+1]);
 	}
-	void push(int p, L a) {
-		l[p] = comb(l[p], a);
-		s[p] = apply(s[p], l[p]);
-		if (p < n) {
-			l[p*2] = comb(l[p*2], l[p]);
-			l[p*2+1] = comb(l[p*2+1], l[p]);
+	void apply_(int p, L value) {
+		s[p] = apply(s[p], value);
+		if (p < n) d[p] = comb(d[p], value);
+	}
+
+	void build(int p) {
+		while (p > 1) p >>= 1, s[p] = apply(f(s[p<<1], s[p<<1|1]), d[p]);
+	}
+
+	void push(int p) {
+		for (int s = sizeof(int) * 8 - __builtin_clz(n) + 1; s > 0; --s) {
+			int i = p >> s;
+			//if (d[i] != lneut) {
+				apply_(i<<1, d[i]);
+				apply_(i<<1|1, d[i]);
+				d[i] = lneut;
+			//}
 		}
-		l[p] = lneut;
 	}
-	void pull(int p) {
-		for (int h = __lg(p) + 1; h >= 0; h--) push(p >> h, lneut);
-	}
-	void upd(int p) {
-		if (p < n) s[p] = f(s[p*2], s[p*2+1]);
-	}
-	void update(int b, int e, L a) { // update [b, e)
-		pull(b += n);
-		pull((e += n) - 1);
-		for (; b < e; b /= 2, e /= 2) {
-			if (b % 2) push(b++, a);
-			else upd(b);
-			if (e % 2) push(--e, a);
-			else upd(e);
+
+	void update(int l, int r, L value) {
+		l += n, r += n;
+		push(l);
+		push(r - 1);
+		int l0 = l, r0 = r;
+		for (; l < r; l >>= 1, r >>= 1) {
+			if (l&1) apply_(l++, value);
+			if (r&1) apply_(--r, value);
 		}
-		for (; b > 0; b /= 2) upd(b);
+		build(l0);
+		build(r0 - 1);
 	}
-	T query(int b, int e) { // query [b, e)
-		T ra = tneut, rb = tneut;
-		pull(b += n);
-		pull((e += n) - 1);
-		for (; b < e; b /= 2, e /= 2) {
-			if (b % 2) ra = f(ra, s[b++]);
-			if (e % 2) rb = f(s[--e], rb);
+
+	int query(int l, int r) {
+		l += n, r += n;
+		push(l);
+		push(r - 1);
+		int res = -2e9;
+		for (; l < r; l >>= 1, r >>= 1) {
+			if (l&1) res = max(res, s[l++]);
+			if (r&1) res = max(s[--r], res);
 		}
-		return f(ra, rb);
+		return res;
 	}
 };
