@@ -17,7 +17,7 @@ const ll inf = 1ll << 60;
 struct Tree {
 	typedef ll T; // data type
 	struct L { ll mset, madd; }; // lazy type
-	const T tneut = -inf;		 // neutral elements
+	const T tneut = -inf;     // neutral elements
 	const L lneut = {inf, 0};
 	T f (T a, T b) { return max(a, b); } // (any associative fn)
 	T apply (T a, L b) {
