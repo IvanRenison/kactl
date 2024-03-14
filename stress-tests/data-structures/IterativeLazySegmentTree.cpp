@@ -20,71 +20,71 @@ struct Tree {
 	ll n;
 	vector<T> vals;
 
-  Tree(const vector<T> vals) : n(sz(vals)), vals(vals) {}
+	Tree(const vector<T> vals) : n(sz(vals)), vals(vals) {}
 
-  void update(ll b, ll e, L a) { // update [b, e)
-    rep(i, b, e) {
-      vals[i] = apply(vals[i], a);
-    }
-  }
-  T query(ll b, ll e) { // query [b, e)
-    T ans = tneut;
-    rep(i, b, e) {
-      ans = f(ans, vals[i]);
-    }
-    return ans;
-  }
+	void update(ll b, ll e, L a) { // update [b, e)
+		rep(i, b, e) {
+			vals[i] = apply(vals[i], a);
+		}
+	}
+	T query(ll b, ll e) { // query [b, e)
+		T ans = tneut;
+		rep(i, b, e) {
+			ans = f(ans, vals[i]);
+		}
+		return ans;
+	}
 };
 }
 
 int main() {
-  {
-    Tree t(5);
-    assert(t.query(0, 5) == t.tneut);
-  }
+	{
+		Tree t(5);
+		assert(t.query(0, 5) == t.tneut);
+	}
 
-  rep(_, 0, 1000) {
-    ll n = rand() % 100 + 1;
+	rep(_, 0, 1000) {
+		ll n = rand() % 100 + 1;
 
-    vector<ll> vals(n);
-    rep(i, 0, n) {
-      vals[i] = rand() % 100;
-    }
+		vector<ll> vals(n);
+		rep(i, 0, n) {
+			vals[i] = rand() % 100;
+		}
 
-    Tree t(vals);
-    Slow::Tree t2(vals);
+		Tree t(vals);
+		Slow::Tree t2(vals);
 
-    vi as, bs, tys;
+		vi as, bs, tys;
 
-    rep(__, 0, 100) {
-      ll a = rand() % n, b = rand() % n, ty = rand() % 3;
+		rep(__, 0, 100) {
+			ll a = rand() % n, b = rand() % n, ty = rand() % 3;
 
-      if (b == a) b++;
-      if (b < a) swap(a, b);
+			if (b == a) b++;
+			if (b < a) swap(a, b);
 
-      as.push_back(a), bs.push_back(b), tys.push_back(ty);
+			as.push_back(a), bs.push_back(b), tys.push_back(ty);
 
-      if (ty <= 1) {
-        ll x = rand() % 100;
+			if (ty <= 1) {
+				ll x = rand() % 100;
 
-        if (ty == 0) {
-          t.update(a, b, {x, 0});
-          t2.update(a, b, {x, 0});
-        } else {
-          t.update(a, b, {inf, x});
-          t2.update(a, b, {inf, x});
-        }
-      } else {
-        ll ans = t.query(a, b);
-        ll ans2 = t2.query(a, b);
-        assert(ans == ans2);
-      }
-    }
-    ll a = rand() % n, b = rand() % n;
-    if (b == a) b++;
-    if (b < a) swap(a, b);
-  }
+				if (ty == 0) {
+					t.update(a, b, {x, 0});
+					t2.update(a, b, {x, 0});
+				} else {
+					t.update(a, b, {inf, x});
+					t2.update(a, b, {inf, x});
+				}
+			} else {
+				ll ans = t.query(a, b);
+				ll ans2 = t2.query(a, b);
+				assert(ans == ans2);
+			}
+		}
+		ll a = rand() % n, b = rand() % n;
+		if (b == a) b++;
+		if (b < a) swap(a, b);
+	}
 
-  cout<<"Tests passed!"<<endl;
+	cout<<"Tests passed!"<<endl;
 }
 
