@@ -5,8 +5,8 @@
 int main() {
 	srand(2);
 	rep(it,0,1000000) {
-		int N = rand() % 20 + 1;
-		// int N = 4;
+		ll N = rand() % 20 + 1;
+		// ll N = 4;
 		vector<P> ps;
 		rep(i,0,N) {
 			ps.emplace_back(rand() % 21 - 10, rand() % 21 - 10);

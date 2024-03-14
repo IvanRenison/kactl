@@ -5,7 +5,7 @@
 
 const double eps = 1e-8;
 int main() {
-	int n = 8;
+	ll n = 8;
 	vector<C> a(n);
 	rep(i,0,n) a[i] = C(rand() % 10 - 5, rand() % 10 - 5);
 	auto aorig = a;

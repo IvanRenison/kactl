@@ -1,69 +1,70 @@
 /**
- * Author: Simon Lindholm
- * Date: 2016-10-08
+ * Author: Iván Renison
+ * Date: 2024-03-05
  * License: CC0
- * Source: me
- * Description: Segment tree with ability to add or set values of large intervals, and compute max of intervals.
+ * Source: notebook el vasito
+ * Description: Segment tree with ability to add values of large intervals, and compute the sum of intervals.
+ * Ranges are [s, e).
  * Can be changed to other things.
- * Use with a bump allocator for better performance, and SmallPtr or implicit indices to save memory.
  * Time: O(\log N).
- * Usage: Node* tr = new Node(v, 0, sz(v));
- * Status: stress-tested a bit
+ * Usage: STree st(n);
+ *  st.init(x);
+ *  st.upd(s, e, v);
+ *  st.query(s, e);
+ * Status: Tested on SPOJ HORRIBLE, stress-tested a bit
  */
 #pragma once
 
-#include "../various/BumpAllocator.h"
+struct STree { // example: range sum with range addition
+	typedef ll T; typedef ll L; // T: data type, L: lazy type
+	constexpr static T tneut = 0; constexpr static L lneut = 0;
+	// neutrals
+	T f(T a, T b) { return a + b; } // operation
+	T apply(T v, L l, ll s, ll e) { return v + l * (e - s); }
+	// new st according to lazy
+	L comb(L a, L b) { return a + b; }
+	// cumulative effect of lazy
 
-const int inf = 1e9;
-struct Node {
-	typedef int T; // data type
-	struct L { int mset, madd; }; // lazy type
-	const T tneut = -inf;     // neutral elements
-	const L lneut = {inf, 0};
-	T f (T a, T b) { return max(a, b); } // (any associative fn)
-	T apply (T a, L b) {
-		return b.mset != inf ? b.mset + b.madd : a + b.madd;
-	} // Apply lazy
-	L comb(L a, L b) {
-		if (b.mset != inf) return b;
-		return {a.mset, a.madd + b.madd};
-	} // Combine lazy
-
-	Node *l = 0, *r = 0;
-	int lo, hi; T val = tneut; L lazy = lneut;
-	Node(int lo,int hi):lo(lo),hi(hi){}//Large interval of tneut
-	Node(vector<T>& v, int lo, int hi) : lo(lo), hi(hi) {
-		if (lo + 1 < hi) {
-			int mid = lo + (hi - lo)/2;
-			l = new Node(v, lo, mid); r = new Node(v, mid, hi);
-			val = f(l->val, r->val);
+	vector<T> st;
+	vector<L> lazy;
+	ll n;
+	STree(ll n) : st(4*n, tneut), lazy(4*n, lneut), n(n) {}
+	void init(ll k, ll s, ll e, const vector<T> &a) {
+		lazy[k] = lneut;
+		if (s + 1 == e) { st[k] = a[s]; return; }
+		ll m = (s + e) / 2;
+		init(2*k, s, m, a), init(2*k+1, m, e, a);
+		st[k] = f(st[2*k], st[2*k+1]);
+	}
+	void push(ll k, ll s, ll e) {
+		if (lazy[k] == lneut) return; // if neutral, nothing to do
+		st[k] = apply(st[k], lazy[k], s, e);
+		if (s + 1 < e) { // propagate to children
+			lazy[2*k] = comb(lazy[2*k], lazy[k]);
+			lazy[2*k+1] = comb(lazy[2*k+1], lazy[k]);
 		}
-		else val = v[lo];
+		lazy[k] = lneut; // clear node lazy
 	}
-	T query(int L, int R) {
-		if (R <= lo || hi <= L) return tneut;
-		if (L <= lo && hi <= R) return apply(val, lazy);
-		push();
-		return f(l->query(L, R), r->query(L, R));
-	}
-	void upd(int Le, int Ri, L x) {
-		if (Ri <= lo || hi <= Le) return;
-		if (Le <= lo && hi <= Ri) lazy = comb(lazy, x);
-		else {
-			push(), l->upd(Le, Ri, x), r->upd(Le, Ri, x);
-			val = f(l->query(lo, hi), r->query(lo, hi));
+	void upd(ll k, ll s, ll e, ll a, ll b, L v) {
+		push(k, s, e);
+		if (s >= b || e <= a) return;
+		if (s >= a && e <= b) {
+			lazy[k] = comb(lazy[k], v); // accumulate lazy
+			push(k, s, e);
+			return;
 		}
+		ll m = (s + e) / 2;
+		upd(2*k, s, m, a, b, v), upd(2*k+1, m, e, a, b, v);
+		st[k] = f(st[2*k], st[2*k+1]);
 	}
-	void set(int L, int R, int x) { upd(L, R, {x, 0}); }
-	void add(int L, int R, int x) { upd(L, R, {inf, x}); }
-	void push() {
-		if (!l) {
-			int mid = lo + (hi - lo)/2;
-			l = new Node(lo, mid), r = new Node(mid, hi);
-		}
-		l->lazy = comb(l->lazy, lazy);
-		r->lazy = comb(r->lazy, lazy);
-		lazy = lneut;
-		val = f(l->query(lo, hi), r->query(lo, hi));
+	T query(ll k, ll s, ll e, ll a, ll b) {
+		if (s >= b || e <= a) return tneut;
+		push(k, s, e);
+		if (s >= a && e <= b) return st[k];
+		ll m = (s + e) / 2;
+		return f(query(2*k, s, m, a, b),query(2*k+1, m, e, a, b));
 	}
+	void init(const vector<T> &a) { init(1, 0, n, a); }
+	void upd(ll a, ll b, L v) { upd(1, 0, n, a, b, v); }
+	T query(ll a, ll b) { return query(1, 0, n, a, b); }
 };
