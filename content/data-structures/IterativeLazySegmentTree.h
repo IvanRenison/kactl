@@ -23,6 +23,7 @@ struct Tree {
 		copy(ALL(vals), begin(s) + n);
 		for (ll i = n - 1; i > 0; i--) s[i] = f(s[2*i], s[2*i+1]);
 	}
+
 	void apply_(ll p, L value) {
 		s[p] = apply(s[p], value);
 		if (p < n) d[p] = comb(d[p], value);
@@ -30,17 +31,15 @@ struct Tree {
 
 	void build(ll p) {
 		while (p > 1)
-			p >>= 1, s[p] = apply(f(s[p<<1], s[p<<1|1]), d[p]);
+			p /= 2, s[p] = apply(f(s[2*p], s[2*p+1]), d[p]);
 	}
 
 	void push(ll p) {
-		for (ll s = 65 - __builtin_clzll(n); s > 0; --s) {
+		for (ll s = 65 - __builtin_clzll(n); s > 0; s--) {
 			ll i = p >> s;
-			//if (d[i] != lneut) {
-				apply_(i<<1, d[i]);
-				apply_(i<<1|1, d[i]);
-				d[i] = lneut;
-			//}
+			apply_(2*i, d[i]);
+			apply_(2*i+1, d[i]);
+			d[i] = lneut;
 		}
 	}
 
@@ -49,7 +48,7 @@ struct Tree {
 		push(l);
 		push(r - 1);
 		ll l0 = l, r0 = r;
-		for (; l < r; l >>= 1, r >>= 1) {
+		for (; l < r; l /= 2, r /= 2) {
 			if (l&1) apply_(l++, value);
 			if (r&1) apply_(--r, value);
 		}
@@ -62,7 +61,7 @@ struct Tree {
 		push(l);
 		push(r - 1);
 		ll ans = -inf;
-		for (; l < r; l >>= 1, r >>= 1) {
+		for (; l < r; l /= 2, r /= 2) {
 			if (l&1) ans = f(ans, s[l++]);
 			if (r&1) ans = f(s[--r], ans);
 		}
