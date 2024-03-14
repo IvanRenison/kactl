@@ -30,7 +30,7 @@ struct Tree {
 			ans.cnts[i] += b.cnts[i];
 		}
 		return ans;
-  } // (any associative fn)
+	} // (any associative fn)
 	T apply (T a, L b) {
 		T ans = a;
 		fore(i, 0, 20) {
