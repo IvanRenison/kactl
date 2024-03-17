@@ -1,5 +1,5 @@
 // Problem: https://www.spoj.com/problems/HORRIBLE/
-// Status: accepted
+// Status: Unsubmitted
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -14,6 +14,7 @@ typedef long long ll;
 typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
+/// content/data-structures/LazySegmentTree.h
 struct STree { // example: range sum with range addition
 	typedef ll T; typedef ll L; // T: data type, L: lazy type
 	constexpr static T tneut = 0; constexpr static L lneut = 0;
@@ -67,6 +68,7 @@ struct STree { // example: range sum with range addition
 	void upd(ll a, ll b, L v) { upd(1, 0, n, a, b, v); }
 	T query(ll a, ll b) { return query(1, 0, n, a, b); }
 };
+/// END content
 
 void solveCase() {
 	ll N, C;

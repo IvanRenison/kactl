@@ -1,4 +1,5 @@
 // Problem: https://cses.fi/problemset/task/1676
+// Status: Unsubmitted
 // Submission: https://cses.fi/problemset/result/8650362/
 #include <bits/stdc++.h>
 using namespace std;
@@ -12,11 +13,16 @@ typedef long long ll;
 typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
+/// content/data-structures/UnionFindStore.h
+/// START diff
 struct D {
 	ll sz = 1;
 };
+/// END diff
 struct UFStore {
+	/// START diff
 	void merge(D& large, const D& small) { large.sz += small.sz; }
+	/// END diff
 	vi e;
 	vector<D> d;
 	UFStore(ll n) : e(n, -1), d(n) {}
@@ -31,6 +37,7 @@ struct UFStore {
 		return true;
 	}
 };
+/// END content
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
