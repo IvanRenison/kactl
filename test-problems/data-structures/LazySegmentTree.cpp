@@ -1,5 +1,5 @@
 // Problem: https://www.spoj.com/problems/HORRIBLE/
-// Status: Unsubmitted
+// Status: accepted
 #include <bits/stdc++.h>
 using namespace std;
 

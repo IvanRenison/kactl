@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/1675/
-// Status: Unsubmitted
-// Submission: https://cses.fi/problemset/result/8586074/
+// Status: ACCEPTED
+// Submission: https://cses.fi/problemset/result/8757315/
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
