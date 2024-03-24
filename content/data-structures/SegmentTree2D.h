@@ -3,16 +3,18 @@
  * Date:
  * License: CC0
  * Source: notebook el vasito
- * Description:
- * Time:
- * Status:
+ * Description: Query sum of area ans make point updates.
+ * Bounds are inclusive to the left and exclusive to the right.
+ * Can be changed by modifying T, f and unit.
+ * Time: O(\log N)
+ * Status: Testes on SOPJ MATSUM and stress-tested a bit
  */
 #pragma once
 
 struct Tree2D {
 	typedef ll T;
 	static constexpr T unit = 0;
-	T f(T a, T b) { return a + b; }
+	T f(T a, T b) { return a + b; } // associative & commutative
 
 	ll n, m;
 	vector<vi> a, st;
@@ -33,7 +35,7 @@ struct Tree2D {
 			for (ll j = y + m; j; j /= 2)
 				st[i / 2][j] = f(st[i][j], st[i ^ 1][j]);
 	}
-	T query(ll x0, ll x1, ll y0, ll y1) {
+	T query(ll x0, ll x1, ll y0, ll y1) { // [x0, x1) * [y0, y1)
 		T r = unit;
 		ll i0 = x0 + n, i1 = x1 + n;
 		for (; i0 < i1; i0 /= 2, i1 /= 2) {
