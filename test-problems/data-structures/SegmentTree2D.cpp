@@ -1,14 +1,20 @@
-/**
- * Author: Iván Renison
- * Date:
- * License: CC0
- * Source: notebook el vasito
- * Description:
- * Time:
- * Status:
- */
-#pragma once
+// Problem: https://www.spoj.com/problems/MATSUM/
+// Status: accepted
+#include <bits/stdc++.h>
+using namespace std;
 
+#define fst first
+#define snd second
+#define pb push_back
+#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
+#define ALL(x) begin(x), end(x)
+#define SZ(x) (ll)(x).size()
+#define mset(a, v) memset((a), (v), sizeof(a))
+typedef long long ll;
+typedef pair<ll, ll> ii;
+typedef vector<ll> vi;
+
+/// content/data-structures/SegmentTree2S.cpp
 struct Tree2D {
 	typedef ll T;
 	static constexpr T unit = 0;
@@ -52,3 +58,39 @@ struct Tree2D {
 		return r;
 	}
 };
+// END content
+
+void solveCase() {
+	ll N;
+	cin >> N;
+
+	Tree2D t(N, N);
+
+	while (true) {
+		string cmd;
+		cin >> cmd;
+		if (cmd == "SET") {
+			ll x, y, num;
+			cin >> x >> y >> num;
+			t.upd(x, y, num);
+		} else if (cmd == "SUM") {
+			ll x0, y0, x1, y1;
+			cin >> x0 >> y0 >> x1 >> y1;
+			ll ans = t.query(x0, x1 + 1, y0, y1 + 1);
+			cout << ans << '\n';
+		} else {
+			break;
+		}
+	}
+}
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+
+	ll T;
+	cin >> T;
+
+	fore(_, 0, T) {
+		solveCase();
+	}
+}
