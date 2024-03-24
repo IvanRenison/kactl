@@ -16,9 +16,9 @@ template<class T>
 struct SubMatrix {
 	vector<vector<T>> p;
 	SubMatrix(vector<vector<T>>& v) {
-		ll R = sz(v), C = sz(v[0]);
+		ll R = SZ(v), C = SZ(v[0]);
 		p.assign(R+1, vector<T>(C+1));
-		rep(r,0,R) rep(c,0,C)
+		fore(r,0,R) fore(c,0,C)
 			p[r+1][c+1] = v[r][c] + p[r][c+1] + p[r+1][c] - p[r][c];
 	}
 	T sum(ll u, ll l, ll d, ll r) {

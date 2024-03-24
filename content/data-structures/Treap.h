@@ -28,14 +28,14 @@ pair<Node*, Node*> split(Node* n, ll k) {
 	if (!n) return {};
 	if (cnt(n->l) >= k) { // "n->val >= k" for lower_bound(k)
 		auto pa = split(n->l, k);
-		n->l = pa.second;
+		n->l = pa.snd;
 		n->recalc();
-		return {pa.first, n};
+		return {pa.fst, n};
 	} else {
 		auto pa = split(n->r, k - cnt(n->l) - 1); // and just "k"
-		n->r = pa.first;
+		n->r = pa.fst;
 		n->recalc();
-		return {n, pa.second};
+		return {n, pa.snd};
 	}
 }
 
@@ -55,7 +55,7 @@ Node* merge(Node* l, Node* r) {
 
 Node* ins(Node* t, Node* n, ll pos) {
 	auto pa = split(t, pos);
-	return merge(merge(pa.first, n), pa.second);
+	return merge(merge(pa.fst, n), pa.snd);
 }
 
 // Example application: move the range [l, r) to index k

@@ -19,7 +19,7 @@ using Tree = tree<T, null_type, less<T>, rb_tree_tag,
 
 void example() {
 	Tree<ll> t, t2; t.insert(8);
-	auto it = t.insert(10).first;
+	auto it = t.insert(10).fst;
 	assert(it == t.lower_bound(9));
 	assert(t.order_of_key(10) == 1);
 	assert(t.order_of_key(11) == 2);

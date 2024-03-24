@@ -17,9 +17,9 @@ template<class T>
 struct RMQ {
 	vector<vector<T>> jmp;
 	RMQ(const vector<T>& V) : jmp(1, V) {
-		for (ll pw = 1, k = 1; pw * 2 <= sz(V); pw *= 2, ++k) {
-			jmp.emplace_back(sz(V) - pw * 2 + 1);
-			rep(j,0,sz(jmp[k]))
+		for (ll pw = 1, k = 1; pw * 2 <= SZ(V); pw *= 2, ++k) {
+			jmp.emplace_back(SZ(V) - pw * 2 + 1);
+			fore(j,0,SZ(jmp[k]))
 				jmp[k][j] = min(jmp[k - 1][j], jmp[k - 1][j + pw]);
 		}
 	}
