@@ -1,6 +1,5 @@
 // Problem: https://codeforces.com/contest/242/problem/E
-// Status: Time limit exceeded on test 17
-//   With recursive lazy segment tree is accepted with time close ti the time limit
+// Status: Accepted
 #include <bits/stdc++.h>
 using namespace std;
 
