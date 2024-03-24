@@ -1,12 +1,13 @@
-Test of contents in problems of online judges
+This folder contains solutions to problems of online judges that use some contents
 
 Each file should start with:
 ```cpp
-// Problem: Link_to_problem
+// Problem: link/to/problem
 // Status: Accepted (or in other branches may be something else)
+// Submission: link/to/submission (only for judges in witch solutions are public)
 ```
 
-In the part of the file in witch the content is used, should be surrounded with comments:
+The part of the file in witch the content is used should be surrounded with comments:
 ```cpp
 /// content/folder/file.h
 content
