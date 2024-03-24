@@ -11,8 +11,8 @@
  */
 #pragma once
 
-void add(ll ind, ll end) { return; } // add a[ind] (end = 0 or 1)
-void del(ll ind, ll end) { return; } // remove a[ind]
+void add(ll ind, ll end) {} // add a[ind] (end = 0 or 1)
+void del(ll ind, ll end) {} // remove a[ind]
 ll calc() { return 0; } // compute current answer
 
 vi mo(vector<ii> Q) {
