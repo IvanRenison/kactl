@@ -53,6 +53,9 @@ test-style:
 	python stress-tests/utilities/styleCheck.py --path=./stress-tests --tabs
 	python stress-tests/utilities/styleCheck.py --path=./test-problems --tabs
 
+test-test-problems:
+	bash ./test-problems/check_all.sh
+
 showexcluded: build
 	grep -RoPh '^\s*\\kactlimport{\K.*' content/ | sed 's/.$$//' > build/headers_included
 	find ./content -name "*.h" -o -name "*.py" -o -name "*.java" | grep -vFf build/headers_included
