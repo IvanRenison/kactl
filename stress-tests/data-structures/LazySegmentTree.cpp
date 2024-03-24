@@ -7,7 +7,7 @@ struct Slow {
 	vi elems;
 	ll n;
 	Slow(ll n) : elems(n), n(n) {}
-	void init(const vector<ll> &a) {
+	void init(const vi &a) {
 		elems = a;
 	}
 	void upd(ll a, ll b, ll v) {
@@ -28,7 +28,7 @@ int main() {
 
 	fore(_, 0, 100) {
 		ll n = rand() % 99 + 1;
-		vector<ll> a(n);
+		vi a(n);
 		fore(i, 0, n) {
 			a[i] = rand() * (rand() % 2 ? 1 : -1);
 		}

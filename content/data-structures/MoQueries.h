@@ -11,32 +11,32 @@
  */
 #pragma once
 
-void add(ll ind, ll end) { ... } // add a[ind] (end = 0 or 1)
-void del(ll ind, ll end) { ... } // remove a[ind]
-ll calc() { ... } // compute current answer
+void add(ll ind, ll end) { return; } // add a[ind] (end = 0 or 1)
+void del(ll ind, ll end) { return; } // remove a[ind]
+ll calc() { return 0; } // compute current answer
 
-vi mo(vector<pii> Q) {
+vi mo(vector<ii> Q) {
 	ll L = 0, R = 0, blk = 350; // ~N/sqrt(Q)
-	vi s(sz(Q)), res = s;
-#define K(x) pii(x.first/blk, x.second ^ -(x.first/blk & 1))
-	iota(all(s), 0);
-	sort(all(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
+	vi s(SZ(Q)), res = s;
+#define K(x) ii(x.fst/blk, x.snd ^ -(x.fst/blk & 1))
+	iota(ALL(s), 0);
+	sort(ALL(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
 	for (ll qi : s) {
-		pii q = Q[qi];
-		while (L > q.first) add(--L, 0);
-		while (R < q.second) add(R++, 1);
-		while (L < q.first) del(L++, 0);
-		while (R > q.second) del(--R, 1);
+		ii q = Q[qi];
+		while (L > q.fst) add(--L, 0);
+		while (R < q.snd) add(R++, 1);
+		while (L < q.fst) del(L++, 0);
+		while (R > q.snd) del(--R, 1);
 		res[qi] = calc();
 	}
 	return res;
 }
 
 vi moTree(vector<array<ll, 2>> Q, vector<vi>& ed, ll root=0){
-	ll N = sz(ed), pos[2] = {}, blk = 350; // ~N/sqrt(Q)
-	vi s(sz(Q)), res = s, I(N), L(N), R(N), in(N), par(N);
+	ll N = SZ(ed), pos[2] = {}, blk = 350; // ~N/sqrt(Q)
+	vi s(SZ(Q)), res = s, I(N), L(N), R(N), in(N), par(N);
 	add(0, 0), in[0] = 1;
-	auto dfs = [&](ll x, ll p, ll dep, auto& f) -> void {
+	auto dfs = [&](ll x, ll p, ll dep, auto&& f) -> void {
 		par[x] = p;
 		L[x] = N;
 		if (dep) I[x] = N++;
@@ -45,10 +45,10 @@ vi moTree(vector<array<ll, 2>> Q, vector<vi>& ed, ll root=0){
 		R[x] = N;
 	};
 	dfs(root, -1, 0, dfs);
-#define K(x) pii(I[x[0]] / blk, I[x[1]] ^ -(I[x[0]] / blk & 1))
-	iota(all(s), 0);
-	sort(all(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
-	for (ll qi : s) rep(end,0,2) {
+#define K(x) ii(I[x[0]] / blk, I[x[1]] ^ -(I[x[0]] / blk & 1))
+	iota(ALL(s), 0);
+	sort(ALL(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
+	for (ll qi : s) fore(end,0,2) {
 		ll &a = pos[end], b = Q[qi][end], i = 0;
 #define step(c) { if (in[c]) { del(a, end); in[a] = 0; } \
                   else { add(c, end); in[c] = 1; } a = c; }

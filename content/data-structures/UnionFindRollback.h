@@ -12,22 +12,22 @@
 #pragma once
 
 struct RollbackUF {
-	vi e; vector<pii> st;
+	vi e; vector<ii> st;
 	RollbackUF(ll n) : e(n, -1) {}
 	ll size(ll x) { return -e[find(x)]; }
 	ll find(ll x) { return e[x] < 0 ? x : find(e[x]); }
-	ll time() { return sz(st); }
+	ll time() { return SZ(st); }
 	void rollback(ll t) {
 		for (ll i = time(); i --> t;)
-			e[st[i].first] = st[i].second;
+			e[st[i].fst] = st[i].snd;
 		st.resize(t);
 	}
 	bool join(ll a, ll b) {
 		a = find(a), b = find(b);
 		if (a == b) return false;
 		if (e[a] > e[b]) swap(a, b);
-		st.push_back({a, e[a]});
-		st.push_back({b, e[b]});
+		st.pb({a, e[a]});
+		st.pb({b, e[b]});
 		e[a] += e[b]; e[b] = a;
 		return true;
 	}
