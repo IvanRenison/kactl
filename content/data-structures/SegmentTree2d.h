@@ -11,14 +11,14 @@
  */
 #pragma once
 
-struct Tree2D {
+struct Tree2 {
 	typedef ll T;
 	static constexpr T unit = 0;
 	T f(T a, T b) { return a + b; } // associative & commutative
 
 	ll n, m;
 	vector<vi> a, st;
-	Tree2D(ll n, ll m) : n(n), m(m), a(n, vi(m)),
+	Tree2(ll n, ll m) : n(n), m(m), a(n, vi(m)),
 			st(2 * n, vi(2 * m)) {
 		fore(i, 0, n) fore(j, 0, m)
 			st[i + n][j + m] = a[i][j];

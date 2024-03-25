@@ -1,6 +1,6 @@
 #include "../utilities/template.h"
 
-#include "../../content/data-structures/SegmentTree2D.h"
+#include "../../content/data-structures/SegmentTree2d.h"
 
 struct Slow {
 	typedef ll T;
@@ -27,7 +27,7 @@ int main() {
 	fore(_, 0, 100) {
 		ll n = rand() % 50 + 1, m = rand() % 50 + 1;
 
-		Tree2D st(n, m);
+		Tree2 st(n, m);
 		Slow slow(n, m);
 
 		fore(_, 0, 100) {
