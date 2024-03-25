@@ -17,14 +17,13 @@ typedef vector<ll> vi;
 /// content/data-structures/LazySegmentTree.h
 struct STree { // example: range sum with range addition
 	typedef ll T; typedef ll L; // T: data type, L: lazy type
-	constexpr static T tneut = 0; constexpr static L lneut = 0;
 	// neutrals
+	constexpr static T tneut = 0; constexpr static L lneut = 0;
 	T f(T a, T b) { return a + b; } // operation
-	T apply(T v, L l, ll s, ll e) { return v + l * (e - s); }
 	// new st according to lazy
-	L comb(L a, L b) { return a + b; }
+	T apply(T v, L l, ll s, ll e) { return v + l * (e - s); }
 	// cumulative effect of lazy
-
+	L comb(L a, L b) { return a + b; }
 	vector<T> st;
 	vector<L> lazy;
 	ll n;
