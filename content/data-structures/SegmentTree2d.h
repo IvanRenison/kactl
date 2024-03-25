@@ -7,7 +7,7 @@
  * Bounds are inclusive to the left and exclusive to the right.
  * Can be changed by modifying T, f and unit.
  * Time: O(\log N)
- * Status: Testes on SOPJ MATSUM and stress-tested a bit
+ * Status: Tested on SOPJ MATSUM and stress-tested a bit
  */
 #pragma once
 
@@ -17,9 +17,9 @@ struct Tree2 {
 	T f(T a, T b) { return a + b; } // associative & commutative
 
 	ll n, m;
-	vector<vi> a, st;
-	Tree2(ll n, ll m) : n(n), m(m), a(n, vi(m)),
-			st(2 * n, vi(2 * m)) {
+	vector<vector<T>> a, st;
+	Tree2(ll n, ll m) : n(n), m(m), a(n, vector<T>(m)),
+			st(2 * n, vector<T>(2 * m)) {
 		fore(i, 0, n) fore(j, 0, m)
 			st[i + n][j + m] = a[i][j];
 		fore(i, 0, n) for (ll j = m - 1; j; --j)
