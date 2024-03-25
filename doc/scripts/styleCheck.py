@@ -29,7 +29,7 @@ def checkFile(file: str, tabs: bool, lineLength: int) -> int:
     end: bool = True # if the last statement is closed
     in_comment: bool = False # if the line is inside a multiline comment starting with /**
     for i, line in enumerate(lines):
-        if "/*" in line and "*/" not in line:
+        if "/**" in line and "*/" not in line:
             in_comment = True
         if in_comment:
             if "*/" in line:
@@ -98,4 +98,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     exit(main())
-""
