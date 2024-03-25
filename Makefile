@@ -54,7 +54,7 @@ test-style:
 	python doc/scripts/styleCheck.py --path=./test-problems --tabs
 
 test-test-problems:
-	bash ./test-problems/check_all.sh
+	bash ./doc/scripts/checkAllInlineContents.sh
 
 showexcluded: build
 	grep -RoPh '^\s*\\kactlimport{\K.*' content/ | sed 's/.$$//' > build/headers_included
