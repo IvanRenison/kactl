@@ -17,13 +17,13 @@
 
 struct STree {
 	typedef ll T;
-	static constexpr T unit = LONG_LONG_MIN;
+	static constexpr T unit = INT_MIN;
 	T f(T a, T b) { return max(a, b); } // (any associative fn)
 
 	vector<T> st;
 	vector<ll> L, R;
 	ll n, s, rt;
-	STree(ll n) : st(1, unit), L(1), R(1), n(n), rt(0), s(1) {}
+	STree(ll n) : st(1, unit), L(1), R(1), n(n), s(1), rt(0) {}
 	ll new_node(T v, ll l = 0, ll r = 0) {
 		ll ks = SZ(st);
 		st.pb(v), L.pb(l), R.pb(r);
