@@ -4,7 +4,7 @@
  * License: CC0
  * Source: notebook el vasito
  * Description: max segment tree in which each update creates a new version of the tree
- * 	ans you can query and update on any version of the tree
+ * 	and you can query and update on any version of the tree
  * Can be changed by modifying T, f and unit.
  * Time: O(\log N)
  * Usage: STree rmq(n);
