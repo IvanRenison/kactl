@@ -24,14 +24,13 @@ struct STree {
 	vector<ll> L, R;
 	ll n, s, rt;
 	STree(ll n) : st(1, unit), L(1), R(1), n(n), s(1), rt(0) {}
-	ll new_node(T v, ll l = 0, ll r = 0) {
-		ll ks = SZ(st);
+	ll new_node(T v, ll l, ll r) {
 		st.pb(v), L.pb(l), R.pb(r);
-		return ks;
+		return SZ(st) - 1;
 	}
 	// not necessary in most cases
 	ll init(ll s, ll e, vector<T> a) {
-		if (s + 1 == e) return new_node(a[s]);
+		if (s + 1 == e) return new_node(a[s], 0, 0);
 		ll m = (s + e) / 2, l = init(s, m, a), r = init(m, e, a);
 		return new_node(f(st[l], st[r]), l, r);
 	}
@@ -42,8 +41,8 @@ struct STree {
 			return ks;
 		}
 		ll m = (s + e) / 2, ps;
-		if (p < m) ps = upd(L[ks], s, m, p, v), L[ks] = ps;
-		else ps = upd(R[ks], m, e, p, v), R[ks] = ps;
+		if (p < m) L[ks] = ps = upd(L[ks], s, m, p, v);
+		else R[ks] = ps = upd(R[ks], m, e, p, v);
 		st[ks] = f(st[L[ks]], st[R[ks]]);
 		return ks;
 	}
@@ -53,7 +52,7 @@ struct STree {
 		ll m = (s + e) / 2;
 		return f(query(L[k], s, m, a, b), query(R[k], m, e, a, b));
 	}
-	ll init(vector<T> a){return init(0,n,a);}
+	ll init(vector<T> a) { return init(0, n, a); }
 	ll upd(ll ver, ll p, T v) {return rt = upd(ver, 0, n, p, v);}
 	// update on last root
 	ll upd(ll p, T v) { return upd(rt, p, v); }
