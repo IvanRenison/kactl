@@ -11,7 +11,7 @@
  * 	ver = rmq.init(xs);
  * 	new_ver = rmq.upd(ver, i, x);
  * 	rmq.query(ver, l, u);
- * Status: stress-tested a bit and tested with codeforces 893F
+ * Status: Tested with codeforces 893F and stress-tested a bit
  */
 #pragma once
 
