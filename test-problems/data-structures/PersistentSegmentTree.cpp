@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/893/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/893/submission/254738459
+// Submission: https://codeforces.com/contest/893/submission/254750587
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -43,9 +43,9 @@ struct STree {
 			st[ks] = v;
 			return ks;
 		}
-		ll m = (s + e) / 2, ps;
-		if (p < m) L[ks] = ps = upd(L[ks], s, m, p, v);
-		else R[ks] = ps = upd(R[ks], m, e, p, v);
+		ll m = (s + e) / 2;
+		if (p < m) L[ks] = upd(L[ks], s, m, p, v);
+		else R[ks] = upd(R[ks], m, e, p, v);
 		st[ks] = f(st[L[ks]], st[R[ks]]);
 		return ks;
 	}
