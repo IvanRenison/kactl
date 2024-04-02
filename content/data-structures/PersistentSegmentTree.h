@@ -22,8 +22,8 @@ struct STree {
 
 	vector<T> st;
 	vector<ll> L, R;
-	ll n, s, rt;
-	STree(ll n) : st(1, unit), L(1), R(1), n(n), s(1), rt(0) {}
+	ll n, rt;
+	STree(ll n) : st(1, unit), L(1), R(1), n(n), rt(0) {}
 	ll new_node(T v, ll l, ll r) {
 		st.pb(v), L.pb(l), R.pb(r);
 		return SZ(st) - 1;
