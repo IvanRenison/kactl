@@ -8,9 +8,9 @@
  * Can be changed by modifying T, f and unit.
  * Time: O(\log N)
  * Usage: STree rmq(n);
- * 	ver = rmq.init(xs);
- * 	new_ver = rmq.upd(ver, i, x);
- * 	rmq.query(ver, l, u);
+ *  ver = rmq.init(xs);
+ *  new_ver = rmq.upd(ver, i, x);
+ *  rmq.query(ver, l, u);
  * Status: Tested with codeforces 893F and stress-tested a bit
  */
 #pragma once
