@@ -3,7 +3,7 @@
  * Date: 2024-04-02
  * License: CC0
  * Source: notebook el vasito
- * Description: max segment tree in which each update creates a new version of the tree
+ * Description: Max segment tree in which each update creates a new version of the tree
  * 	and you can query and update on any version of the tree.
  * Can be changed by modifying T, f and unit.
  * Time: O(\log N)
