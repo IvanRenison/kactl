@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/893/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/893/submission/254751437
+// Submission: https://codeforces.com/contest/893/submission/255541307
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -32,7 +32,7 @@ struct STree {
 		return SZ(st) - 1;
 	}
 	// not necessary in most cases
-	ll init(ll s, ll e, vector<T> a) {
+	ll init(ll s, ll e, vector<T>& a) {
 		if (s + 1 == e) return new_node(a[s], 0, 0);
 		ll m = (s + e) / 2, l = init(s, m, a), r = init(m, e, a);
 		return new_node(f(st[l], st[r]), l, r);
@@ -55,7 +55,7 @@ struct STree {
 		ll m = (s + e) / 2;
 		return f(query(L[k], s, m, a, b), query(R[k], m, e, a, b));
 	}
-	ll init(vector<T> a) { return init(0, n, a); }
+	ll init(vector<T>& a) { return init(0, n, a); }
 	ll upd(ll ver, ll p, T v) {return rt = upd(ver, 0, n, p, v);}
 	// update on last root
 	ll upd(ll p, T v) { return upd(rt, p, v); }
