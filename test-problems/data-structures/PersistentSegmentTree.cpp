@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/893/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/893/submission/259527347
+// Submission: https://codeforces.com/contest/893/submission/259528355
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -61,7 +61,6 @@ struct Tree {
 	ll upd(ll p, T v) { return upd(rt, p, v); }
 	T query(ll ver, ll a, ll b) {return query(ver, 0, n, a, b);}
 };
-
 /// END content
 
 vector<ii> dfsOrder(ll r, const vector<vi>& adj) {
