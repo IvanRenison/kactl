@@ -4,7 +4,7 @@
 
 struct Slow {
 	typedef ll T;
-	static constexpr T unit = 0;
+	static constexpr T neut = 0;
 	T f(T a, T b) { return a + b; }
 
 	ll n, m;
@@ -14,7 +14,7 @@ struct Slow {
 		a[x][y] = v;
 	}
 	T query(ll x0, ll x1, ll y0, ll y1) {
-		T ans = unit;
+		T ans = neut;
 		fore(x, x0, x1) fore(y, y0, y1) {
 			ans = f(ans, a[x][y]);
 		}
@@ -56,7 +56,7 @@ namespace Modification {
 
 struct Tree2 {
 	typedef set<ll> T;
-	const T unit = {};
+	const T neut = {};
 	T f(T a, const T& b) {
 		for (ll x : b) {
 			a.insert(x);
@@ -84,7 +84,7 @@ struct Tree2 {
 				st[i / 2][j] = f(st[i][j], st[i ^ 1][j]);
 	}
 	T query(ll x0, ll x1, ll y0, ll y1) { // [x0, x1) * [y0, y1)
-		T r = unit;
+		T r = neut;
 		ll i0 = x0 + n, i1 = x1 + n;
 		for (; i0 < i1; i0 /= 2, i1 /= 2) {
 			ll t[4], q = 0;
@@ -104,7 +104,7 @@ struct Tree2 {
 
 struct Slow {
 	typedef set<ll> T;
-	const T unit = {};
+	const T neut = {};
 	T f(T a, const T& b) {
 		for (ll x : b) {
 			a.insert(x);
@@ -119,7 +119,7 @@ struct Slow {
 		a[x][y] = v;
 	}
 	T query(ll x0, ll x1, ll y0, ll y1) {
-		T ans = unit;
+		T ans = neut;
 		fore(x, x0, x1) fore(y, y0, y1) {
 			ans = f(ans, a[x][y]);
 		}
