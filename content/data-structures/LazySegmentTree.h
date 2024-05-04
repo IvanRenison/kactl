@@ -15,7 +15,7 @@
  */
 #pragma once
 
-struct STree { // example: range sum with range addition
+struct Tree { // example: range sum with range addition
 	typedef ll T; typedef ll L; // T: data type, L: lazy type
 	// neutrals
 	constexpr static T tneut = 0; constexpr static L lneut = 0;
@@ -27,7 +27,7 @@ struct STree { // example: range sum with range addition
 	vector<T> st;
 	vector<L> lazy;
 	ll n;
-	STree(ll n) : st(4*n, tneut), lazy(4*n, lneut), n(n) {}
+	Tree(ll n) : st(4*n, tneut), lazy(4*n, lneut), n(n) {}
 	void init(ll k, ll s, ll e, const vector<T> &a) {
 		lazy[k] = lneut;
 		if (s + 1 == e) { st[k] = a[s]; return; }

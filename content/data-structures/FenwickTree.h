@@ -13,7 +13,7 @@
 struct FT {
 	vi s;
 	FT(ll n) : s(n) {}
-	void update(ll pos, ll dif) { // a[pos] += dif
+	void upd(ll pos, ll dif) { // a[pos] += dif
 		for (; pos < SZ(s); pos |= pos + 1) s[pos] += dif;
 	}
 	ll query(ll pos) { // sum of values in [0, pos)

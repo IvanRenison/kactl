@@ -27,16 +27,16 @@ const ll lut[6][6] = {
 
 struct Tree {
 	typedef ll T;
-	const T unit = 0;
+	const T neut = 0;
 	T f(T a, T b) { return lut[a][b]; }
 	vector<T> s; ll n;
 	Tree(ll n = 0, T def = 0) : s(2*n, def), n(n) {}
-	void update(ll pos, T val) {
+	void upd(ll pos, T val) {
 		for (s[pos += n] = val; pos > 1; pos /= 2)
 			s[pos / 2] = f(s[pos & ~1], s[pos | 1]);
 	}
 	T query(ll b, ll e) { // query [b, e)
-		T ra = unit, rb = unit;
+		T ra = neut, rb = neut;
 		for (b += n, e += n; b < e; b /= 2, e /= 2) {
 			if (b % 2) ra = f(ra, s[b++]);
 			if (e % 2) rb = f(s[--e], rb);
@@ -50,7 +50,7 @@ struct Tree {
 int main() {
 	{
 		maximum::Tree t(0);
-		assert(t.query(0, 0) == t.unit);
+		assert(t.query(0, 0) == t.neut);
 	}
 
 	if (0) {
@@ -58,7 +58,7 @@ int main() {
 		maximum::Tree tr(N);
 		ll sum = 0;
 		fore(it,0,1000000) {
-			tr.update(ra() % N, ra());
+			tr.upd(ra() % N, ra());
 			ll i = ra() % N;
 			ll j = ra() % N;
 			if (i > j) swap(i, j);
@@ -71,20 +71,20 @@ int main() {
 
 	fore(n,1,10) {
 		maximum::Tree tr(n);
-		vi v(n, maximum::Tree::unit);
+		vi v(n, maximum::Tree::neut);
 		fore(it,0,1000000) {
 			ll i = rand() % (n+1), j = rand() % (n+1);
 			ll x = rand() % (n+2);
 
 			ll r = rand() % 100;
 			if (r < 30) {
-				ll ma = tr.unit;
+				ll ma = tr.neut;
 				fore(k,i,j) ma = max(ma, v[k]);
 				assert(ma == tr.query(i,j));
 			}
 			else {
 				i = min(i, n-1);
-				tr.update(i, x);
+				tr.upd(i, x);
 				v[i] = x;
 			}
 		}
@@ -99,13 +99,13 @@ int main() {
 
 			ll r = rand() % 100;
 			if (r < 30) {
-				ll ma = tr.unit;
+				ll ma = tr.neut;
 				fore(k,i,j) ma = nonabelian::lut[ma][v[k]];
 				assert(ma == tr.query(i,j));
 			}
 			else {
 				i = min(i, n-1);
-				tr.update(i, x);
+				tr.upd(i, x);
 				v[i] = x;
 			}
 		}

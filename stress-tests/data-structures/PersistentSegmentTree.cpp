@@ -14,7 +14,7 @@ struct Slow {
 	ll upd(ll ver, ll i, Tree::T x) {
 		assert(ver < SZ(trees));
 		trees.pb(trees[ver]);
-		trees.back().update(i, x);
+		trees.back().upd(i, x);
 		return SZ(trees) - 1;
 	}
 

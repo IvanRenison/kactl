@@ -9,7 +9,7 @@ int main() {
 		vi t(N);
 		fore(i,0,N) {
 			ll v = rand() % 3;
-			fw.update(i, v);
+			fw.upd(i, v);
 			t[i] += v;
 		}
 		ll q = rand() % 20;
