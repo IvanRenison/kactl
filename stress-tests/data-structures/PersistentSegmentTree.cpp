@@ -31,7 +31,7 @@ int main() {
 		ll n = rand() % 100 + 1;
 
 		Slow::Slow slow(n);
-		STree st(n);
+		Tree st(n);
 
 		vi slow_versions = {0};
 		vi st_versions = {0};

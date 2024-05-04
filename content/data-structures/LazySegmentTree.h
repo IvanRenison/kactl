@@ -7,7 +7,7 @@
  * Ranges are [s, e).
  * Can be changed to other things.
  * Time: O(\log N).
- * Usage: STree st(n);
+ * Usage: Tree st(n);
  *  st.init(x);
  *  st.upd(s, e, v);
  *  st.query(s, e);

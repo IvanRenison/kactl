@@ -32,7 +32,7 @@ int main() {
 		fore(i, 0, n) {
 			a[i] = rand() * (rand() % 2 ? 1 : -1);
 		}
-		STree st(n);
+		Tree st(n);
 		assert(st.n == n);
 		assert(st.query(0, n) == 0);
 		Slow slow(n);

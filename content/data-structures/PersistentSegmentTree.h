@@ -7,7 +7,7 @@
  * 	and you can query and update on any version of the tree.
  * Can be changed by modifying T, f and unit.
  * Time: O(\log N)
- * Usage: STree rmq(n);
+ * Usage: Tree rmq(n);
  *  ver = rmq.init(xs);
  *  new_ver = rmq.upd(ver, i, x);
  *  rmq.query(ver, l, u);
@@ -15,7 +15,7 @@
  */
 #pragma once
 
-struct STree {
+struct Tree {
 	typedef ll T;
 	static constexpr T neut = LONG_LONG_MIN;
 	T f(T a, T b) { return max(a, b); } // (any associative fn)
@@ -23,7 +23,7 @@ struct STree {
 	vector<T> st;
 	vector<ll> L, R;
 	ll n, rt;
-	STree(ll n) : st(1, neut), L(1), R(1), n(n), rt(0) {}
+	Tree(ll n) : st(1, neut), L(1), R(1), n(n), rt(0) {}
 	ll new_node(T v, ll l, ll r) {
 		st.pb(v), L.pb(l), R.pb(r);
 		return SZ(st) - 1;
