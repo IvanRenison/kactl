@@ -26,13 +26,13 @@ struct HLD {
 		for(auto &c: C) {
 			c.tree = {sz(c.nodes), 0};
 			for (ll ni : c.nodes)
-				c.tree.update(V[ni].pos, V[ni].val);
+				c.tree.upd(V[ni].pos, V[ni].val);
 		}
 	}
 
-	void update(ll node, T val) {
+	void upd(ll node, T val) {
 		Node& n = V[node]; n.val = val;
-		if (n.chain != -1) C[n.chain].tree.update(n.pos, val);
+		if (n.chain != -1) C[n.chain].tree.upd(n.pos, val);
 	}
 
 	ll pard(Node& nod) {
