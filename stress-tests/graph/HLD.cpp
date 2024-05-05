@@ -89,7 +89,7 @@ void testAgainstOld(ll n, ll iters, ll queries) {
 			if (rand() % 2) {
 				ll node = rand() % n;
 				ll val = rand() % 10;
-				hld2.update(node, val);
+				hld2.upd(node, val);
 				hld.modifyPath(node, node, val - hld.queryPath(node, node));
 			} else {
 				ll a = rand() % n;

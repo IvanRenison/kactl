@@ -13,11 +13,11 @@ int main() {
 
 		vector<vi> grid(12, vi(12)), sumto(13, vi(13));
 		for(auto &pa: upd)
-			ft.fakeUpdate(get<0>(pa), get<1>(pa));
+			ft.fakeUpd(get<0>(pa), get<1>(pa));
 		ft.init();
 		for(auto &pa: upd) {
 			grid[get<0>(pa)][get<1>(pa)] += get<2>(pa);
-			ft.update(get<0>(pa), get<1>(pa), get<2>(pa));
+			ft.upd(get<0>(pa), get<1>(pa), get<2>(pa));
 		}
 
 		fore(i,0,13) {

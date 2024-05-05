@@ -13,7 +13,7 @@
 
 struct Tree2 {
 	typedef ll T;
-	static constexpr T unit = 0;
+	static constexpr T neut = 0;
 	T f(T a, T b) { return a + b; } // associative & commutative
 
 	ll n, m;
@@ -36,7 +36,7 @@ struct Tree2 {
 				st[i / 2][j] = f(st[i][j], st[i ^ 1][j]);
 	}
 	T query(ll x0, ll x1, ll y0, ll y1) { // [x0, x1) * [y0, y1)
-		T r = unit;
+		T r = neut;
 		ll i0 = x0 + n, i1 = x1 + n;
 		for (; i0 < i1; i0 /= 2, i1 /= 2) {
 			ll t[4], q = 0;

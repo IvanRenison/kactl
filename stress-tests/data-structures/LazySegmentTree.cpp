@@ -7,9 +7,7 @@ struct Slow {
 	vi elems;
 	ll n;
 	Slow(ll n) : elems(n), n(n) {}
-	void init(const vi &a) {
-		elems = a;
-	}
+	Slow(const vi &a) : elems(a), n(SZ(a)) {}
 	void upd(ll a, ll b, ll v) {
 		fore(i, a, b) {
 			elems[i] += v;
@@ -32,12 +30,9 @@ int main() {
 		fore(i, 0, n) {
 			a[i] = rand() * (rand() % 2 ? 1 : -1);
 		}
-		STree st(n);
+		Tree st(a);
 		assert(st.n == n);
-		assert(st.query(0, n) == 0);
-		Slow slow(n);
-		st.init(a);
-		slow.init(a);
+		Slow slow(a);
 
 		assert(st.query(0, n) == slow.query(0, n));
 

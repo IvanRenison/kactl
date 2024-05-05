@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/893/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/893/submission/255541307
+// Submission: https://codeforces.com/contest/893/submission/259528355
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -16,17 +16,17 @@ typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
 /// content/data-structures/PersistentSegmentTree.h
-struct STree {
+struct Tree {
 	typedef ll T;
 	/// START diff
-	static constexpr T unit = LONG_LONG_MAX;
+	static constexpr T neut = LONG_LONG_MAX;
 	T f(T a, T b) { return min(a, b); } // (any associative fn)
 	/// END diff
 
 	vector<T> st;
 	vector<ll> L, R;
 	ll n, rt;
-	STree(ll n) : st(1, unit), L(1), R(1), n(n), rt(0) {}
+	Tree(ll n) : st(1, neut), L(1), R(1), n(n), rt(0) {}
 	ll new_node(T v, ll l, ll r) {
 		st.pb(v), L.pb(l), R.pb(r);
 		return SZ(st) - 1;
@@ -50,14 +50,14 @@ struct STree {
 		return ks;
 	}
 	T query(ll k, ll s, ll e, ll a, ll b) {
-		if (e <= a || b <= s) return unit;
+		if (e <= a || b <= s) return neut;
 		if (a <= s && e <= b) return st[k];
 		ll m = (s + e) / 2;
 		return f(query(L[k], s, m, a, b), query(R[k], m, e, a, b));
 	}
 	ll init(vector<T>& a) { return init(0, n, a); }
 	ll upd(ll ver, ll p, T v) {return rt = upd(ver, 0, n, p, v);}
-	// update on last root
+	// upd on last root
 	ll upd(ll p, T v) { return upd(rt, p, v); }
 	T query(ll ver, ll a, ll b) {return query(ver, 0, n, a, b);}
 };
@@ -119,7 +119,7 @@ vi solve(ll r, const vector<ii>& edges, const vi& as, const vector<ii>& queries)
 
 	vector<ii> ord = dfsOrder(r, adj);
 
-	STree st(n);
+	Tree st(n);
 
 	vi versions(SZ(levels));
 

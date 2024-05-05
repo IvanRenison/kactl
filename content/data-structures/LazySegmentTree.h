@@ -7,7 +7,7 @@
  * Ranges are [s, e).
  * Can be changed to other things.
  * Time: O(\log N).
- * Usage: STree st(n);
+ * Usage: Tree st(n);
  *  st.init(x);
  *  st.upd(s, e, v);
  *  st.query(s, e);
@@ -15,7 +15,7 @@
  */
 #pragma once
 
-struct STree { // example: range sum with range addition
+struct Tree { // example: range sum with range addition
 	typedef ll T; typedef ll L; // T: data type, L: lazy type
 	// neutrals
 	constexpr static T tneut = 0; constexpr static L lneut = 0;
@@ -24,11 +24,14 @@ struct STree { // example: range sum with range addition
 	T apply(T v, L l, ll s, ll e) { return v + l * (e - s); }
 	// cumulative effect of lazy
 	L comb(L a, L b) { return a + b; }
+	ll n;
 	vector<T> st;
 	vector<L> lazy;
-	ll n;
-	STree(ll n) : st(4*n, tneut), lazy(4*n, lneut), n(n) {}
-	void init(ll k, ll s, ll e, const vector<T> &a) {
+	Tree(ll n) : n(n), st(4*n, tneut), lazy(4*n, lneut) {}
+	Tree(vector<T> &a) : n(SZ(a)), st(4*n), lazy(4*n, lneut) {
+		init(1, 0, n, a);
+	}
+	void init(ll k, ll s, ll e, vector<T> &a) {
 		lazy[k] = lneut;
 		if (s + 1 == e) { st[k] = a[s]; return; }
 		ll m = (s + e) / 2;
@@ -63,7 +66,6 @@ struct STree { // example: range sum with range addition
 		ll m = (s + e) / 2;
 		return f(query(2*k, s, m, a, b),query(2*k+1, m, e, a, b));
 	}
-	void init(const vector<T> &a) { init(1, 0, n, a); }
 	void upd(ll a, ll b, L v) { upd(1, 0, n, a, b, v); }
 	T query(ll a, ll b) { return query(1, 0, n, a, b); }
 };
