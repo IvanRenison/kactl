@@ -22,7 +22,7 @@ struct Tree {
 
 	Tree(const vector<T> vals) : n(sz(vals)), vals(vals) {}
 
-	void update(ll b, ll e, L a) { // update [b, e)
+	void upd(ll b, ll e, L a) { // update [b, e)
 		rep(i, b, e) {
 			vals[i] = apply(vals[i], a);
 		}
@@ -68,11 +68,11 @@ int main() {
 				ll x = rand() % 100;
 
 				if (ty == 0) {
-					t.update(a, b, {x, 0});
-					t2.update(a, b, {x, 0});
+					t.upd(a, b, {x, 0});
+					t2.upd(a, b, {x, 0});
 				} else {
-					t.update(a, b, {inf, x});
-					t2.update(a, b, {inf, x});
+					t.upd(a, b, {inf, x});
+					t2.upd(a, b, {inf, x});
 				}
 			} else {
 				ll ans = t.query(a, b);

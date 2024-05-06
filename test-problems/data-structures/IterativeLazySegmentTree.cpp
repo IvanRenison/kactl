@@ -1,5 +1,6 @@
 // Problem: https://codeforces.com/contest/242/problem/E
-// Status: Accepted
+// Status: Time limit exceeded on test 16
+// Submission:
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -14,7 +15,9 @@ typedef long long ll;
 typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
+/// content/data-structures/IterativeLazySegmentTree.h
 struct Tree {
+	/// START diff
 	struct T {
 		vi cnts;
 		ll sz;
@@ -42,6 +45,7 @@ struct Tree {
 	L comb(L a, L b) {
 		return a ^ b;
 	} // Combine lazy
+	/// END diff
 
 	ll n;
 	vector<T> s;
@@ -72,7 +76,7 @@ struct Tree {
 		}
 	}
 
-	void update(ll l, ll r, L value) {
+	void upd(ll l, ll r, L value) {
 		l += n, r += n;
 		push(l);
 		push(r - 1);
@@ -97,6 +101,7 @@ struct Tree {
 		return ans;
 	}
 };
+/// END content
 
 
 int main() {
@@ -137,7 +142,7 @@ int main() {
 		} else {
 			ll x;
 			cin >> x;
-			t.update(l, r, x);
+			t.upd(l, r, x);
 		}
 	}
 
