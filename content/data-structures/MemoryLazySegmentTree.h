@@ -7,7 +7,7 @@
  * Can be changed to other things.
  * Use with a bump allocator for better performance, and SmallPtr or implicit indices to save memory.
  * Time: O(\log N).
- * Usage: Node* tr = new Node(v, 0, sz(v));
+ * Usage: Node* tr = new Node(v, 0, SZ(v));
  * Status: stress-tested a bit
  */
 #pragma once
@@ -17,16 +17,16 @@
 const ll inf = 1e18;
 struct Node {
 	typedef ll T; // data type
-	struct L { ll mset, madd; }; // lazy type
+	struct L { ll toset, toadd; }; // lazy type
 	const T tneut = -inf;     // neutral elements
 	const L lneut = {inf, 0};
 	T f (T a, T b) { return max(a, b); } // (any associative fn)
 	T apply (T a, L b) {
-		return b.mset != inf ? b.mset + b.madd : a + b.madd;
+		return b.toset != inf ? b.toset + b.toadd : a + b.toadd;
 	} // Apply lazy
 	L comb(L a, L b) {
-		if (b.mset != inf) return b;
-		return {a.mset, a.madd + b.madd};
+		if (b.toset != inf) return b;
+		return {a.toset, a.toadd + b.toadd};
 	} // Combine lazy
 
 	Node *l = 0, *r = 0;

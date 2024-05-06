@@ -27,18 +27,18 @@ ll calc() {
 }
 
 ll blk; // ~N/sqrt(Q)
-vi mo(vector<pii> Q) {
+vi mo(vector<ii> Q) {
 	ll L = 0, R = 0;
-	vi s(sz(Q)), res = s;
-#define K(x) pii(x.first/blk, x.second ^ -(x.first/blk & 1))
-	iota(all(s), 0);
-	sort(all(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
+	vi s(SZ(Q)), res = s;
+#define K(x) ii(x.fst/blk, x.snd ^ -(x.fst/blk & 1))
+	iota(ALL(s), 0);
+	sort(ALL(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
 	for (ll qi : s) {
-		pii q = Q[qi];
-		while (L > q.first) add(--L, 0);
-		while (R < q.second) add(R++, 1);
-		while (L < q.first) del(L++, 0);
-		while (R > q.second) del(--R, 1);
+		ii q = Q[qi];
+		while (L > q.fst) add(--L, 0);
+		while (R < q.snd) add(R++, 1);
+		while (L < q.fst) del(L++, 0);
+		while (R > q.snd) del(--R, 1);
 		res[qi] = calc();
 	}
 	return res;
@@ -47,16 +47,16 @@ vi mo(vector<pii> Q) {
 void test(ll n, ll q) {
 	curL = curR = ops = 0;
 	blk = max((ll)(n / sqrt(max(q, 1ll))), 1ll);
-	vector<pii> queries(q);
+	vector<ii> queries(q);
 	for (auto& pa : queries) {
-		pa.first = rand() % n;
-		pa.second = rand() % n;
-		if (pa.first > pa.second)
-			swap(pa.first, pa.second);
+		pa.fst = rand() % n;
+		pa.snd = rand() % n;
+		if (pa.fst > pa.snd)
+			swap(pa.fst, pa.snd);
 	}
 	vi res = mo(queries);
-	rep(i,0,q) {
-		ll l = queries[i].first, r = queries[i].second;
+	fore(i,0,q) {
+		ll l = queries[i].fst, r = queries[i].snd;
 		if (l == r) {
 			assert(res[i] == -1);
 		} else {
@@ -81,7 +81,7 @@ void add(ll i, ll end) {
 	sum += vals[i];
 	ops++;
 	if (end == 0) path.push_front(i);
-	else path.push_back(i);
+	else path.pb(i);
 }
 void del(ll i, ll end) {
 	sum -= vals[i];
@@ -98,10 +98,10 @@ void del(ll i, ll end) {
 ll calc() { return sum; }
 
 vi moTree(vector<array<ll, 2>> Q, vector<vi>& ed, ll root=0){
-	ll N = sz(ed), pos[2] = {};
-	vi s(sz(Q)), res = s, I(N), L(N), R(N), in(N), par(N);
+	ll N = SZ(ed), pos[2] = {};
+	vi s(SZ(Q)), res = s, I(N), L(N), R(N), in(N), par(N);
 	add(0, 0), in[0] = 1;
-	auto dfs = [&](ll x, ll p, ll dep, auto& f) -> void {
+	auto dfs = [&](ll x, ll p, ll dep, auto&& f) -> void {
 		par[x] = p;
 		L[x] = N;
 		if (dep) I[x] = N++;
@@ -110,13 +110,13 @@ vi moTree(vector<array<ll, 2>> Q, vector<vi>& ed, ll root=0){
 		R[x] = N;
 	};
 	dfs(root, -1, 0, dfs);
-#define K(x) pii(I[x[0]] / blk, I[x[1]] ^ -(I[x[0]] / blk & 1))
-	iota(all(s), 0);
-	sort(all(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
-	for (ll qi : s) rep(end,0,2) {
+#define K(x) ii(I[x[0]] / blk, I[x[1]] ^ -(I[x[0]] / blk & 1))
+	iota(ALL(s), 0);
+	sort(ALL(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
+	for (ll qi : s) fore(end,0,2) {
 		ll &a = pos[end], b = Q[qi][end], i = 0;
-#define step(c) { if (in[c]) del(a, end), in[a] = 0; \
-                  else add(c, end), in[c] = 1; a = c; }
+#define step(c) { if (in[c]) { del(a, end); in[a] = 0; } \
+                  else { add(c, end); in[c] = 1; } a = c; }
 		while (!(L[b] <= L[a] && R[a] <= R[b]))
 			I[i++] = b, b = par[b];
 		while (a != b) step(par[a]);
@@ -137,16 +137,16 @@ void testTr(ll n, ll q) {
 		pa[1] = rand() % n;
 	}
 	vi par(n), val(n);
-	rep(i,1,n) par[i] = rand() % i;
-	rep(i,0,n) val[i] = rand() % 1000;
+	fore(i,1,n) par[i] = rand() % i;
+	fore(i,0,n) val[i] = rand() % 1000;
 	vector<vi> ed(n);
-	rep(i,1,n) ed[par[i]].push_back(i), ed[i].push_back(par[i]);
+	fore(i,1,n) ed[par[i]].pb(i), ed[i].pb(par[i]);
 	MoTree::vals = val;
 	MoTree::sum = 0;
 	MoTree::path.clear();
 	vi res = MoTree::moTree(queries, ed);
 	vi seen(n);
-	rep(i,0,q) {
+	fore(i,0,q) {
 		// Tree depth is logarithmic, so compute query answers naively
 		ll l = queries[i][0], r = queries[i][1];
 		ll at = l;
@@ -165,7 +165,7 @@ void testTr(ll n, ll q) {
 
 int main() {
 	srand(2);
-	rep(it,0,10) rep(n,1,15) rep(q,0,n*n) {
+	fore(it,0,10) fore(n,1,15) fore(q,0,n*n) {
 		testTr(n, q);
 	}
 	testTr(100'000, 100'000);
@@ -174,7 +174,7 @@ int main() {
 	test(100'000, 100'000);
 	test(1000, 100'000);
 	test(100'000, 1000);
-	rep(it,0,10) rep(n,1,15) rep(q,0,n*n) {
+	fore(it,0,10) fore(n,1,15) fore(q,0,n*n) {
 		test(n, q);
 	}
 	cout << "Tests passed!" << endl;

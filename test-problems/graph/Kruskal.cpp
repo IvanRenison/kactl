@@ -1,5 +1,6 @@
 // Problem: https://cses.fi/problemset/task/1675/
-// Submission: https://cses.fi/problemset/result/8586074/
+// Status: ACCEPTED
+// Submission: https://cses.fi/problemset/result/8757315/
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -12,19 +13,27 @@ typedef long long ll;
 typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
+/// content/data-structures/UnionFind.h
 struct UF {
 	vi e;
 	UF(ll n) : e(n, -1) {}
+	bool sameSet(ll a, ll b) { return find(a) == find(b); }
+	ll size(ll x) { return -e[find(x)]; }
 	ll find(ll x) { return e[x] < 0 ? x : e[x] = find(e[x]); }
 	bool join(ll a, ll b) {
 		a = find(a), b = find(b);
 		if (a == b) return false;
 		if (e[a] > e[b]) swap(a, b);
-		e[a] += e[b], e[b] = a;
+		e[a] += e[b]; e[b] = a;
 		return true;
 	}
 };
+/// END content
+
+/// content/graph/Kruskal.h
+/// START diff
 auto kruskal(vector<pair<ll, ii>>& es, ll n) {
+	/// END diff
 	sort(ALL(es));
 	UF uf(n);
 	ll r = 0;
@@ -35,8 +44,11 @@ auto kruskal(vector<pair<ll, ii>>& es, ll n) {
 			// {w, {u, v}} is in MST
 		}
 	}
+	/// START diff
 	return make_pair(r, uf);
+	/// END diff
 }
+/// END content
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
