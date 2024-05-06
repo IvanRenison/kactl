@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/biconnected_components
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/207134
+// Submission: https://judge.yosupo.jp/submission/207135
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -25,8 +25,7 @@ BCC_ans BCC(ll n, const vector<ii>& edges) {
 	vi num(n), st;
 	vector<vector<ii>> adj(n);
 	for (auto [a, b] : edges) {
-		adj[a].emplace_back(b, eid);
-		adj[b].emplace_back(a, eid++);
+		adj[a].emplace_back(b, eid), adj[b].emplace_back(a, eid++);
 	}
 
 	BCC_ans ans = {0, vi(m, -1), vector<set<ll>>(n)};
@@ -40,25 +39,22 @@ BCC_ans BCC(ll n, const vector<ii>& edges) {
 				ans.nComps++;
 			} else if (num[y]) {
 				top = min(top, num[y]);
-				if (num[y] < me)
-					st.push_back(e);
+				if (num[y] < me) st.push_back(e);
 			} else {
 				ll si = SZ(st), up = dfs(y, e);
 				top = min(top, up);
 				if (up == me) {
 					st.push_back(e);//from si to SZ(st) we have a comp
 					fore(i, si, SZ(st)) {
-						ll e = st[i];
-						ans.edgesComp[e] = ans.nComps;
-						auto [u, v] = edges[e];
+						ans.edgesComp[st[i]] = ans.nComps;
+						auto [u, v] = edges[st[i]];
 						ans.nodesComp[u].insert(ans.nComps);
 						ans.nodesComp[v].insert(ans.nComps);
 					}
 					ans.nComps++;
 					st.resize(si);
 				}
-				else if (up < me) st.push_back(e);
-				else { /* e is a bridge */ }
+				else if (up < me) st.push_back(e); // else e isa bridge
 			}
 		}
 		return top;
