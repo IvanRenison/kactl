@@ -31,7 +31,7 @@ BCC_ans BCC(ll n, const vector<ii>& edges) {
 	BCC_ans ans = {0, vi(m, -1), vector<set<ll>>(n)};
 
 	function<ll(ll, ll)> dfs = [&](ll at, ll par){
-		ll me = num[at] = ++Time, e, y, top = me;
+		ll me = num[at] = ++Time, top = me;
 		for (auto [y, e] : adj[at]) if (e != par) {
 			if (y == at) { // self loop
 				ans.edgesComp[e] = ans.nComps;
