@@ -57,7 +57,7 @@ struct Tree {
 		}
 	}
 
-	void update(ll l, ll r, L value) {
+	void upd(ll l, ll r, L value) {
 		l += n, r += n;
 		push(l);
 		push(r - 1);
