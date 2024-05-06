@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/biconnected_components
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/207136
+// Submission: https://judge.yosupo.jp/submission/207137
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -44,7 +44,7 @@ BCC_ans BCC(ll n, const vector<ii>& edges) {
 				ll si = SZ(st), up = dfs(y, e);
 				top = min(top, up);
 				if (up == me) {
-					st.push_back(e);//from si to SZ(st) we have a comp
+					st.push_back(e); // from si to SZ(st) we have a comp
 					fore(i, si, SZ(st)) {
 						ans.edgesComp[st[i]] = ans.nComps;
 						auto [u, v] = edges[st[i]];

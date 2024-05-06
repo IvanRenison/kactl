@@ -43,7 +43,7 @@ BCC_ans BCC(ll n, const vector<ii>& edges) {
 				ll si = SZ(st), up = dfs(y, e);
 				top = min(top, up);
 				if (up == me) {
-					st.push_back(e);//from si to SZ(st) we have a comp
+					st.push_back(e); // from si to SZ(st) we have a comp
 					fore(i, si, SZ(st)) {
 						ans.edgesComp[st[i]] = ans.nComps;
 						auto [u, v] = edges[st[i]];
