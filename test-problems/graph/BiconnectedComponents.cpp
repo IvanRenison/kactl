@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/biconnected_components
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/207135
+// Submission: https://judge.yosupo.jp/submission/207136
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -54,7 +54,7 @@ BCC_ans BCC(ll n, const vector<ii>& edges) {
 					ans.nComps++;
 					st.resize(si);
 				}
-				else if (up < me) st.push_back(e); // else e isa bridge
+				else if (up < me) st.push_back(e); // else e is bridge
 			}
 		}
 		return top;

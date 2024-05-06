@@ -53,7 +53,7 @@ BCC_ans BCC(ll n, const vector<ii>& edges) {
 					ans.nComps++;
 					st.resize(si);
 				}
-				else if (up < me) st.push_back(e); // else e isa bridge
+				else if (up < me) st.push_back(e); // else e is bridge
 			}
 		}
 		return top;
