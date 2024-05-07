@@ -9,7 +9,7 @@
  *  be in several components. An edge which is not in a component is a bridge,
  *  i.e., not part of any cycle.
  * Time: O(E + V)
- * Status: tested with library checker ans with SPOJ EC_P
+ * Status: tested with library checker and with SPOJ EC_P
  */
 #pragma once
 
