@@ -20,16 +20,20 @@ struct PathQueries {
   vector<vi> anc;
   vector<vector<T>> part;
   vi depth;
-  // NODES
+#ifndef EDGES
   PathQueries(const vector<vi>& g, vector<T>& vals)
     : n(SZ(g)), K(64 - __builtin_clzll(n)), anc(K, vi(n, -1)),
       part(K, vector<T>(n, neut)), depth(n) {
-  // EDGES
-  // PathQueries(vector<vector<pair<ll, T>>> &g)
-  //   : n(SZ(g)), K(64 - __builtin_clzll(n)), anc(K, vi(n, -1)),
-  //     part(K, vector<T>(n, neut)), depth(n) {
-  //   vector<vi> g(n);
-  //   fore(u, 0, n) for (auto [v, data] : g[u]) g[u].pb(v);
+    part[0] = vals;
+#else
+  PathQueries(vector<vector<pair<ll, T>>> &g_)
+    : n(SZ(g_)), K(64 - __builtin_clzll(n)), anc(K, vi(n, -1)),
+      part(K, vector<T>(n, neut)), depth(n) {
+    vector<vi> g(n);
+    fore(u, 0, n) for (auto [v, data] : g_[u]) {
+      g[u].pb(v);
+    }
+#endif
     vi s = {0};
     while (!s.empty()) {
       ll u = s.back();
@@ -38,9 +42,11 @@ struct PathQueries {
         anc[0][v] = u, depth[v] = depth[u] + 1, s.push_back(v);
       }
     }
-    part[0] = vals;
-    // fore(u, 0, n) for (auto [v, data] : g[u])
-    //   part[0][depth[u] > depth[v] ? u : v] = data; // EDGES
+#ifdef EDGES
+  fore(u, 0, n) for (auto [v, data] : g_[u]) {
+    part[0][depth[u] > depth[v] ? u : v] = data;
+  }
+#endif
     fore(k, 0, K - 1) fore(v, 0, n) {
       if (anc[k][v] != -1) {
         anc[k + 1][v] = anc[k][anc[k][v]];
@@ -53,14 +59,20 @@ struct PathQueries {
     T ans = neut;
     fore(k, 0, K) if ((depth[u] - depth[v]) & (1 << k))
       ans = f(ans, part[k][u]), u = anc[k][u];
-    // if (u == v) return ans; // edge queries
-    if (u == v) return f(ans, part[0][u]); // node queries
+#ifndef EDGES
+    if (u == v) return f(ans, part[0][u]);
+#else
+    if (u == v) return ans;
+#endif
     for (ll k = K; k--;) if (anc[k][u] != anc[k][v]) {
       ans = f(ans, f(part[k][u], part[k][v]));
       u = anc[k][u], v = anc[k][v];
     }
     ans = f(ans, f(part[0][u], part[0][v]));
-    // return ans; // edge queries
-    return f(ans, part[0][anc[0][u]]); // node queries
+#ifndef EDGES
+    return f(ans, part[0][anc[0][u]]);
+#else
+    return ans;
+#endif
   }
 };
