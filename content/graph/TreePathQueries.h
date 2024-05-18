@@ -5,7 +5,7 @@
  * Source: Folklore
  * Description: Data structure for computing queries on paths in a tree.
  * Time: construction $O(N \log N)$, queries $O(\log N)$
- * Status: untestd
+ * Status: stress-tested a bit
  */
 #pragma once
 
