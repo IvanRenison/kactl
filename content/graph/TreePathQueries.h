@@ -4,6 +4,7 @@
  * License: CC0
  * Source: Folklore
  * Description: Data structure for computing queries on paths in a tree.
+ * Works for nodes having values but can be changed to work with edges having values.
  * Time: construction $O(N \log N)$, queries $O(\log N)$
  * Status: stress-tested a bit
  */
