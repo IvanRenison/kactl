@@ -7,7 +7,7 @@
 
 struct Slow {
 	typedef ll T;
-  constexpr static T NEUT = 0;
+  constexpr static T neut = LONG_LONG_MIN;
   T op(const T& a, const T& b) {
     return max(a, b);
   } // associative and commutative
@@ -32,7 +32,7 @@ struct Slow {
 	}
 
 	T query(ll u, ll v) {
-		T ans = NEUT;
+		T ans = neut;
 		ll p = lca.lca(u, v);
 		while (u != p) {
 			ans = op(ans, vals[u]);
@@ -57,6 +57,7 @@ int main() {
 		for (auto [u, v] : edges) {
 			adj[u].pb(v), adj[v].pb(u);
 		}
+
 		vector<ll> vals(n);
 
 		fore(i, 0, n) {
@@ -68,7 +69,9 @@ int main() {
 
 		fore(_, 0, 100) {
 			ll u = rand() % n, v = rand() % n;
-			assert(pq.query(u, v) == slow.query(u, v));
+			ll ans_pq = pq.query(u, v);
+			ll ans_slow = slow.query(u, v);
+			assert(ans_pq == ans_slow);
 		}
 	}
 
