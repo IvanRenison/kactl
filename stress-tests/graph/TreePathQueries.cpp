@@ -8,9 +8,9 @@
 struct Slow {
 	typedef ll T;
 	constexpr static T neut = LONG_LONG_MIN;
-	T op(const T& a, const T& b) {
+	T f(const T& a, const T& b) {
 		return max(a, b);
-	} // associative and commutative
+	}
 
 	ll n;
 	LCA lca;
@@ -35,14 +35,14 @@ struct Slow {
 		T ans = neut;
 		ll p = lca.lca(u, v);
 		while (u != p) {
-			ans = op(ans, vals[u]);
+			ans = f(ans, vals[u]);
 			u = par[u];
 		}
 		while (v != p) {
-			ans = op(ans, vals[v]);
+			ans = f(ans, vals[v]);
 			v = par[v];
 		}
-		ans = op(ans, vals[p]);
+		ans = f(ans, vals[p]);
 		return ans;
 	}
 };

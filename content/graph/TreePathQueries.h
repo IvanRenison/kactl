@@ -14,7 +14,7 @@ struct PathQueries {
 	constexpr static T neut = LONG_LONG_MIN;
 	T f(const T& a, const T& b) {
 		return max(a, b);
-	} // associative and commutative
+	} // (any associative and commutative fn)
 
 	ll n, K;
 	vector<vi> anc;
