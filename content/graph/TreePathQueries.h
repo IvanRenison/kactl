@@ -20,20 +20,17 @@ struct PathQueries {
 	vector<vi> anc;
 	vector<vector<T>> part;
 	vi depth;
-#ifndef EDGES
-	PathQueries(const vector<vi>& g, vector<T>& vals)
+	PathQueries(const vector<vi>& g, vector<T>& vals) // NODES
 		: n(SZ(g)), K(64 - __builtin_clzll(n)), anc(K, vi(n, -1)),
 			part(K, vector<T>(n, neut)), depth(n) {
 		part[0] = vals;
-#else
-	PathQueries(vector<vector<pair<ll, T>>> &g_)
-		: n(SZ(g_)), K(64 - __builtin_clzll(n)), anc(K, vi(n, -1)),
-			part(K, vector<T>(n, neut)), depth(n) {
-		vector<vi> g(n);
-		fore(u, 0, n) for (auto [v, data] : g_[u]) {
-			g[u].pb(v);
-		}
-#endif
+//PathQueries(vector<vector<pair<ll, T>>> &g_) // EDGES
+//	: n(SZ(g_)), K(64 - __builtin_clzll(n)), anc(K, vi(n, -1)),
+//		part(K, vector<T>(n, neut)), depth(n) {
+//	vector<vi> g(n);
+//	fore(u, 0, n) for (auto [v, data] : g_[u]) {
+//		g[u].pb(v);
+//	}
 		vi s = {0};
 		while (!s.empty()) {
 			ll u = s.back();
@@ -42,11 +39,9 @@ struct PathQueries {
 				anc[0][v] = u, depth[v] = depth[u] + 1, s.push_back(v);
 			}
 		}
-#ifdef EDGES
-	fore(u, 0, n) for (auto [v, data] : g_[u]) {
-		part[0][depth[u] > depth[v] ? u : v] = data;
-	}
-#endif
+//	fore(u, 0, n) for (auto [v, data] : g_[u]) { // EDGES
+//		part[0][depth[u] > depth[v] ? u : v] = data;
+//	}
 		fore(k, 0, K - 1) fore(v, 0, n) {
 			if (anc[k][v] != -1) {
 				anc[k + 1][v] = anc[k][anc[k][v]];
@@ -59,20 +54,14 @@ struct PathQueries {
 		T ans = neut;
 		fore(k, 0, K) if ((depth[u] - depth[v]) & (1 << k))
 			ans = f(ans, part[k][u]), u = anc[k][u];
-#ifndef EDGES
-		if (u == v) return f(ans, part[0][u]);
-#else
-		if (u == v) return ans;
-#endif
+		if (u == v) return f(ans, part[0][u]); // NODES
+//	if (u == v) return ans; // EDGES
 		for (ll k = K; k--;) if (anc[k][u] != anc[k][v]) {
 			ans = f(ans, f(part[k][u], part[k][v]));
 			u = anc[k][u], v = anc[k][v];
 		}
 		ans = f(ans, f(part[0][u], part[0][v]));
-#ifndef EDGES
-		return f(ans, part[0][anc[0][u]]);
-#else
-		return ans;
-#endif
+		return f(ans, part[0][anc[0][u]]); // NODES
+//	return ans; // EDGES
 	}
 };
