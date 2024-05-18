@@ -8,10 +8,10 @@
 
 struct Slow {
 	typedef ll T;
-  constexpr static T neut = LONG_LONG_MIN;
-  T op(const T& a, const T& b) {
-    return max(a, b);
-  } // associative and commutative
+	constexpr static T neut = LONG_LONG_MIN;
+	T op(const T& a, const T& b) {
+		return max(a, b);
+	} // associative and commutative
 
 	ll n;
 	LCA lca;
