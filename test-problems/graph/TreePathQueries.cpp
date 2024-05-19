@@ -19,7 +19,7 @@ typedef vector<ll> vi;
 struct PathQueries {
 /// START diff
 	typedef vector<int> T;
-	constexpr static T neut = {};
+	const T neut = {};
 	T f(const T& a, const T& b) {
 		T ans = a;
 		for (int x : b) {
