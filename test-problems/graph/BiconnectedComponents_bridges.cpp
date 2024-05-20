@@ -14,8 +14,7 @@ typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
 /// content/graph/BiconnectedComponents.h
-tuple<ll, vi, vector<set<ll>>>
-BCC(ll n, const vector<ii>& edges) {
+auto BCC(ll n, const vector<ii>& edges) {
 	ll m = SZ(edges), Time = 0, eid = 0;
 	vi num(n), st;
 	vector<vector<ii>> adj(n);
@@ -63,8 +62,9 @@ BCC(ll n, const vector<ii>& edges) {
 		nodesComp[u].insert(nComps);
 		nComps++;
 	}
-
-	return {nComps, edgesComp, nodesComp};
+/// START diff
+	return tuple<ll, vi, vector<set<ll>>>(nComps, edgesComp, nodesComp);
+/// END diff
 };
 /// END content
 

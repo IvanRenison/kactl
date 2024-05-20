@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/biconnected_components
-// Status: AC
-// Submission: https://judge.yosupo.jp/submission/210183
+// Status:
+// Submission: https://judge.yosupo.jp/submission/210190
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -14,8 +14,7 @@ typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
 /// content/graph/BiconnectedComponents.h
-tuple<ll, vi, vector<set<ll>>>
-BCC(ll n, const vector<ii>& edges) {
+auto BCC(ll n, const vector<ii>& edges) {
 	ll m = SZ(edges), Time = 0, eid = 0;
 	vi num(n), st;
 	vector<vector<ii>> adj(n);
@@ -64,7 +63,7 @@ BCC(ll n, const vector<ii>& edges) {
 		nComps++;
 	}
 
-	return {nComps, edgesComp, nodesComp};
+	return tuple(nComps, edgesComp, nodesComp);
 };
 /// END content
 
