@@ -1,5 +1,5 @@
 // Problem: https://judge.yosupo.jp/problem/biconnected_components
-// Status:
+// Status: AC
 // Submission: https://judge.yosupo.jp/submission/210190
 #include <bits/stdc++.h>
 using namespace std;
