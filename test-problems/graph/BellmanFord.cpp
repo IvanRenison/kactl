@@ -40,34 +40,34 @@ void bellmanFord(vector<Node>& nodes, vector<Ed>& eds, ll s) {
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
-    while (true) {
-        ll n, m, q, s;
-        cin >> n >> m >> q >> s;
-        if (n == 0 && m == 0 && q == 0 && s == 0) break;
+	while (true) {
+		ll n, m, q, s;
+		cin >> n >> m >> q >> s;
+		if (n == 0 && m == 0 && q == 0 && s == 0) break;
 
-        vector<Node> nodes(n);
-        vector<Ed> eds(m);
+		vector<Node> nodes(n);
+		vector<Ed> eds(m);
 
-        fore(i, 0, m) {
-            ll u, v, w;
-            cin >> u >> v >> w;
-            eds[i] = {u, v, w};
-        }
+		fore(i, 0, m) {
+			ll u, v, w;
+			cin >> u >> v >> w;
+			eds[i] = {u, v, w};
+		}
 
-        bellmanFord(nodes, eds, s);
+		bellmanFord(nodes, eds, s);
 
-        fore(i, 0, q) {
-            ll dest;
-            cin >> dest;
-            if (nodes[dest].dist == inf) {
-                cout << "Impossible\n";
-            } else if (nodes[dest].dist == -inf) {
-                cout << "-Infinity\n";
-            } else {
-                cout << nodes[dest].dist << "\n";
-            }
-        }
-        cout << "\n";
-    }
-    return 0;
+		fore(i, 0, q) {
+			ll dest;
+			cin >> dest;
+			if (nodes[dest].dist == inf) {
+				cout << "Impossible\n";
+			} else if (nodes[dest].dist == -inf) {
+				cout << "-Infinity\n";
+			} else {
+				cout << nodes[dest].dist << "\n";
+			}
+		}
+		cout << "\n";
+	}
+	return 0;
 }
