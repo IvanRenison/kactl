@@ -2,9 +2,9 @@
  * Author: Simon Lindholm
  * Date: 2016-01-14
  * License: CC0
- * Description: Given a rooted tree and a subset S of nodes, compute the minimal
- * subtree that contains all the nodes by adding all (at most $|S|-1$)
- * pairwise LCA's and compressing edges.
+ * Description: Given a tree $T$ rooted at 0, and a subset of nodes $X$ returns
+ * tree with vertex set $\{\text{lca}(x,y):x\in X,y\in X\}$ and edges between
+ * every pair of vertices in which one is an ancestor of the other in $T$.
  * Returns a list of (par, orig\_index) representing a tree rooted at 0.
  * The root points to itself.
  * Time: $O(|S| \log |S|)$
