@@ -54,7 +54,7 @@ struct PathQueries {
 			ll u = s.back();
 			s.pop_back();
 			for (ll v : g[u]) if (v != anc[0][u]) {
-				anc[0][v] = u, depth[v] = depth[u] + 1, s.push_back(v);
+				anc[0][v] = u, depth[v] = depth[u] + 1, s.pb(v);
 			}
 		}
 //	fore(u, 0, n) for (auto [v, data] : g_[u]) { // EDGES

@@ -24,32 +24,32 @@ struct PushRelabel {
 
 	void addEdge(ll s, ll t, ll cap, ll rcap=0) {
 		if (s == t) return;
-		g[s].push_back({t, sz(g[t]), 0, cap});
-		g[t].push_back({s, sz(g[s])-1, 0, rcap});
+		g[s].pb({t, SZ(g[t]), 0, cap});
+		g[t].pb({s, SZ(g[s])-1, 0, rcap});
 	}
 
 	void addFlow(Edge& e, ll f) {
 		Edge &back = g[e.dest][e.back];
-		if (!ec[e.dest] && f) hs[H[e.dest]].push_back(e.dest);
+		if (!ec[e.dest] && f) hs[H[e.dest]].pb(e.dest);
 		e.f += f; e.c -= f; ec[e.dest] += f;
 		back.f -= f; back.c += f; ec[back.dest] -= f;
 	}
 	ll calc(ll s, ll t) {
-		ll v = sz(g); H[s] = v; ec[t] = 1;
+		ll v = SZ(g); H[s] = v; ec[t] = 1;
 		vi co(2*v); co[0] = v-1;
-		rep(i,0,v) cur[i] = g[i].data();
+		fore(i,0,v) cur[i] = g[i].data();
 		for (Edge& e : g[s]) addFlow(e, e.c);
 
 		for (ll hi = 0;;) {
 			while (hs[hi].empty()) if (!hi--) return -ec[s];
 			ll u = hs[hi].back(); hs[hi].pop_back();
 			while (ec[u] > 0)  // discharge u
-				if (cur[u] == g[u].data() + sz(g[u])) {
+				if (cur[u] == g[u].data() + SZ(g[u])) {
 					H[u] = 1e9;
 					for (Edge& e : g[u]) if (e.c && H[u] > H[e.dest]+1)
 						H[u] = H[e.dest]+1, cur[u] = &e;
 					if (++co[H[u]], !--co[hi] && hi < v)
-						rep(i,0,v) if (hi < H[i] && H[i] < v)
+						fore(i,0,v) if (hi < H[i] && H[i] < v)
 							--co[H[i]], H[i] = v + 1;
 					hi = H[u];
 				} else if (cur[u]->c && H[u] == H[cur[u]->dest]+1)
@@ -57,5 +57,5 @@ struct PushRelabel {
 				else ++cur[u];
 		}
 	}
-	bool leftOfMinCut(ll a) { return H[a] >= sz(g); }
+	bool leftOfMinCut(ll a) { return H[a] >= SZ(g); }
 };

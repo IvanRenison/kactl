@@ -8,24 +8,24 @@
  * for undirected graphs, forward/backward edges have the same index.
  * Returns a list of nodes in the Eulerian path/cycle with src at both start and end, or
  * empty list if no cycle/path exists.
- * To get edge indices back, add .second to s and ret.
+ * To get edge indices back, add .snd to s and ret.
  * Time: O(V + E)
  * Status: stress-tested
  */
 #pragma once
 
-vi eulerWalk(vector<vector<pii>>& gr, ll nedges, ll src=0) {
-	ll n = sz(gr);
+vi eulerWalk(vector<vector<ii>>& gr, ll nedges, ll src=0) {
+	ll n = SZ(gr);
 	vi D(n), its(n), eu(nedges), ret, s = {src};
 	D[src]++; // to allow Euler paths, not just cycles
 	while (!s.empty()) {
-		ll x = s.back(), y, e, &it = its[x], end = sz(gr[x]);
-		if (it == end){ ret.push_back(x); s.pop_back(); continue; }
+		ll x = s.back(), y, e, &it = its[x], end = SZ(gr[x]);
+		if (it == end){ ret.pb(x); s.pop_back(); continue; }
 		tie(y, e) = gr[x][it++];
 		if (!eu[e]) {
 			D[x]--, D[y]++;
-			eu[e] = 1; s.push_back(y);
+			eu[e] = 1; s.pb(y);
 		}}
-	for (ll x : D) if (x < 0 || sz(ret) != nedges+1) return {};
+	for (ll x : D) if (x < 0 || SZ(ret) != nedges+1) return {};
 	return {ret.rbegin(), ret.rend()};
 }

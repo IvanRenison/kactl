@@ -28,7 +28,7 @@ struct PathQueries {
 			ll u = s.back();
 			s.pop_back();
 			for (ll v : g[u]) if (v != anc[0][u]) {
-				anc[0][v] = u, depth[v] = depth[u] + 1, s.push_back(v);
+				anc[0][v] = u, depth[v] = depth[u] + 1, s.pb(v);
 			}
 		}
 		fore(u, 0, n) for (auto [v, data] : g_[u]) { // EDGES
@@ -77,7 +77,7 @@ struct Slow {
 			ll u = s.back();
 			s.pop_back();
 			for (auto [v, x] : g_vals[u]) {
-				if (v != par[u].first) {
+				if (v != par[u].fst) {
 					par[v] = {u, x};
 					s.pb(v);
 				}
@@ -89,12 +89,12 @@ struct Slow {
 		T ans = neut;
 		ll p = lca.lca(u, v);
 		while (u != p) {
-			ans = f(ans, par[u].second);
-			u = par[u].first;
+			ans = f(ans, par[u].snd);
+			u = par[u].fst;
 		}
 		while (v != p) {
-			ans = f(ans, par[v].second);
-			v = par[v].first;
+			ans = f(ans, par[v].snd);
+			v = par[v].fst;
 		}
 		return ans;
 	}
@@ -119,7 +119,7 @@ int main() {
 
 		vector<vector<pair<ll, ll>>> g_vals(n);
 		fore(i, 0, n - 1) {
-			ll u = edges[i].first, v = edges[i].second;
+			ll u = edges[i].fst, v = edges[i].snd;
 			g_vals[u].pb({v, vals[i]});
 			g_vals[v].pb({u, vals[i]});
 		}

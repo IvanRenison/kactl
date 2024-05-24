@@ -6,15 +6,15 @@
 #include "../../content/data-structures/RMQ.h"
 
 namespace old {
-typedef vector<pii> vpi;
+typedef vector<ii> vpi;
 typedef vector<vpi> graph;
 
 struct LCA {
 	vi time;
 	vector<ll> dist;
-	RMQ<pii> rmq;
+	RMQ<ii> rmq;
 
-	LCA(graph& C) : time(sz(C), -99), dist(sz(C)), rmq(dfs(C)) {}
+	LCA(graph& C) : time(SZ(C), -99), dist(SZ(C)), rmq(dfs(C)) {}
 
 	vpi dfs(graph& C) {
 		vector<tuple<ll, ll, ll, ll>> q(1);
@@ -26,8 +26,8 @@ struct LCA {
 			if (d) ret.emplace_back(d, p);
 			time[v] = T++;
 			dist[v] = di;
-			for(auto &e: C[v]) if (e.first != p)
-				q.emplace_back(e.first, v, d+1, di + e.second);
+			for(auto &e: C[v]) if (e.fst != p)
+				q.emplace_back(e.fst, v, d+1, di + e.snd);
 		}
 		return ret;
 	}
@@ -35,7 +35,7 @@ struct LCA {
 	ll query(ll a, ll b) {
 		if (a == b) return a;
 		a = time[a], b = time[b];
-		return rmq.query(min(a, b), max(a, b)).second;
+		return rmq.query(min(a, b), max(a, b)).snd;
 	}
 	ll distance(ll a, ll b) {
 		ll lca = query(a, b);
@@ -58,10 +58,10 @@ void test_n(ll n, ll num) {
 		vector<vi> tree(n);
 		vector<vector<pair<ll, ll>>> oldTree(n);
 		for (auto i: graph) {
-			tree[i.first].push_back(i.second);
-			tree[i.second].push_back(i.first);
-			oldTree[i.first].push_back({i.second, 1});
-			oldTree[i.second].push_back({i.first, 1});
+			tree[i.fst].pb(i.snd);
+			tree[i.snd].pb(i.fst);
+			oldTree[i.fst].pb({i.snd, 1});
+			oldTree[i.snd].pb({i.fst, 1});
 		}
 		vector<ll> par(n), depth(n);
 		getPars(tree, 0, 0, 0, par, depth);
@@ -85,4 +85,3 @@ signed main() {
 	test_n(1000, 10);
 	cout<<"Tests passed!"<<endl;
 }
-

@@ -15,22 +15,22 @@
 
 #include "LCA.h"
 
-typedef vector<pair<ll, ll>> vpi;
-vpi compressTree(LCA& lca, const vi& subset) {
-	static vi rev; rev.resize(sz(lca.time));
+typedef vector<pair<ll, ll>> vii;
+vii compressTree(LCA& lca, const vi& subset) {
+	static vi rev; rev.resize(SZ(lca.time));
 	vi li = subset, &T = lca.time;
 	auto cmp = [&](ll a, ll b) { return T[a] < T[b]; };
-	sort(all(li), cmp);
-	ll m = sz(li)-1;
-	rep(i,0,m) {
+	sort(ALL(li), cmp);
+	ll m = SZ(li)-1;
+	fore(i,0,m) {
 		ll a = li[i], b = li[i+1];
-		li.push_back(lca.lca(a, b));
+		li.pb(lca.lca(a, b));
 	}
-	sort(all(li), cmp);
-	li.erase(unique(all(li)), li.end());
-	rep(i,0,sz(li)) rev[li[i]] = i;
-	vpi ret = {pii(0, li[0])};
-	rep(i,0,sz(li)-1) {
+	sort(ALL(li), cmp);
+	li.erase(unique(ALL(li)), li.end());
+	fore(i,0,SZ(li)) rev[li[i]] = i;
+	vii ret = {ii(0, li[0])};
+	fore(i,0,SZ(li)-1) {
 		ll a = li[i], b = li[i+1];
 		ret.emplace_back(rev[lca.lca(a, b)], b);
 	}

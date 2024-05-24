@@ -44,7 +44,7 @@ pair<ll, vi> dmst(ll n, ll r, vector<Edge>& g) {
 	seen[r] = r;
 	vector<Edge> Q(n), in(n, {-1,-1}), comp;
 	deque<tuple<ll, ll, vector<Edge>>> cycs;
-	rep(s,0,n) {
+	fore(s,0,n) {
 		ll u = s, qi = 0, w;
 		while (seen[u] < 0) {
 			if (!heap[u]) return {-1,{}};
@@ -61,7 +61,7 @@ pair<ll, vi> dmst(ll n, ll r, vector<Edge>& g) {
 				cycs.push_front({u, time, {&Q[qi], &Q[end]}});
 			}
 		}
-		rep(i,0,qi) in[uf.find(Q[i].b)] = Q[i];
+		fore(i,0,qi) in[uf.find(Q[i].b)] = Q[i];
 	}
 
 	for (auto& [u,t,comp] : cycs) { // restore sol (optional)
@@ -70,6 +70,6 @@ pair<ll, vi> dmst(ll n, ll r, vector<Edge>& g) {
 		for (auto& e : comp) in[uf.find(e.b)] = e;
 		in[uf.find(inEdge.b)] = inEdge;
 	}
-	rep(i,0,n) par[i] = in[i].a;
+	fore(i,0,n) par[i] = in[i].a;
 	return {res, par};
 }

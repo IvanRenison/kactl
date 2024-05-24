@@ -18,7 +18,7 @@ struct bruteforce { // values in nodes
 			if (i != p) root(i, cur);
 		}
 	}
-	bruteforce(vector<vector<ll>> _tree): tree(_tree), vals(sz(tree)), pars(sz(tree)) {
+	bruteforce(vector<vector<ll>> _tree): tree(_tree), vals(SZ(tree)), pars(SZ(tree)) {
 		root(0);
 	}
 	bool dfsModify(ll cur, ll target, ll val, ll p=-1) {
@@ -74,12 +74,12 @@ void testAgainstOld(ll n, ll iters, ll queries) {
 		vector<vector<ll>> tree1(n);
 		vector<vector<pair<ll, ll>>> tree2(n);
 		for (auto i : graph) {
-			tree1[i.first].push_back(i.second);
-			tree1[i.second].push_back(i.first);
+			tree1[i.fst].pb(i.snd);
+			tree1[i.snd].pb(i.fst);
 		}
-		for (ll i = 0; i < sz(tree1); i++) {
+		for (ll i = 0; i < SZ(tree1); i++) {
 			for (auto j : tree1[i]) {
-				tree2[i].push_back({j, 0});
+				tree2[i].pb({j, 0});
 			}
 		}
 		HLD<false> hld(tree1);
@@ -94,7 +94,7 @@ void testAgainstOld(ll n, ll iters, ll queries) {
 			} else {
 				ll a = rand() % n;
 				ll b = rand() % n;
-				assert(hld.queryPath(a, b) == hld2.query2(a, b).first);
+				assert(hld.queryPath(a, b) == hld2.query2(a, b).fst);
 			}
 		}
 	}
@@ -104,8 +104,8 @@ void testAgainstBrute(ll n, ll iters, ll queries) {
 		auto graph = genRandomTree(n);
 		vector<vector<ll>> tree1(n);
 		for (auto i : graph) {
-			tree1[i.first].push_back(i.second);
-			tree1[i.second].push_back(i.first);
+			tree1[i.fst].pb(i.snd);
+			tree1[i.snd].pb(i.fst);
 		}
 		HLD<false> hld(tree1);
 		bruteforce hld2(tree1);
