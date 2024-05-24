@@ -6,7 +6,7 @@
  * Description: Calculate the centroid tree of a tree.
  * Returns vector of fathers (-1 for root).
  * Time: $O(N)$
- * Status: untested
+ * Status: Tested a bit with codeforces problem
  */
 #pragma once
 
