@@ -14,6 +14,7 @@ typedef long long ll;
 typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
+/// content/graph/BellmanFord.h
 const ll inf = LLONG_MAX;
 struct Ed { ll a, b, w, s() { return a < b ? a : -a; }};
 struct Node { ll dist = inf; ll prev = -1; };
@@ -37,6 +38,7 @@ void bellmanFord(vector<Node>& nodes, vector<Ed>& eds, ll s) {
 			nodes[e.b].dist = -inf;
 	}
 }
+/// END content
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
