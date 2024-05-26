@@ -47,8 +47,8 @@ int main() {
 			adj[v].pb(u);
 		}
 
-		vector<ll> parent(n, 0);
-		vector<ll> depth(n, 0);
+		vi parent(n, 0);
+		vi depth(n, 0);
 		function<void(ll, ll)> dfs = [&](ll node, ll par) {
 			for (ll to : adj[node]) {
 				if (to == par) continue;
