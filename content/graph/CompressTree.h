@@ -3,9 +3,9 @@
  * Date: 2016-01-14
  * License: CC0
  * Description: Given a tree $T$ rooted at 0, and a subset of nodes $X$ returns
- * tree with vertex set $\{\text{lca}(x,y):x\in X,y\in X\}$ and edges between
- * every pair of vertices in which one is an ancestor of the other in $T$. Size
- * is at most $2|X| - 1$, including $X$.
+ * tree with vertex set $\{\text{lca}(x, y) : x \in X, y \in X\}$ and edges
+ * between every pair of vertices in which one is an ancestor of the other in
+ * $T$. Size is at most $2|X| - 1$, including $X$.
  * Returns a list of (par, orig\_index) representing a tree rooted at 0.
  * The root points to itself.
  * Time: $O(|X| \log |X|)$
