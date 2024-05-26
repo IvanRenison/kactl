@@ -23,61 +23,39 @@ inline ll qOp(ll lval, ll rval){return lval + rval;}//query
 inline ll dOnSeg(ll d, ll len){return d==N_DEL ? N_DEL : d*len;}
 //mostly generic
 inline ll joinD(ll d1, ll d2){
-	if(d1==N_DEL)return d2;if(d2==N_DEL)return d1;return mOp(d1, d2);}
+	if(d1==N_DEL)return d2;
+	if(d2==N_DEL)return d1;
+	return mOp(d1, d2);
+}
 inline ll joinVD(ll v, ll d){return d==N_DEL ? v : mOp(v, d);}
-struct Node_t{
-	ll sz_, nVal, tVal, d;
-	bool rev;
-	Node_t *c[2], *p;
-	Node_t(ll v) : sz_(1), nVal(v), tVal(v), d(N_DEL), rev(0), p(0){
-		c[0]=c[1]=0;
-	}
-	bool isRoot(){return !p || (p->c[0] != this && p->c[1] != this);}
-	void push(){
-		if(rev){
-			rev=0; swap(c[0], c[1]);
-			fore(x,0,2)if(c[x])c[x]->rev^=1;
-		}
-		nVal=joinVD(nVal, d); tVal=joinVD(tVal, dOnSeg(d, sz_));
-		fore(x,0,2)if(c[x])c[x]->d=joinD(c[x]->d, d);
-		d=N_DEL;
-	}
-	void upd();
-	ll getPV() {
-		return joinVD(tVal, dOnSeg(d, sz_));
-	}
-};
-typedef Node_t* Node;
-void Node_t::upd(){
-	tVal = qOp(qOp((c[0] ? c[0]->getPV() : N_VAL), joinVD(nVal, d)), (c[1] ? c[1]->getPV() : N_VAL));
-	sz_ = 1 + (c[0] ? c[0]->sz_ : 0) + (c[1] ? c[1]->sz_ : 0);
-}
-void conn(Node c, Node p, ll il){if(c)c->p=p;if(il>=0)p->c[!il]=c;}
-void rotate(Node x){
-	Node p = x->p, g = p->p;
-	bool gCh=p->isRoot(), isl = x==p->c[0];
-	conn(x->c[isl],p,isl); conn(p,x,!isl);
-	conn(x,g,gCh?-1:(p==g->c[0])); p->upd();
-}
-void spa(Node x){//splay
-	while(!x->isRoot()){
-		Node p = x->p, g = p->p;
-		if(!p->isRoot())g->push();
-		p->push(); x->push();
-		if(!p->isRoot())rotate((x==p->c[0])==(p==g->c[0])? p : x);
-		rotate(x);
-	}
-	x->push(); x->upd();
-}
-
-Node lift_rec(Node x, ll t) {
-	if(!x)return 0;
-	if(t==(x->c[0] ? x->c[0]->sz_ : 0)){spa(x);return x;}
-	if(t<(x->c[0] ? x->c[0]->sz_ : 0))return lift_rec(x->c[0],t);
-	return lift_rec(x->c[1],t-(x->c[0] ? x->c[0]->sz_ : 0)-1);
-}
 
 struct LinkCutTree {
+	struct Node_t{
+		ll sz_, nVal, tVal, d;
+		bool rev;
+		ll c[2], p;
+		Node_t(ll v) : sz_(1), nVal(v), tVal(v), d(N_DEL), rev(0), p(-1){
+			c[0] = c[1] = -1;
+		}
+		/* bool isRoot(){return !p || (p->c[0] != this && p->c[1] != this);}
+		void push(){
+			if(rev){
+				rev=0; swap(c[0], c[1]);
+				fore(x,0,2)if(c[x])c[x]->rev^=1;
+			}
+			nVal=joinVD(nVal, d); tVal=joinVD(tVal, dOnSeg(d, sz_));
+			fore(x,0,2)if(c[x])c[x]->d=joinD(c[x]->d, d);
+			d=N_DEL;
+		}
+		ll getPV() {
+			return joinVD(tVal, dOnSeg(d, sz_));
+		}
+		void upd() {
+			tVal = qOp(qOp((c[0] ? c[0]->getPV() : N_VAL), joinVD(nVal, d)), (c[1] ? c[1]->getPV() : N_VAL));
+			sz_ = 1 + (c[0] ? c[0]->sz_ : 0) + (c[1] ? c[1]->sz_ : 0);
+		} */
+	};
+	typedef Node_t* Node;
 	ll n;
 	vector<Node> nodes;
 
@@ -92,11 +70,67 @@ struct LinkCutTree {
 		}
 	}
 
-	Node exv(ll u){ // expose
-		Node last = 0;
-		for(Node y = nodes[u]; y; y = y->p)
-			spa(y), y->c[0] = last, y->upd(), last = y;
-		spa(nodes[u]);
+	bool isRoot(ll u) {
+		return nodes[u]->p == -1 || (nodes[nodes[u]->p]->c[0] != u && nodes[nodes[u]->p]->c[1] != u);
+	}
+	void push(ll u) {
+		if (nodes[u]->rev) {
+			nodes[u]->rev=0;
+			swap(nodes[u]->c[0], nodes[u]->c[1]);
+			fore(x, 0, 2) if (nodes[u]->c[x] != -1) nodes[nodes[u]->c[x]]->rev ^= 1;
+		}
+		nodes[u]->nVal = joinVD(nodes[u]->nVal, nodes[u]->d);
+		nodes[u]->tVal = joinVD(nodes[u]->tVal, dOnSeg(nodes[u]->d, nodes[u]->sz_));
+		fore(x, 0, 2) if(nodes[u]->c[x] != -1)
+			nodes[nodes[u]->c[x]]->d = joinD(nodes[nodes[u]->c[x]]->d, nodes[u]->d);
+		nodes[u]->d=N_DEL;
+	}
+	ll getPV(ll u) {
+		return joinVD(nodes[u]->tVal, dOnSeg(nodes[u]->d, nodes[u]->sz_));
+	}
+	void upd(ll u) {
+		nodes[u]->tVal = qOp(
+			qOp((nodes[u]->c[0] != -1 ? getPV(nodes[u]->c[0]) : N_VAL), joinVD(nodes[u]->nVal, nodes[u]->d)),
+			(nodes[u]->c[1] != -1 ? getPV(nodes[u]->c[1]) : N_VAL));
+		nodes[u]->sz_ = 1 + (nodes[u]->c[0] != -1 ? nodes[nodes[u]->c[0]]->sz_ : 0) + (nodes[u]->c[1] != -1 ? nodes[nodes[u]->c[1]]->sz_ : 0);
+	}
+
+	void conn(ll c, ll p, ll il) {
+		if (c != -1) nodes[c]->p = p;
+		if (il >= 0) nodes[p]->c[!il] = c;
+	}
+	void rotate(ll u) {
+		ll p = nodes[u]->p, g = nodes[p]->p;
+		bool gCh = isRoot(p), isl = u == nodes[p]->c[0];
+		conn(nodes[u]->c[isl], p, isl); conn(p, u, !isl);
+		conn(u, g, gCh ? -1 : (p == nodes[g]->c[0]));
+		upd(p);
+	}
+	void spa(ll u) { // splay
+		while(!isRoot(u)){
+			ll p = nodes[u]->p, g = nodes[p]->p;
+			if(!isRoot(p)) push(g);
+			push(p), push(u);
+			if(!isRoot(p)) rotate((u == nodes[p]->c[0]) == (p == nodes[g]->c[0]) ? p : u);
+			rotate(u);
+		}
+		push(u), upd(u);
+	}
+	ll lift_rec(ll u, ll t) {
+		if(u == -1) return 0;
+		if(t == (nodes[u]->c[0] != -1 ? nodes[nodes[u]->c[0]]->sz_ : 0)) {
+			spa(u);
+			return u;
+		}
+		if(t < (nodes[u]->c[0] != -1 ? nodes[nodes[u]->c[0]]->sz_ : 0))
+			return lift_rec(nodes[u]->c[0], t);
+		return lift_rec(nodes[u]->c[1], t - (nodes[u]->c[0] != -1 ? nodes[nodes[u]->c[0]]->sz_ : 0) - 1);
+	}
+	ll exv(ll u){ // expose
+		ll last = -1;
+		for(ll v = u; v != -1; v = nodes[v]->p)
+			spa(v), nodes[v]->c[0] = last, upd(v), last = v;
+		spa(u);
 		return last;
 	}
 
@@ -104,14 +138,13 @@ struct LinkCutTree {
 		exv(u);
 		nodes[u]->rev ^= 1;
 	}
-	Node getR(ll u){
-		Node x = nodes[u];
+	ll getR(ll u){
 		exv(u);
-		while(x->c[1]) x = x->c[1];
-		spa(x);
-		return x;
+		while(nodes[u]->c[1]) u = nodes[u]->c[1];
+		spa(u);
+		return u;
 	}
-	Node lca(ll u, ll v) {
+	ll lca(ll u, ll v) {
 		exv(u);
 		return exv(v);
 	}
@@ -121,26 +154,26 @@ struct LinkCutTree {
 	}
 	void link(ll u, ll v) {
 		mkR(u);
-		nodes[u]->p = nodes[v];
+		nodes[u]->p = v;
 	}
 	void cut(ll u, ll v) {
 		mkR(u), exv(v);
-		nodes[v]->c[1]->p = 0, nodes[v]->c[1] = 0;
+		nodes[nodes[v]->c[1]]->p = -1, nodes[v]->c[1] = -1;
 	}
-	Node father(ll u){
+	ll father(ll u){
 		exv(u);
-		Node r = nodes[u]->c[1];
-		if (!r) return 0;
-		while(r->c[0]) r = r->c[0];
-		return r;
+		ll v = nodes[u]->c[1];
+		if (v == -1) return 0;
+		while(nodes[v]->c[0] != -1) v = nodes[v]->c[0];
+		return v;
 	}
 	void cut(ll u) { // cuts x from father keeping tree root
 		exv(u);
-		nodes[u]->p = 0;
+		nodes[u]->p = -1;
 	}
 	ll query(ll u, ll v) {
 		mkR(u), exv(v);
-		return nodes[v]->getPV();
+		return getPV(v);
 	}
 	void modify(ll u, ll v, ll d) {
 		mkR(u), exv(v);
@@ -150,9 +183,9 @@ struct LinkCutTree {
 		exv(u);
 		return nodes[u]->sz_ - 1;
 	}
-	Node lift(ll u, ll t) { // t-th ancestor of x (lift(x,1) is x's father)
+	ll lift(ll u, ll t) { // t-th ancestor of x (lift(x,1) is x's father)
 		exv(u);
-		return lift_rec(nodes[u],t);
+		return lift_rec(u, t);
 	}
 };
 ///END content
