@@ -67,23 +67,91 @@ Node exv(Node x){//expose
 	spa(x);
 	return last;
 }
+
+struct LinkCutTree {
+	ll n;
+	vector<Node> nodes;
+
+	LinkCutTree(ll n) : n(n), nodes(n) {
+		fore(i, 0, n) {
+			nodes[i] = new Node_t(N_VAL);
+		}
+	}
+	LinkCutTree(vi& vals) : n(vals.size()), nodes(n) {
+		fore(i, 0, n) {
+			nodes[i] = new Node_t(vals[i]);
+		}
+	}
+
+	void mkR(ll u){ // makeRoot
+		exv(nodes[u]);
+		nodes[u]->rev ^= 1;
+	}
+	Node getR(ll u){
+		Node x = nodes[u];
+		exv(x);
+		while(x->c[1]) x = x->c[1];
+		spa(x);
+		return x;
+	}
+	Node lca(ll u, ll v) {
+		exv(nodes[u]);
+		return exv(nodes[v]);
+	}
+	bool connected(ll u, ll v) {
+		exv(nodes[u]), exv(nodes[v]);
+		return u == v ? true : nodes[u]->p != 0;
+	}
+	void link(ll u, ll v) {
+		mkR(u);
+		nodes[u]->p = nodes[v];
+	}
+	void cut(ll u, ll v) {
+		mkR(u), exv(nodes[v]);
+		nodes[v]->c[1]->p = 0, nodes[v]->c[1] = 0;
+	}
+	Node father(ll u){
+		exv(nodes[u]);
+		Node r = nodes[u]->c[1];
+		if (!r) return 0;
+		while(r->c[0]) r = r->c[0];
+		return r;
+	}
+	void cut(ll u) { // cuts x from father keeping tree root
+		exv(father(u));
+		nodes[u]->p = 0;
+	}
+	ll query(ll u, ll v) {
+		mkR(u), exv(nodes[v]);
+		return getPV(nodes[v]);
+	}
+	void modify(ll u, ll v, ll d) {
+		mkR(u), exv(nodes[v]);
+		nodes[v]->d = joinD(nodes[v]->d, d);
+	}
+	ll depth(ll u) { // distance from x to its tree root
+		exv(nodes[u]);
+		return getSize(nodes[u]) - 1;
+	}
+};
+
 void mkR(Node x){exv(x);x->rev^=1;}//makeRoot
-Node getR(Node x){exv(x);while(x->c[1])x=x->c[1];spa(x);return x;}
-Node lca(Node x, Node y){exv(x); return exv(y);}
-bool connected(Node x, Node y){exv(x);exv(y); return x==y?1:x->p!=0;}
-void link(Node x, Node y){mkR(x); x->p=y;}
-void cut(Node x, Node y){mkR(x); exv(y); y->c[1]->p=0; y->c[1]=0;}
-Node father(Node x){
-	exv(x);
-	Node r=x->c[1];
-	if(!r)return 0;
-	while(r->c[0])r=r->c[0];
-	return r;
-}
-void cut(Node x){ // cuts x from father keeping tree root
-	exv(father(x));x->p=0;}
-ll query(Node x, Node y){mkR(x); exv(y); return getPV(y);}
-void modify(Node x, Node y, ll d){mkR(x);exv(y);y->d=joinD(y->d,d);}
+//Node getR(Node x){exv(x);while(x->c[1])x=x->c[1];spa(x);return x;}
+//Node lca(Node x, Node y){exv(x); return exv(y);}
+//bool connected(Node x, Node y){exv(x);exv(y); return x==y?1:x->p!=0;}
+//void link(Node x, Node y){mkR(x); x->p=y;}
+//void cut(Node x, Node y){mkR(x); exv(y); y->c[1]->p=0; y->c[1]=0;}
+// Node father(Node x){
+// 	exv(x);
+// 	Node r=x->c[1];
+// 	if(!r)return 0;
+// 	while(r->c[0])r=r->c[0];
+// 	return r;
+// }
+// void cut(Node x){ // cuts x from father keeping tree root
+// 	exv(father(x));x->p=0;}
+//ll query(Node x, Node y){mkR(x); exv(y); return getPV(y);}
+//void modify(Node x, Node y, ll d){mkR(x);exv(y);y->d=joinD(y->d,d);}
 Node lift_rec(Node x, ll t){
 	if(!x)return 0;
 	if(t==getSize(x->c[0])){spa(x);return x;}
@@ -92,5 +160,5 @@ Node lift_rec(Node x, ll t){
 }
 Node lift(Node x, ll t){ // t-th ancestor of x (lift(x,1) is x's father)
 	exv(x);return lift_rec(x,t);}
-ll depth(Node x){ // distance from x to its tree root
-	exv(x);return getSize(x)-1;}
+// ll depth(Node x){ // distance from x to its tree root
+// 	exv(x);return getSize(x)-1;}
