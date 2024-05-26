@@ -8,7 +8,7 @@
  * Returns a list of (par, orig\_index) representing a tree rooted at 0.
  * The root points to itself.
  * Time: $O(|S| \log |S|)$
- * Status: Tested at CodeForces and with CSES: Finding a Centroid
+ * Status: Tested at CodeForces
  */
 #pragma once
 
