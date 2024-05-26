@@ -6,7 +6,7 @@ using namespace std;
 #define fst first
 #define snd second
 #define pb push_back
-#define fore(i, a, b) for (ll i = a, gmat = b; assert(b == gmat), i < gmat; i++)
+#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
 #define ALL(x) begin(x), end(x)
 #define SZ(x) (ll)(x).size()
 #define mset(a, v) memset((a), (v), sizeof(a))
