@@ -1,14 +1,22 @@
-/**
- * Author: Iván Renison
- * Date: 2024-05-26
- * Source: notebook el vasito
- * Description: Represents a forest of rooted trees. You can add and remove
- * edges (as long as the result is still a forest), make path queries ans path updates
- * Time: All operations take amortized O(\log N).
- * Status: Stress-tested a bit for N <= 20
- */
-#pragma once
+// Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
+// Status:
+// Submission:
+#include <bits/stdc++.h>
+using namespace std;
 
+#define fst first
+#define snd second
+#define pb push_back
+#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
+#define ALL(x) begin(x), end(x)
+#define SZ(x) (ll)(x).size()
+#define mset(a, v) memset((a), (v), sizeof(a))
+typedef long long ll;
+typedef pair<ll, ll> ii;
+typedef pair<ll, ll> pii;
+typedef vector<ll> vi;
+
+/// content/graph/LinkCutTree.h
 const ll N_DEL = 0, N_VAL = 0; //delta, value
 inline ll mOp(ll x, ll y){return x+y;}//modify
 inline ll qOp(ll lval, ll rval){return lval + rval;}//query
@@ -94,3 +102,43 @@ Node lift(Node x, ll t){ // t-th ancestor of x (lift(x,1) is x's father)
 	exv(x);return lift_rec(x,t);}
 ll depth(Node x){ // distance from x to its tree root
 	exv(x);return getSize(x)-1;}
+///END content
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+
+	ll N, Q;
+	cin >> N >> Q;
+
+	vector<Node> nodes(N);
+	fore(i, 0, N) {
+		ll a;
+		cin >> a;
+		nodes[i] = new Node_t(a);
+	}
+	fore(i, 0, N - 1) {
+		ll a, b;
+		cin >> a >> b;
+		link(nodes[a], nodes[b]);
+	}
+
+	while (Q--) {
+		ll t;
+		cin >> t;
+		if (t == 0) {
+			ll u, v, w, x;
+			cin >> u >> v >> w >> x;
+			cut(nodes[u], nodes[v]);
+			link(nodes[w], nodes[x]);
+		} else if (t == 1) {
+			ll p, x;
+			cin >> p >> x;
+			modify(nodes[p], nodes[p], x);
+		} else {
+			ll u, v;
+			cin >> u >> v;
+			ll val = query(nodes[u], nodes[v]);
+			cout << val << '\n';
+		}
+	}
+}
