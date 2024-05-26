@@ -4,7 +4,7 @@
 #include "../../content/graph/CompressTree.h"
 
 struct SlowCompressTree {
-	typedef vector<pair<ll, ll>> vii;
+	typedef vector<ii> vii;
 
 	LCA& lca;
 	const vi& subset;
@@ -12,27 +12,27 @@ struct SlowCompressTree {
 	SlowCompressTree(LCA& lca, const vi& subset): lca(lca), subset(subset) {}
 
 	vii compress() {
-		set<ll> nodes(subset.begin(), subset.end());
-		for (size_t i = 0; i < subset.size(); ++i) {
-			for (size_t j = i+1; j < subset.size(); ++j) {
+		set<ll> nodes(ALL(subset));
+		fore(i, 0, SZ(subset)) {
+			fore(j, i + 1, SZ(subset)) {
 				nodes.insert(lca.lca(subset[i], subset[j]));
 			}
 		}
 
-		vector<ll> sortedNodes(nodes.begin(), nodes.end());
-		sort(sortedNodes.begin(), sortedNodes.end(), [&](ll a, ll b) {
+		vi sortedNodes(ALL(nodes));
+		sort(ALL(sortedNodes), [&](ll a, ll b) {
 			return lca.time[a] < lca.time[b];
 		});
 
 		map<ll, ll> nodeToIndex;
-		for (size_t i = 0; i < sortedNodes.size(); ++i) {
+		fore(i, 0, SZ(sortedNodes)) {
 			nodeToIndex[sortedNodes[i]] = i;
 		}
 
 		vii tree;
 		tree.emplace_back(0, sortedNodes[0]);
 
-		for (size_t i = 1; i < sortedNodes.size(); ++i) {
+		fore(i, 1, SZ(sortedNodes)) {
 			ll u = sortedNodes[i];
 			ll v = sortedNodes[i - 1];
 			tree.emplace_back(nodeToIndex[lca.lca(u, v)], u);
@@ -42,13 +42,13 @@ struct SlowCompressTree {
 	}
 };
 
-bool compareEdges(const vector<pair<ll, ll>>& edges1, const vector<pair<ll, ll>>& edges2) {
-	set<pair<ll, ll>> set1, set2;
-	for (const auto& edge : edges1) {
-		set1.insert(minmax(edge.first, edge.second));
+bool compareEdges(const vector<ii>& edges1, const vector<ii>& edges2) {
+	set<ii> set1, set2;
+	for (const auto& [u, v] : edges1) {
+		set1.insert(minmax(u, v));
 	}
-	for (const auto& edge : edges2) {
-		set2.insert(minmax(edge.first, edge.second));
+	for (const auto& [u, v] : edges2) {
+		set2.insert(minmax(u, v));
 	}
 	return set1 == set2;
 }
