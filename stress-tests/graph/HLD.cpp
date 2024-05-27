@@ -72,7 +72,7 @@ void testAgainstOld(ll n, ll iters, ll queries) {
 	for (ll trees = 0; trees < iters; trees++) {
 		auto graph = genRandomTree(n);
 		vector<vector<ll>> tree1(n);
-		vector<vector<pair<ll, ll>>> tree2(n);
+		vector<vector<ii>> tree2(n);
 		for (auto i : graph) {
 			tree1[i.fst].pb(i.snd);
 			tree1[i.snd].pb(i.fst);

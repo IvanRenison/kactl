@@ -38,7 +38,7 @@ struct MCMF {
 		fill(ALL(dist), INF);
 		dist[s] = 0; ll di;
 
-		__gnu_pbds::priority_queue<pair<ll, ll>> q;
+		__gnu_pbds::priority_queue<ii> q;
 		vector<decltype(q)::point_iterator> its(N);
 		q.push({ 0, s });
 
@@ -60,7 +60,7 @@ struct MCMF {
 		fore(i,0,N) pi[i] = min(pi[i] + dist[i], INF);
 	}
 
-	pair<ll, ll> maxflow(ll s, ll t) {
+	ii maxflow(ll s, ll t) {
 		ll totflow = 0, totcost = 0;
 		while (path(s), seen[t]) {
 			ll fl = INF;

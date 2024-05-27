@@ -117,7 +117,7 @@ int main() {
 			vals[i] = rand() % 100;
 		}
 
-		vector<vector<pair<ll, ll>>> g_vals(n);
+		vector<vector<ii>> g_vals(n);
 		fore(i, 0, n - 1) {
 			ll u = edges[i].fst, v = edges[i].snd;
 			g_vals[u].pb({v, vals[i]});

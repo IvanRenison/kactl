@@ -15,7 +15,7 @@
 
 #include "LCA.h"
 
-typedef vector<pair<ll, ll>> vii;
+typedef vector<ii> vii;
 vii compressTree(LCA& lca, const vi& subset) {
 	static vi rev; rev.resize(SZ(lca.time));
 	vi li = subset, &T = lca.time;

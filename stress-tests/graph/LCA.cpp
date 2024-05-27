@@ -56,7 +56,7 @@ void test_n(ll n, ll num) {
 	for (ll out=0; out<num; out++) {
 		auto graph = genRandomTree(n);
 		vector<vi> tree(n);
-		vector<vector<pair<ll, ll>>> oldTree(n);
+		vector<vector<ii>> oldTree(n);
 		for (auto i: graph) {
 			tree[i.fst].pb(i.snd);
 			tree[i.snd].pb(i.fst);

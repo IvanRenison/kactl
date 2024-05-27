@@ -20,7 +20,7 @@ struct MCMF2 {
 	void addEdge(ll s, ll t, Flow c, Flow cost = 0) {
 		flow_add_edge(g, s, t, c, cost);
 	}
-	pair<ll, ll> maxflow(ll s, ll t) {
+	ii maxflow(ll s, ll t) {
 		return min_cost_max_flow(g, s, t);
 	}
 	void setpi(ll s) {}
