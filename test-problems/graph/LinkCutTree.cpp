@@ -17,24 +17,46 @@ typedef pair<ll, ll> pii;
 typedef vector<ll> vi;
 
 /// content/graph/LinkCutTree.h
+typedef ll T; // T: data type, L: lazy type
+typedef ll L;
+/* struct T {
+	ll x;
+	bool operator==(T o) const { return x == o.x; }
+};
+struct L {
+	ll y;
+	bool operator==(L o) const { return y == o.y; }
+}; */
+const L lneut = 0;
+const L tneut = 0; //delta, value
+//const L lneut = {0};
+//const T tneut = {0};
+T f(T a, T b) { return T{a + b}; } // operation
+// new st according to lazy
+T apply(T v, L l, ll len) { return T{v + l * len}; }
+// cumulative effect of lazy
+L comb(L a, L b) { return L{a + b}; }
+
 const ll N_DEL = 0, N_VAL = 0; //delta, value
 inline ll mOp(ll x, ll y){return x+y;}//modify
 inline ll qOp(ll lval, ll rval){return lval + rval;}//query
 inline ll dOnSeg(ll d, ll len){return d==N_DEL ? N_DEL : d*len;}
 //mostly generic
-inline ll joinD(ll d1, ll d2){
-	if(d1==N_DEL)return d2;
-	if(d2==N_DEL)return d1;
-	return mOp(d1, d2);
+inline L joinD(L d1, L d2){
+	if(d1==lneut)return d2;
+	if(d2==lneut)return d1;
+	return comb(d1, d2);
 }
-inline ll joinVD(ll v, ll d){return d==N_DEL ? v : mOp(v, d);}
+inline T joinVD(T v, L d){return d==lneut ? v : apply(v, d, 1);}
 
 struct LinkCutTree {
 	struct Node {
-		ll sz_, nVal, tVal, d;
+		ll sz_;
+		T nVal, tVal;
+		L d;
 		bool rev;
 		ll c[2], p;
-		Node(ll v = N_VAL) : sz_(1), nVal(v), tVal(v), d(N_DEL), rev(0), p(-1){
+		Node(T v = tneut) : sz_(1), nVal(v), tVal(v), d(lneut), rev(0), p(-1){
 			c[0] = c[1] = -1;
 		}
 	};
@@ -43,10 +65,10 @@ struct LinkCutTree {
 
 	LinkCutTree(ll n) : n(n), nodes(n) {
 		fore(i, 0, n) {
-			nodes[i] = Node(N_VAL);
+			nodes[i] = Node(tneut);
 		}
 	}
-	LinkCutTree(vi& vals) : n(vals.size()), nodes(n) {
+	LinkCutTree(vector<T>& vals) : n(vals.size()), nodes(n) {
 		fore(i, 0, n) {
 			nodes[i] = Node(vals[i]);
 		}
@@ -62,18 +84,18 @@ struct LinkCutTree {
 			fore(x, 0, 2) if (nodes[u].c[x] != -1) nodes[nodes[u].c[x]].rev ^= 1;
 		}
 		nodes[u].nVal = joinVD(nodes[u].nVal, nodes[u].d);
-		nodes[u].tVal = joinVD(nodes[u].tVal, dOnSeg(nodes[u].d, nodes[u].sz_));
+		nodes[u].tVal = apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
 		fore(x, 0, 2) if(nodes[u].c[x] != -1)
 			nodes[nodes[u].c[x]].d = joinD(nodes[nodes[u].c[x]].d, nodes[u].d);
-		nodes[u].d=N_DEL;
+		nodes[u].d=lneut;
 	}
-	ll getPV(ll u) {
-		return joinVD(nodes[u].tVal, dOnSeg(nodes[u].d, nodes[u].sz_));
+	T getPV(ll u) {
+		return apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
 	}
 	void upd(ll u) {
-		nodes[u].tVal = qOp(
-			qOp((nodes[u].c[0] != -1 ? getPV(nodes[u].c[0]) : N_VAL), joinVD(nodes[u].nVal, nodes[u].d)),
-			(nodes[u].c[1] != -1 ? getPV(nodes[u].c[1]) : N_VAL));
+		nodes[u].tVal = f(
+			f((nodes[u].c[0] != -1 ? getPV(nodes[u].c[0]) : tneut), joinVD(nodes[u].nVal, nodes[u].d)),
+			(nodes[u].c[1] != -1 ? getPV(nodes[u].c[1]) : tneut));
 		nodes[u].sz_ = 1 + (nodes[u].c[0] != -1 ? nodes[nodes[u].c[0]].sz_ : 0) + (nodes[u].c[1] != -1 ? nodes[nodes[u].c[1]].sz_ : 0);
 	}
 
@@ -153,11 +175,11 @@ struct LinkCutTree {
 		exv(u);
 		nodes[u].p = -1;
 	}
-	ll query(ll u, ll v) {
+	T query(ll u, ll v) {
 		mkR(u), exv(v);
 		return getPV(v);
 	}
-	void modify(ll u, ll v, ll d) {
+	void modify(ll u, ll v, L d) {
 		mkR(u), exv(v);
 		nodes[v].d = joinD(nodes[v].d, d);
 	}
