@@ -11,36 +11,14 @@
 
 typedef ll T; // T: data type, L: lazy type
 typedef ll L;
-/* struct T {
-	ll x;
-	bool operator==(T o) const { return x == o.x; }
-};
-struct L {
-	ll y;
-	bool operator==(L o) const { return y == o.y; }
-}; */
 const L lneut = 0;
-const L tneut = 0; //delta, value
-//const L lneut = {0};
-//const T tneut = {0};
+const L tneut = 0;
 T f(T a, T b) { return T{a + b}; } // operation
 // new st according to lazy
 T apply(T v, L l, ll len) { return T{v + l * len}; }
 // cumulative effect of lazy
 L comb(L a, L b) { return L{a + b}; }
-
-const ll N_DEL = 0, N_VAL = 0; //delta, value
-inline ll mOp(ll x, ll y){return x+y;}//modify
-inline ll qOp(ll lval, ll rval){return lval + rval;}//query
-inline ll dOnSeg(ll d, ll len){return d==N_DEL ? N_DEL : d*len;}
 //mostly generic
-inline L joinD(L d1, L d2){
-	if(d1==lneut)return d2;
-	if(d2==lneut)return d1;
-	return comb(d1, d2);
-}
-inline T joinVD(T v, L d){return d==lneut ? v : apply(v, d, 1);}
-
 struct LinkCutTree {
 	struct Node {
 		ll sz_;
@@ -75,10 +53,10 @@ struct LinkCutTree {
 			swap(nodes[u].c[0], nodes[u].c[1]);
 			fore(x, 0, 2) if (nodes[u].c[x] != -1) nodes[nodes[u].c[x]].rev ^= 1;
 		}
-		nodes[u].nVal = joinVD(nodes[u].nVal, nodes[u].d);
+		nodes[u].nVal = apply(nodes[u].nVal, nodes[u].d, 1);
 		nodes[u].tVal = apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
 		fore(x, 0, 2) if(nodes[u].c[x] != -1)
-			nodes[nodes[u].c[x]].d = joinD(nodes[nodes[u].c[x]].d, nodes[u].d);
+			nodes[nodes[u].c[x]].d = comb(nodes[nodes[u].c[x]].d, nodes[u].d);
 		nodes[u].d=lneut;
 	}
 	T getPV(ll u) {
@@ -86,7 +64,7 @@ struct LinkCutTree {
 	}
 	void upd(ll u) {
 		nodes[u].tVal = f(
-			f((nodes[u].c[0] != -1 ? getPV(nodes[u].c[0]) : tneut), joinVD(nodes[u].nVal, nodes[u].d)),
+			f((nodes[u].c[0] != -1 ? getPV(nodes[u].c[0]) : tneut), apply(nodes[u].nVal, nodes[u].d, 1)),
 			(nodes[u].c[1] != -1 ? getPV(nodes[u].c[1]) : tneut));
 		nodes[u].sz_ = 1 + (nodes[u].c[0] != -1 ? nodes[nodes[u].c[0]].sz_ : 0) + (nodes[u].c[1] != -1 ? nodes[nodes[u].c[1]].sz_ : 0);
 	}
@@ -173,7 +151,7 @@ struct LinkCutTree {
 	}
 	void modify(ll u, ll v, L d) {
 		mkR(u), exv(v);
-		nodes[v].d = joinD(nodes[v].d, d);
+		nodes[v].d = comb(nodes[v].d, d);
 	}
 	ll depth(ll u) { // distance from x to its tree root
 		exv(u);
