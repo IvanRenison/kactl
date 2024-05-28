@@ -81,7 +81,7 @@ ll Directed_MST(ll root, ll NV, ll NE) {
 				ID[v] = cnt++;
 			}
 		}
-		if(cnt == 0)    break;
+		if(cnt == 0) break;
 		fore(i,0,NV) {
 			if(ID[i] == -1) ID[i] = cnt++;
 		}

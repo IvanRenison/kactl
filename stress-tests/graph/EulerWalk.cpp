@@ -83,7 +83,7 @@ int main() {
 				allEds[ii(a, b)].pb(i);
 				if (undir) {
 					ed[b].emplace_back(a, i);
-					allEds[ii(b, a)].pb(i);
+					allEds[{b, a}].pb(i);
 				}
 				theEdges.emplace_back(a, b);
 			}

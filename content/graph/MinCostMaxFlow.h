@@ -29,8 +29,8 @@ struct MCMF {
 
 	void addEdge(ll from, ll to, ll cap, ll cost) {
 		if (from == to) return;
-		ed[from].pb(edge{ from,to,SZ(ed[to]),cap,cost,0 });
-		ed[to].pb(edge{ to,from,SZ(ed[from])-1,0,-cost,0 });
+		ed[from].pb(edge{from, to, SZ(ed[to]), cap, cost, 0});
+		ed[to].pb(edge{to, from, SZ(ed[from])-1, 0, -cost, 0});
 	}
 
 	void path(ll s) {
