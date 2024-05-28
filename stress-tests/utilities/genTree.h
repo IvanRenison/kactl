@@ -5,7 +5,7 @@
   Complexity: O(VlogV)
  */
 
-vector<ii> pruferCodeToTree(vector<ll> &pruferCode) {
+vector<ii> pruferCodeToTree(vi &pruferCode) {
 	// Stores number count of nodes in the prufer code
 	unordered_map<ll,ll> nodeCount;
 
@@ -47,7 +47,7 @@ vector<ii> pruferCodeToTree(vector<ll> &pruferCode) {
 }
 
 vector<ii> genRandomTree(ll n) {
-	vector<ll> pruferCode;
+	vi pruferCode;
 	for (ll i=0; i<n-2; i++) {
 		pruferCode.pb(rand()%(n-1) + 1);
 	}

@@ -40,11 +40,10 @@ void* operator new(size_t s) {
 void operator delete(void*) noexcept {}
 #endif
 
-typedef vector<ll> vd;
 bool zero(ll x) { return x == 0; }
-ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
+ll MinCostMatching(const vector<vi>& cost, vi& L, vi& R) {
 	ll n = SZ(cost), mated = 0;
-	vd dist(n), u(n), v(n);
+	vi dist(n), u(n), v(n);
 	vi dad(n), seen(n);
 
 	/// construct dual feasible solution
@@ -117,7 +116,7 @@ ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
 		L[s] = j;
 	}
 
-	auto value = vd(1)[0];
+	auto value = vi(1)[0];
 	fore(i,0,n) value += cost[i][L[i]];
 	return value;
 }
@@ -146,7 +145,7 @@ void testMatching() {
 		size_t last = ::i;
 		ll N = rand() % 10, M = rand() % 10;
 		ll NM = max(N, M);
-		vector<vd> co(NM, vd(NM));
+		vector<vi> co(NM, vi(NM));
 		fore(i,0,N) fore(j,0,M) co[i][j] = (rand() % 10) + 2;
 		vi L, R;
 		ll v = MinCostMatching(co, L, R);

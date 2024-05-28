@@ -13,7 +13,7 @@
 #include "../numerical/MatrixInverse-mod.h"
 
 vector<ii> generalMatching(ll N, vector<ii>& ed) {
-	vector<vector<ll>> mat(N, vector<ll>(N)), A;
+	vector<vi> mat(N, vi(N)), A;
 	for (auto [u, v] : ed) {
 		ll a = u, b = v, r = rand() % mod;
 		mat[a][b] = r, mat[b][a] = (mod - r) % mod;
@@ -23,7 +23,7 @@ vector<ii> generalMatching(ll N, vector<ii>& ed) {
 	assert(r % 2 == 0);
 
 	if (M != N) do {
-		mat.resize(M, vector<ll>(M));
+		mat.resize(M, vi(M));
 		fore(i,0,N) {
 			mat[i].resize(M);
 			fore(j,N,M) {
@@ -39,7 +39,7 @@ vector<ii> generalMatching(ll N, vector<ii>& ed) {
 			fore(j,i+1,M) if (A[i][j] && mat[i][j]) {
 				fi = i; fj = j; goto done;
 		} assert(0); done:
-		if (fj < N) ret.emplace_back(fi, fj);
+		if (fj < N) ret.pb({fi, fj});
 		has[fi] = has[fj] = 0;
 		fore(sw,0,2) {
 			ll a = modpow(A[fi][fj], mod-2);

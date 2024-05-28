@@ -58,7 +58,7 @@ int main() {
 			adj[u].pb(v), adj[v].pb(u);
 		}
 
-		vector<ll> vals(n);
+		vi vals(n);
 
 		fore(i, 0, n) {
 			vals[i] = rand() % 100;

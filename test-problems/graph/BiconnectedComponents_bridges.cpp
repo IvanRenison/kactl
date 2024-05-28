@@ -19,7 +19,7 @@ auto BCC(ll n, const vector<ii>& edges) {
 	vi num(n), st;
 	vector<vector<ii>> adj(n);
 	for (auto [a, b] : edges) {
-		adj[a].emplace_back(b, eid), adj[b].emplace_back(a, eid++);
+		adj[a].pb({b, eid}), adj[b].pb({a, eid++});
 	}
 
 	ll nComps = 0; // number of biconnected components

@@ -21,7 +21,7 @@ bool valid(vi deg) {
 int main() {
 	fore(N,0,7) {
 		vector<ii> possibleEd;
-		fore(i,0,N) fore(j,0,i) possibleEd.emplace_back(i, j);
+		fore(i,0,N) fore(j,0,i) possibleEd.pb({i, j});
 		set<vi> valids;
 		fore(bi,0,(1 << SZ(possibleEd))) {
 			vi deg(N);

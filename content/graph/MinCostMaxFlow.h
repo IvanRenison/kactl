@@ -22,7 +22,7 @@ struct MCMF {
 	ll N;
 	vector<vector<edge>> ed;
 	vi seen;
-	vector<ll> dist, pi;
+	vi dist, pi;
 	vector<edge*> par;
 
 	MCMF(ll N) : N(N), ed(N), seen(N), dist(N), pi(N), par(N) {}

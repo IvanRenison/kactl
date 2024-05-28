@@ -30,12 +30,12 @@ struct SlowCompressTree {
 		}
 
 		vii tree;
-		tree.emplace_back(0, sortedNodes[0]);
+		tree.pb({0, sortedNodes[0]});
 
 		fore(i, 1, SZ(sortedNodes)) {
 			ll u = sortedNodes[i];
 			ll v = sortedNodes[i - 1];
-			tree.emplace_back(nodeToIndex[lca.lca(u, v)], u);
+			tree.pb({nodeToIndex[lca.lca(u, v)], u});
 		}
 
 		return tree;

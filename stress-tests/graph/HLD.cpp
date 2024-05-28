@@ -7,9 +7,9 @@ namespace old {
 #include "oldHLD.h"
 }
 struct bruteforce { // values in nodes
-	vector<vector<ll>> tree;
-	vector<ll> vals;
-	vector<ll> pars;
+	vector<vi> tree;
+	vi vals;
+	vi pars;
 	ll unit = -1e9;
 	ll f(ll a, ll b) { return max(a, b); }
 	void root(ll cur, ll p = -1) {
@@ -18,7 +18,7 @@ struct bruteforce { // values in nodes
 			if (i != p) root(i, cur);
 		}
 	}
-	bruteforce(vector<vector<ll>> _tree): tree(_tree), vals(SZ(tree)), pars(SZ(tree)) {
+	bruteforce(vector<vi> _tree): tree(_tree), vals(SZ(tree)), pars(SZ(tree)) {
 		root(0);
 	}
 	bool dfsModify(ll cur, ll target, ll val, ll p=-1) {
@@ -71,7 +71,7 @@ struct bruteforce { // values in nodes
 void testAgainstOld(ll n, ll iters, ll queries) {
 	for (ll trees = 0; trees < iters; trees++) {
 		auto graph = genRandomTree(n);
-		vector<vector<ll>> tree1(n);
+		vector<vi> tree1(n);
 		vector<vector<ii>> tree2(n);
 		for (auto [u, v] : graph) {
 			tree1[u].pb(v);
@@ -102,7 +102,7 @@ void testAgainstOld(ll n, ll iters, ll queries) {
 void testAgainstBrute(ll n, ll iters, ll queries) {
 	for (ll trees = 0; trees < iters; trees++) {
 		auto graph = genRandomTree(n);
-		vector<vector<ll>> tree1(n);
+		vector<vi> tree1(n);
 		for (auto [u, v] : graph) {
 			tree1[u].pb(v);
 			tree1[v].pb(u);

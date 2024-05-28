@@ -1,7 +1,7 @@
 
 #include "../../content/data-structures/SegmentTree.h"
 
-typedef vector<ii> vpi;
+typedef vector<ii> vii;
 
 struct Node {
 	ll d, par, val, chain = -1, pos = -1;
@@ -9,7 +9,7 @@ struct Node {
 
 struct Chain {
 	ll par, val;
-	vector<ll> nodes;
+	vi nodes;
 	Tree tree;
 };
 
@@ -21,7 +21,7 @@ struct HLD {
 	vector<Node> V;
 	vector<Chain> C;
 
-	HLD(vector<vpi>& g) : V(SZ(g)) {
+	HLD(vector<vii>& g) : V(SZ(g)) {
 		dfs(0, -1, g, 0);
 		for(auto &c: C) {
 			c.tree = {SZ(c.nodes), 0};
@@ -73,7 +73,7 @@ struct HLD {
 		return ans;
 	}
 
-	ii dfs(ll at, ll par, vector<vpi>& g, ll d) {
+	ii dfs(ll at, ll par, vector<vii>& g, ll d) {
 		V[at].d = d; V[at].par = par;
 		ll sum = 1, ch, nod, sz;
 		tuple<ll,ll,ll> mx(-1,-1,-1);
@@ -85,12 +85,12 @@ struct HLD {
 			mx = max(mx, make_tuple(sz, e.fst, ch));
 		}
 		tie(sz, nod, ch) = mx;
-		if (2*sz < sum) return ii(sum, -1);
-		if (ch == -1) { ch = SZ(C); C.emplace_back(); }
+		if (2*sz < sum) return {sum, -1};
+		if (ch == -1) { ch = SZ(C); C.pb({}); }
 		V[nod].pos = SZ(C[ch].nodes);
 		V[nod].chain = ch;
 		C[ch].par = at;
 		C[ch].nodes.pb(nod);
-		return ii(sum, ch);
+		return {sum, ch};
 	}
 };

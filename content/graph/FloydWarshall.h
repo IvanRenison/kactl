@@ -13,7 +13,7 @@
 #pragma once
 
 const ll inf = 1LL << 62;
-void floydWarshall(vector<vector<ll>>& m) {
+void floydWarshall(vector<vi>& m) {
 	ll n = SZ(m);
 	fore(i,0,n) m[i][i] = min(m[i][i], 0LL);
 	fore(k,0,n) fore(i,0,n) fore(j,0,n)

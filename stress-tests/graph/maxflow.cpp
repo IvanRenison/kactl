@@ -48,7 +48,7 @@ int main() {
 		assert(flow == ekFlow);
 
 		// Conservation of flow for PushRelabel
-		vector<ll> flows(n);
+		vi flows(n);
 		fore(i,0,n) for(auto &e: pr.g[i]) if (e.f > 0) {
 			assert(e.c >= 0);
 			flows[i] += e.f;
@@ -59,7 +59,7 @@ int main() {
 		fore(i,0,n) if (i != s && i != t) assert(flows[i] == 0);
 
 		// Conservation of flow for Dinic
-		vector<ll> dinicFlows(n);
+		vi dinicFlows(n);
 		fore(i,0,n) for(auto &e: dinic.adj[i]) {
 			assert(e.flow() <= e.oc);
 			dinicFlows[i] += e.flow();
@@ -68,7 +68,7 @@ int main() {
 		assert(flows == dinicFlows);
 
 		// Conservation of flow for EdmondsKarp
-		vector<ll> ekFlows(n);
+		vi ekFlows(n);
 		fore(i,0,n) for(auto [u, v]: origEk[i]) {
 			ll nc = ek[i][u];
 			assert(nc >= 0);

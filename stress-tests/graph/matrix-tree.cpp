@@ -1,6 +1,6 @@
 #include "../utilities/template.h"
 
-ll det(vector<vector<ll>>& a) {
+ll det(vector<vi>& a) {
 	ll n = SZ(a); ll ans = 1;
 	fore(i,0,n) {
 		fore(j,i+1,n) {
@@ -54,7 +54,7 @@ int main() {
 		ll M = rand() % 10;
 		ll root = rand() % N;
 		vector<vi> ed(N);
-		vector<vector<ll>> mat(N, vector<ll>(N));
+		vector<vi> mat(N, vi(N));
 		fore(i,0,M) {
 			ll a = rand() % N;
 			ll b = rand() % N;

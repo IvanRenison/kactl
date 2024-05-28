@@ -29,10 +29,10 @@ vii compressTree(LCA& lca, const vi& subset) {
 	sort(ALL(li), cmp);
 	li.erase(unique(ALL(li)), li.end());
 	fore(i,0,SZ(li)) rev[li[i]] = i;
-	vii ret = {ii(0, li[0])};
+	vii ret = {{{0, li[0]}}};
 	fore(i,0,SZ(li)-1) {
 		ll a = li[i], b = li[i+1];
-		ret.emplace_back(rev[lca.lca(a, b)], b);
+		ret.pb({rev[lca.lca(a, b)], b});
 	}
 	return ret;
 }

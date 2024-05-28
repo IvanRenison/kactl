@@ -30,7 +30,7 @@ int main() {
 				bool c = uf.sameSet(a, b);
 				if (!c && v != 1) {
 					lc.link(a, b);
-					edges.emplace_back(a, b);
+					edges.pb({a, b});
 				} else {
 					assert(lc.connected(a, b) == c);
 				}

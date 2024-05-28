@@ -79,13 +79,13 @@ int main() {
 			fore(i,0,m) {
 				ll a = rand() % n;
 				ll b = rand() % n;
-				ed[a].emplace_back(b, i);
-				allEds[ii(a, b)].pb(i);
+				ed[a].pb({b, i});
+				allEds[{a, b}].pb(i);
 				if (undir) {
-					ed[b].emplace_back(a, i);
+					ed[b].pb({a, i});
 					allEds[{b, a}].pb(i);
 				}
-				theEdges.emplace_back(a, b);
+				theEdges.pb({a, b});
 			}
 
 			vi res = cycle ? eulerCycle(ed, m, start) : eulerWalk(ed, m, start);
@@ -112,7 +112,7 @@ int main() {
 				vi seenEdge(m);
 				fore(i,1,SZ(res)) {
 					ll x = res[i];
-					for(auto &eid: allEds[ii(cur, x)]) {
+					for(auto &eid: allEds[{cur, x}]) {
 						if (!seenEdge[eid]) {
 							seenEdge[eid] = 1;
 							goto ok;

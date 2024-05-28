@@ -17,7 +17,7 @@ struct PushRelabel {
 		ll f, c;
 	};
 	vector<vector<Edge>> g;
-	vector<ll> ec;
+	vi ec;
 	vector<Edge*> cur;
 	vector<vi> hs; vi H;
 	PushRelabel(ll n) : g(n), ec(n), cur(n), hs(2*n), H(n) {}
