@@ -26,7 +26,7 @@ struct LinkCutTree {
 		L d;
 		bool rev;
 		ll c[2], p;
-		Node(T v = tneut) : sz_(1), nVal(v), tVal(v), d(lneut), rev(0), p(-1){
+		Node(T v = tneut) : sz_(1), nVal(v), tVal(v), d(lneut), rev(0), p(-1) {
 			c[0] = c[1] = -1;
 		}
 	};
@@ -60,13 +60,16 @@ struct LinkCutTree {
 		nodes[u].d=lneut;
 	}
 	T getPV(ll u) {
-		return apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
+		return u == -1 ? tneut : apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
+	}
+	ll getSz(ll u) {
+		return u == -1 ? 0 : nodes[u].sz_;
 	}
 	void upd(ll u) {
 		nodes[u].tVal = f(
-			f((nodes[u].c[0] != -1 ? getPV(nodes[u].c[0]) : tneut), apply(nodes[u].nVal, nodes[u].d, 1)),
-			(nodes[u].c[1] != -1 ? getPV(nodes[u].c[1]) : tneut));
-		nodes[u].sz_ = 1 + (nodes[u].c[0] != -1 ? nodes[nodes[u].c[0]].sz_ : 0) + (nodes[u].c[1] != -1 ? nodes[nodes[u].c[1]].sz_ : 0);
+			f(getPV(nodes[u].c[0]), apply(nodes[u].nVal, nodes[u].d, 1)),
+			getPV(nodes[u].c[1]));
+		nodes[u].sz_ = 1 + getSz(nodes[u].c[0]) + getSz(nodes[u].c[1]);
 	}
 
 	void conn(ll c, ll p, ll il) {
@@ -76,33 +79,34 @@ struct LinkCutTree {
 	void rotate(ll u) {
 		ll p = nodes[u].p, g = nodes[p].p;
 		bool gCh = isRoot(p), isl = u == nodes[p].c[0];
-		conn(nodes[u].c[isl], p, isl); conn(p, u, !isl);
+		conn(nodes[u].c[isl], p, isl);
+		conn(p, u, !isl);
 		conn(u, g, gCh ? -1 : (p == nodes[g].c[0]));
 		upd(p);
 	}
 	void spa(ll u) { // splay
-		while(!isRoot(u)){
+		while (!isRoot(u)) {
 			ll p = nodes[u].p, g = nodes[p].p;
-			if(!isRoot(p)) push(g);
+			if (!isRoot(p)) push(g);
 			push(p), push(u);
-			if(!isRoot(p)) rotate((u == nodes[p].c[0]) == (p == nodes[g].c[0]) ? p : u);
+			if (!isRoot(p)) rotate((u == nodes[p].c[0]) == (p == nodes[g].c[0]) ? p : u);
 			rotate(u);
 		}
 		push(u), upd(u);
 	}
 	ll lift_rec(ll u, ll t) {
 		if(u == -1) return 0;
-		if(t == (nodes[u].c[0] != -1 ? nodes[nodes[u].c[0]].sz_ : 0)) {
+		ll s = getSz(nodes[u].c[0]);
+		if(t == s) {
 			spa(u);
 			return u;
 		}
-		if(t < (nodes[u].c[0] != -1 ? nodes[nodes[u].c[0]].sz_ : 0))
-			return lift_rec(nodes[u].c[0], t);
-		return lift_rec(nodes[u].c[1], t - (nodes[u].c[0] != -1 ? nodes[nodes[u].c[0]].sz_ : 0) - 1);
+		if(t < s) return lift_rec(nodes[u].c[0], t);
+		return lift_rec(nodes[u].c[1], t - s - 1);
 	}
 	ll exv(ll u){ // expose
 		ll last = -1;
-		for(ll v = u; v != -1; v = nodes[v].p)
+		for (ll v = u; v != -1; v = nodes[v].p)
 			spa(v), nodes[v].c[0] = last, upd(v), last = v;
 		spa(u);
 		return last;
@@ -114,7 +118,7 @@ struct LinkCutTree {
 	}
 	ll getR(ll u){
 		exv(u);
-		while(nodes[u].c[1]) u = nodes[u].c[1];
+		while (nodes[u].c[1]) u = nodes[u].c[1];
 		spa(u);
 		return u;
 	}
@@ -137,8 +141,8 @@ struct LinkCutTree {
 	ll father(ll u){
 		exv(u);
 		ll v = nodes[u].c[1];
-		if (v == -1) return 0;
-		while(nodes[v].c[0] != -1) v = nodes[v].c[0];
+		if (v == -1) return -1;
+		while (nodes[v].c[0] != -1) v = nodes[v].c[0];
 		return v;
 	}
 	void cut(ll u) { // cuts x from father keeping tree root
