@@ -27,16 +27,14 @@ struct TwoSat {
 	TwoSat(ll n = 0) : N(n), gr(2*n) {}
 
 	ll addVar() { // (optional)
-		gr.pb({});
-		gr.pb({});
+		gr.pb({}), gr.pb({});
 		return N++;
 	}
 
 	void either(ll f, ll j) {
 		f = max(2*f, -1-2*f);
 		j = max(2*j, -1-2*j);
-		gr[f].pb(j^1);
-		gr[j].pb(f^1);
+		gr[f].pb(j^1), gr[j].pb(f^1);
 	}
 	void setValue(ll x) { either(x, x); }
 

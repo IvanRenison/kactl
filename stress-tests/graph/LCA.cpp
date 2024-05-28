@@ -58,10 +58,8 @@ void test_n(ll n, ll num) {
 		vector<vi> tree(n);
 		vector<vector<ii>> oldTree(n);
 		for (auto [u, v] : graph) {
-			tree[u].pb(v);
-			tree[v].pb(u);
-			oldTree[u].pb({v, 1});
-			oldTree[v].pb({u, 1});
+			tree[u].pb(v), tree[v].pb(u);
+			oldTree[u].pb({v, 1}), oldTree[v].pb({u, 1});
 		}
 		vi par(n), depth(n);
 		getPars(tree, 0, 0, 0, par, depth);

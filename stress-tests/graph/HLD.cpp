@@ -74,8 +74,7 @@ void testAgainstOld(ll n, ll iters, ll queries) {
 		vector<vi> tree1(n);
 		vector<vector<ii>> tree2(n);
 		for (auto [u, v] : graph) {
-			tree1[u].pb(v);
-			tree1[v].pb(u);
+			tree1[u].pb(v), tree1[v].pb(u);
 		}
 		for (ll i = 0; i < SZ(tree1); i++) {
 			for (auto j : tree1[i]) {
@@ -104,8 +103,7 @@ void testAgainstBrute(ll n, ll iters, ll queries) {
 		auto graph = genRandomTree(n);
 		vector<vi> tree1(n);
 		for (auto [u, v] : graph) {
-			tree1[u].pb(v);
-			tree1[v].pb(u);
+			tree1[u].pb(v), tree1[v].pb(u);
 		}
 		HLD<false> hld(tree1);
 		bruteforce hld2(tree1);
