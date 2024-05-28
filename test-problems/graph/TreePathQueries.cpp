@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/1902/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/1902/submission/261648278
+// Submission: https://codeforces.com/contest/1902/submission/262948210
 #include <bits/stdc++.h>
 using namespace std;
 
