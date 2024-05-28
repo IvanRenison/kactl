@@ -4,23 +4,23 @@
 #include "../../content/graph/TopoSort.h"
 
 int main() {
-	rep(it,0,50000) {
+	fore(it,0,50000) {
 		ll n = rand() % 20;
 		ll m = n ? rand() % 30 : 0;
 		bool acyclic = randBool();
 		vi order(n);
-		iota(all(order), 0);
+		iota(ALL(order), 0);
 		shuffle_vec(order);
 		vector<vi> ed(n);
-		rep(i,0,m) {
+		fore(i,0,m) {
 			ll a = rand() % n;
 			ll b = rand() % n;
 			if (acyclic && a >= b) continue;
-			ed[order[a]].push_back(order[b]);
+			ed[order[a]].pb(order[b]);
 		}
 		vi ret = topoSort(ed);
-		if (acyclic) assert(sz(ret) == n);
-		else assert(sz(ret) <= n);
+		if (acyclic) assert(SZ(ret) == n);
+		else assert(SZ(ret) <= n);
 		vi seen(n);
 		for (ll i : ret) {
 			assert(!seen[i]++);

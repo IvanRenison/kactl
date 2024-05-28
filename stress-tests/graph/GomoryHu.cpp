@@ -12,12 +12,12 @@ void test(ll N, ll mxFlow, ll iters) {
 		ll m = rand()%(N*N);
 		vector<array<ll, 3>> edges;
 		vector<vi> mat(n, vi(n));
-		rep(it,0,m) {
+		fore(it,0,m) {
 			ll i = rand() % n;
 			ll j = rand() % n;
 			if (i == j) continue;
 			ll w = rand() % mxFlow;
-			edges.push_back({i, j, w});
+			edges.pb({i, j, w});
 			mat[i][j] += w;
 			mat[j][i] += w;
 		}
@@ -31,8 +31,8 @@ void test(ll N, ll mxFlow, ll iters) {
 		vector<Edge> gomoryHuTree = gomoryHu(n, edges);
 		vector<vector<array<ll, 2>>> adj(n);
 		for (auto e : gomoryHuTree) {
-			adj[e[0]].push_back({(ll)e[1], (ll)e[2]});
-			adj[e[1]].push_back({(ll)e[0], (ll)e[2]});
+			adj[e[0]].pb({(ll)e[1], (ll)e[2]});
+			adj[e[1]].pb({(ll)e[0], (ll)e[2]});
 		}
 		auto dfs = make_y_combinator([&](auto dfs, ll start, ll cur, ll p, ll mn) -> void {
 			if (start != cur) {
@@ -53,20 +53,20 @@ void test(ll N, ll mxFlow, ll iters) {
 			}
 			auto mat2 = mat;
 			auto pa = globalMinCut(mat2);
-			assert(pa.first == minCut);
+			assert(pa.fst == minCut);
 			vi inCut(n);
-			assert(sz(pa.second) != 0);
-			assert(sz(pa.second) != n);
-			for (ll x : pa.second) {
+			assert(SZ(pa.snd) != 0);
+			assert(SZ(pa.snd) != n);
+			for (ll x : pa.snd) {
 				assert(0 <= x && x < n);
 				assert(!inCut[x]);
 				inCut[x] = 1;
 			}
 			ll cutw = 0;
-			rep(i,0,n) rep(j,0,n) if (inCut[i] && !inCut[j]) {
+			fore(i,0,n) fore(j,0,n) if (inCut[i] && !inCut[j]) {
 				cutw += mat[i][j];
 			}
-			assert(pa.first == cutw);
+			assert(pa.fst == cutw);
 		}
 	}
 }

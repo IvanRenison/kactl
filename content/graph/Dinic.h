@@ -19,12 +19,12 @@ struct Dinic {
 	vector<vector<Edge>> adj;
 	Dinic(ll n) : lvl(n), ptr(n), q(n), adj(n) {}
 	void addEdge(ll a, ll b, ll c, ll rcap = 0) {
-		adj[a].push_back({b, sz(adj[b]), c, c});
-		adj[b].push_back({a, sz(adj[a]) - 1, rcap, rcap});
+		adj[a].pb({b, SZ(adj[b]), c, c});
+		adj[b].pb({a, SZ(adj[a]) - 1, rcap, rcap});
 	}
 	ll dfs(ll v, ll t, ll f) {
 		if (v == t || !f) return f;
-		for (ll& i = ptr[v]; i < sz(adj[v]); i++) {
+		for (ll& i = ptr[v]; i < SZ(adj[v]); i++) {
 			Edge& e = adj[v][i];
 			if (lvl[e.to] == lvl[v] + 1)
 				if (ll p = dfs(e.to, t, min(f, e.c))) {
@@ -36,8 +36,8 @@ struct Dinic {
 	}
 	ll calc(ll s, ll t) {
 		ll flow = 0; q[0] = s;
-		rep(L,0,31) do { // 'll L=30' maybe faster for random data
-			lvl = ptr = vi(sz(q));
+		fore(L,0,31) do { // 'll L=30' maybe faster for random data
+			lvl = ptr = vi(SZ(q));
 			ll qi = 0, qe = lvl[s] = 1;
 			while (qi < qe && !lvl[t]) {
 				ll v = q[qi++];

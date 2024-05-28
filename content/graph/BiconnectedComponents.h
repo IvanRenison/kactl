@@ -18,7 +18,7 @@ auto BCC(ll n, const vector<ii>& edges) {
 	vi num(n), st;
 	vector<vector<ii>> adj(n);
 	for (auto [a, b] : edges) {
-		adj[a].emplace_back(b, eid), adj[b].emplace_back(a, eid++);
+		adj[a].pb({b, eid}), adj[b].pb({a, eid++});
 	}
 
 	ll nComps = 0; // number of biconnected components
@@ -34,12 +34,12 @@ auto BCC(ll n, const vector<ii>& edges) {
 				nComps++;
 			} else if (num[y]) {
 				top = min(top, num[y]);
-				if (num[y] < me) st.push_back(e);
+				if (num[y] < me) st.pb(e);
 			} else {
 				ll si = SZ(st), up = dfs(y, e);
 				top = min(top, up);
 				if (up == me) {
-					st.push_back(e); // from si to SZ(st) we have a comp
+					st.pb(e); // from si to SZ(st) we have a comp
 					fore(i, si, SZ(st)) {
 						edgesComp[st[i]] = nComps;
 						auto [u, v] = edges[st[i]];
@@ -49,7 +49,7 @@ auto BCC(ll n, const vector<ii>& edges) {
 					nComps++;
 					st.resize(si);
 				}
-				else if (up < me) st.push_back(e); // else e is bridge
+				else if (up < me) st.pb(e); // else e is bridge
 			}
 		}
 		return top;

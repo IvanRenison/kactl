@@ -20,7 +20,7 @@ struct MCMF2 {
 	void addEdge(ll s, ll t, Flow c, Flow cost = 0) {
 		flow_add_edge(g, s, t, c, cost);
 	}
-	pair<ll, ll> maxflow(ll s, ll t) {
+	ii maxflow(ll s, ll t) {
 		return min_cost_max_flow(g, s, t);
 	}
 	void setpi(ll s) {}
@@ -40,27 +40,26 @@ void* operator new(size_t s) {
 void operator delete(void*) noexcept {}
 #endif
 
-typedef vector<ll> vd;
 bool zero(ll x) { return x == 0; }
-ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
-	ll n = sz(cost), mated = 0;
-	vd dist(n), u(n), v(n);
+ll MinCostMatching(const vector<vi>& cost, vi& L, vi& R) {
+	ll n = SZ(cost), mated = 0;
+	vi dist(n), u(n), v(n);
 	vi dad(n), seen(n);
 
 	/// construct dual feasible solution
-	rep(i,0,n) {
+	fore(i,0,n) {
 		u[i] = cost[i][0];
-		rep(j,1,n) u[i] = min(u[i], cost[i][j]);
+		fore(j,1,n) u[i] = min(u[i], cost[i][j]);
 	}
-	rep(j,0,n) {
+	fore(j,0,n) {
 		v[j] = cost[0][j] - u[0];
-		rep(i,1,n) v[j] = min(v[j], cost[i][j] - u[i]);
+		fore(i,1,n) v[j] = min(v[j], cost[i][j] - u[i]);
 	}
 
 	/// find primal solution satisfying complementary slackness
 	L = vi(n, -1);
 	R = vi(n, -1);
-	rep(i,0,n) rep(j,0,n) {
+	fore(i,0,n) fore(j,0,n) {
 		if (R[j] != -1) continue;
 		if (zero(cost[i][j] - u[i] - v[j])) {
 			L[i] = j;
@@ -73,22 +72,22 @@ ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
 	for (; mated < n; mated++) { // until solution is feasible
 		ll s = 0;
 		while (L[s] != -1) s++;
-		fill(all(dad), -1);
-		fill(all(seen), 0);
-		rep(k,0,n)
+		fill(ALL(dad), -1);
+		fill(ALL(seen), 0);
+		fore(k,0,n)
 			dist[k] = cost[s][k] - u[s] - v[k];
 
 		ll j = 0;
 		for (;;) { /// find closest
 			j = -1;
-			rep(k,0,n){
+			fore(k,0,n){
 				if (seen[k]) continue;
 				if (j == -1 || dist[k] < dist[j]) j = k;
 			}
 			seen[j] = 1;
 			ll i = R[j];
 			if (i == -1) break;
-			rep(k,0,n) { /// relax neighbors
+			fore(k,0,n) { /// relax neighbors
 				if (seen[k]) continue;
 				auto new_dist = dist[j] + cost[i][k] - u[i] - v[k];
 				if (dist[k] > new_dist) {
@@ -99,7 +98,7 @@ ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
 		}
 
 		/// update dual variables
-		rep(k,0,n) {
+		fore(k,0,n) {
 			if (k == j || !seen[k]) continue;
 			auto w = dist[k] - dist[j];
 			v[k] += w, u[R[k]] -= w;
@@ -117,8 +116,8 @@ ll MinCostMatching(const vector<vd>& cost, vi& L, vi& R) {
 		L[s] = j;
 	}
 
-	auto value = vd(1)[0];
-	rep(i,0,n) value += cost[i][L[i]];
+	auto value = vi(1)[0];
+	fore(i,0,n) value += cost[i][L[i]];
 	return value;
 }
 
@@ -127,7 +126,7 @@ void testPerf() {
 	ll N = 500, E = 10000, CAPS = 100, COSTS = 100000;
 	MCMF mcmf(N);
 	ll s = 0, t = 1;
-	rep(i,0,E) {
+	fore(i,0,E) {
 		ll a = rand() % N;
 		ll b = rand() % N;
 		ll cap = rand() % CAPS;
@@ -138,27 +137,27 @@ void testPerf() {
 		// ::cost[a][b] = cost;
 	}
 	auto pa = mcmf.maxflow(s, t);
-	cout << pa.first << ' ' << pa.second << endl;
+	cout << pa.fst << ' ' << pa.snd << endl;
 }
 
 void testMatching() {
-	rep(it,0,100000) {
+	fore(it,0,100000) {
 		size_t last = ::i;
 		ll N = rand() % 10, M = rand() % 10;
 		ll NM = max(N, M);
-		vector<vd> co(NM, vd(NM));
-		rep(i,0,N) rep(j,0,M) co[i][j] = (rand() % 10) + 2;
+		vector<vi> co(NM, vi(NM));
+		fore(i,0,N) fore(j,0,M) co[i][j] = (rand() % 10) + 2;
 		vi L, R;
 		ll v = MinCostMatching(co, L, R);
 		ll S = N+M, T = N+M+1;
 		MCMF mcmf(N+M+2);
-		rep(i,0,N) mcmf.addEdge(S, i, 1, 0);
-		rep(i,0,M) mcmf.addEdge(N+i, T, 1, 0);
-		rep(i,0,N) rep(j,0,M) mcmf.addEdge(i, N+j, 1, co[i][j] - 2);
+		fore(i,0,N) mcmf.addEdge(S, i, 1, 0);
+		fore(i,0,M) mcmf.addEdge(N+i, T, 1, 0);
+		fore(i,0,N) fore(j,0,M) mcmf.addEdge(i, N+j, 1, co[i][j] - 2);
 		mcmf.setpi(S);
 		auto pa = mcmf.maxflow(S, T);
-		assert(pa.first == min(N, M));
-		assert(pa.second == v - 2 * pa.first);
+		assert(pa.fst == min(N, M));
+		assert(pa.snd == v - 2 * pa.fst);
 		::i = last;
 	}
 }
@@ -167,16 +166,16 @@ void testNeg() {
 	const ll ITS = 1000000;
 	ll ed[100][100];
 	ll negs = 0;
-	rep(it,0,ITS) {
+	fore(it,0,ITS) {
 		size_t lasti = ::i;
 		ll N = rand() % 7 + 2;
 		ll M = rand() % 17;
 		ll S = 0, T = 1;
 		MCMF mcmf(N);
 		MCMF2 mcmf2(N);
-		rep(i,0,N) rep(j,0,N) ed[i][j] = 0;
+		fore(i,0,N) fore(j,0,N) ed[i][j] = 0;
 		bool anyneg = false;
-		rep(eid,0,M) {
+		fore(eid,0,M) {
 			ll i = rand() % N, j = rand() % N;
 			if (i != j && !ed[i][j]) {
 				ed[i][j] = 1;

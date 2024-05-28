@@ -18,11 +18,11 @@ struct LCA {
 	vi time, path, ret;
 	RMQ<ll> rmq;
 
-	LCA(vector<vi>& C) : time(sz(C)), rmq((dfs(C,0,-1), ret)) {}
+	LCA(vector<vi>& C) : time(SZ(C)), rmq((dfs(C,0,-1), ret)) {}
 	void dfs(vector<vi>& C, ll v, ll par) {
 		time[v] = T++;
 		for (ll y : C[v]) if (y != par) {
-			path.push_back(v), ret.push_back(time[v]);
+			path.pb(v), ret.pb(time[v]);
 			dfs(C, y, v);
 		}
 	}

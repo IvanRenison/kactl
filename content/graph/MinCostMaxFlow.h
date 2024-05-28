@@ -22,28 +22,28 @@ struct MCMF {
 	ll N;
 	vector<vector<edge>> ed;
 	vi seen;
-	vector<ll> dist, pi;
+	vi dist, pi;
 	vector<edge*> par;
 
 	MCMF(ll N) : N(N), ed(N), seen(N), dist(N), pi(N), par(N) {}
 
 	void addEdge(ll from, ll to, ll cap, ll cost) {
 		if (from == to) return;
-		ed[from].push_back(edge{ from,to,sz(ed[to]),cap,cost,0 });
-		ed[to].push_back(edge{ to,from,sz(ed[from])-1,0,-cost,0 });
+		ed[from].pb(edge{from, to, SZ(ed[to]), cap, cost, 0});
+		ed[to].pb(edge{to, from, SZ(ed[from])-1, 0, -cost, 0});
 	}
 
 	void path(ll s) {
-		fill(all(seen), 0);
-		fill(all(dist), INF);
+		fill(ALL(seen), 0);
+		fill(ALL(dist), INF);
 		dist[s] = 0; ll di;
 
-		__gnu_pbds::priority_queue<pair<ll, ll>> q;
+		__gnu_pbds::priority_queue<ii> q;
 		vector<decltype(q)::point_iterator> its(N);
 		q.push({ 0, s });
 
 		while (!q.empty()) {
-			s = q.top().second; q.pop();
+			s = q.top().snd; q.pop();
 			seen[s] = 1; di = dist[s] + pi[s];
 			for (edge& e : ed[s]) if (!seen[e.to]) {
 				ll val = di - pi[e.to] + e.cost;
@@ -57,10 +57,10 @@ struct MCMF {
 				}
 			}
 		}
-		rep(i,0,N) pi[i] = min(pi[i] + dist[i], INF);
+		fore(i,0,N) pi[i] = min(pi[i] + dist[i], INF);
 	}
 
-	pair<ll, ll> maxflow(ll s, ll t) {
+	ii maxflow(ll s, ll t) {
 		ll totflow = 0, totcost = 0;
 		while (path(s), seen[t]) {
 			ll fl = INF;
@@ -73,16 +73,17 @@ struct MCMF {
 				ed[x->to][x->rev].flow -= fl;
 			}
 		}
-		rep(i,0,N) for(edge& e : ed[i]) totcost += e.cost * e.flow;
+		fore(i,0,N) for(edge& e : ed[i])
+			totcost += e.cost * e.flow;
 		return {totflow, totcost/2};
 	}
 
 	// If some costs can be negative, call this before maxflow:
 	void setpi(ll s) { // (otherwise, leave this out)
-		fill(all(pi), INF); pi[s] = 0;
+		fill(ALL(pi), INF); pi[s] = 0;
 		ll it = N, ch = 1; ll v;
 		while (ch-- && it--)
-			rep(i,0,N) if (pi[i] != INF)
+			fore(i,0,N) if (pi[i] != INF)
 			  for (edge& e : ed[i]) if (e.cap)
 				  if ((v = pi[i] + e.cost) < pi[e.to])
 					  pi[e.to] = v, ch = 1;

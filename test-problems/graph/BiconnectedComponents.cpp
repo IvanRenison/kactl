@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/biconnected_components
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/210190
+// Submission: https://judge.yosupo.jp/submission/211633
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -19,7 +19,7 @@ auto BCC(ll n, const vector<ii>& edges) {
 	vi num(n), st;
 	vector<vector<ii>> adj(n);
 	for (auto [a, b] : edges) {
-		adj[a].emplace_back(b, eid), adj[b].emplace_back(a, eid++);
+		adj[a].pb({b, eid}), adj[b].pb({a, eid++});
 	}
 
 	ll nComps = 0; // number of biconnected components
@@ -35,12 +35,12 @@ auto BCC(ll n, const vector<ii>& edges) {
 				nComps++;
 			} else if (num[y]) {
 				top = min(top, num[y]);
-				if (num[y] < me) st.push_back(e);
+				if (num[y] < me) st.pb(e);
 			} else {
 				ll si = SZ(st), up = dfs(y, e);
 				top = min(top, up);
 				if (up == me) {
-					st.push_back(e); // from si to SZ(st) we have a comp
+					st.pb(e); // from si to SZ(st) we have a comp
 					fore(i, si, SZ(st)) {
 						edgesComp[st[i]] = nComps;
 						auto [u, v] = edges[st[i]];
@@ -50,7 +50,7 @@ auto BCC(ll n, const vector<ii>& edges) {
 					nComps++;
 					st.resize(si);
 				}
-				else if (up < me) st.push_back(e); // else e is bridge
+				else if (up < me) st.pb(e); // else e is bridge
 			}
 		}
 		return top;
@@ -79,8 +79,8 @@ int main() {
 
 	vector<vi> adj(N);
 	for (auto [u, v] : edges) {
-		adj[u].push_back(v);
-		adj[v].push_back(u);
+		adj[u].pb(v);
+		adj[v].pb(u);
 	}
 
 	auto [nComps, edgesComp, nodesComp] = BCC(N, edges);
@@ -89,13 +89,13 @@ int main() {
 	vector<vi> comps(nComps);
 	fore(i, 0, N) {
 		for (ll c : nodesComp[i]) {
-			comps[c].push_back(i);
+			comps[c].pb(i);
 		}
 	}
 	fore(e, 0, M) {
 		if (edgesComp[e] == -1) {
 			auto [u, v] = edges[e];
-			comps.push_back({u, v});
+			comps.pb({u, v});
 		}
 	}
 

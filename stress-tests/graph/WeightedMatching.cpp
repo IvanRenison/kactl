@@ -30,16 +30,16 @@ void test(ll N, ll mxCost, ll iters) {
 		mcmf.setpi(s);
 		auto maxflow = mcmf.maxflow(s, t);
 		auto matching = hungarian(cost);
-		assert(maxflow.first == n);
-		assert(maxflow.second == matching.first);
+		assert(maxflow.fst == n);
+		assert(maxflow.snd == matching.fst);
 		ll matchSum = 0;
 		set<ll> used;
 		for (ll i = 0; i < n; i++) {
-			matchSum += cost[i][matching.second[i]];
-			assert(used.count(matching.second[i]) == 0);
-			used.insert(matching.second[i]);
+			matchSum += cost[i][matching.snd[i]];
+			assert(used.count(matching.snd[i]) == 0);
+			used.insert(matching.snd[i]);
 		}
-		assert(matchSum == matching.first);
+		assert(matchSum == matching.fst);
 		return;
 	}
 }
