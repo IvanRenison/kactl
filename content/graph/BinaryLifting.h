@@ -7,7 +7,7 @@
  * to support fast upward jumps and LCAs.
  * Assumes the root node points to itself.
  * Time: construction $O(N \log N)$, queries $O(\log N)$
- * Status: stress-tested
+ * Status: stress-tested directly and via LCA.cpp
  */
 #pragma once
 
