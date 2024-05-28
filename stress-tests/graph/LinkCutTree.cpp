@@ -1,41 +1,182 @@
 #include "../utilities/template.h"
 
 #include "../../content/graph/LinkCutTree.h"
-#include "../../content/data-structures/UnionFind.h"
 
-int main() {
-	srand(2);
-	LinkCut lczero(0);
-	rep(it,0,10000) {
-		ll N = rand() % 20 + 1;
-		LinkCut lc(N);
-		UF uf(N);
-		vector<pii> edges;
-		rep(it2,0,1000) {
-			ll v = (rand() >> 4) & 3;
-			if (v == 0 && !edges.empty()) { // remove
-				ll r = (rand() >> 4) % sz(edges);
-				pii ed = edges[r];
-				swap(edges[r], edges.back());
-				edges.pop_back();
-				if (rand() & 16)
-					lc.cut(ed.first, ed.second);
-				else
-					lc.cut(ed.second, ed.first);
-			} else {
-				ll a = (rand() >> 4) % N;
-				ll b = (rand() >> 4) % N;
-				uf.e.assign(N, -1);
-				for(auto &ed: edges) uf.join(ed.first, ed.second);
-				bool c = uf.sameSet(a, b);
-				if (!c && v != 1) {
-					lc.link(a, b);
-					edges.emplace_back(a, b);
-				} else {
-					assert(lc.connected(a, b) == c);
+namespace slow {
+	typedef ll T; // T: data type, L: lazy type
+	typedef ll L;
+	const L lneut = 0;
+	const L tneut = 0;
+	T f(T a, T b) { return T{a + b}; } // operation
+	// new st according to lazy
+	T apply(T v, L l, ll len) { return T{v + l * len}; }
+	// cumulative effect of lazy
+	L comb(L a, L b) { return L{a + b}; }
+
+	struct Slow {
+		ll n;
+		vector<T> vals;
+		set<ii> edges;
+
+		Slow(ll n) : n(n), vals(n, tneut) {}
+		Slow(vector<T>& vals) : n(SZ(vals)), vals(vals) {}
+
+		bool connected(ll u, ll v) {
+			vector<vi> adj(n);
+			for (auto [u, v] : edges) {
+				adj[u].pb(v), adj[v].pb(u);
+			}
+
+			vector<ii> s = {{u, u}};
+
+			while (!s.empty()) {
+				auto [x, p] = s.back();
+				s.pop_back();
+
+				if (x == v) return true;
+
+				for (ll y : adj[x]) {
+					if (y != p) s.pb({y, x});
 				}
 			}
+
+			return false;
+		}
+		void link(ll u, ll v) {
+			assert(!connected(u, v));
+			edges.insert(minmax(u, v));
+		}
+		void cut(ll u, ll v) {
+			assert(edges.count(minmax(u, v)));
+			edges.erase(minmax(u, v));
+		}
+		T query(ll u, ll v) {
+			if (u == v) return vals[u];
+
+			vector<vi> adj(n);
+			for (auto [u, v] : edges) {
+				adj[u].pb(v), adj[v].pb(u);
+			}
+
+			vector<ll> ps(n, -1);
+			ps[u] = -2;
+			vi s = {u};
+			while (!s.empty()) {
+				ll x = s.back();
+				s.pop_back();
+
+				if (x == v) {
+					break;
+				}
+
+				for (ll y : adj[x]) {
+					if (ps[y] == -1) {
+						ps[y] = x;
+						s.pb(y);
+					}
+				}
+			}
+
+			assert(ps[v] != -1);
+
+			T ans = tneut;
+
+			for (ll x = v; x != -2; x = ps[x]) {
+				ans = f(ans, vals[x]);
+			}
+
+			return ans;
+		}
+		void modify(ll u, ll v, L d) {
+			if (u == v) {
+				vals[u] = apply(vals[u], d, 1);
+				return;
+			}
+
+			vector<vi> adj(n);
+			for (auto [u, v] : edges) {
+				adj[u].pb(v), adj[v].pb(u);
+			}
+
+			vector<ll> ps(n, -1);
+			ps[u] = -2;
+			vi s = {u};
+			while (!s.empty()) {
+				ll x = s.back();
+				s.pop_back();
+
+				if (x == v) break;
+
+				for (ll y : adj[x]) {
+					if (ps[y] == -1) {
+						ps[y] = x;
+						s.pb(y);
+					}
+				}
+			}
+
+			assert(ps[v] != -1);
+
+			for (ll x = v; x != -2; x = ps[x]) {
+				vals[x] = apply(vals[x], d, 1);
+			}
+		}
+	};
+};
+
+void testCase() {
+	ll n = rand() % 100 + 1;
+
+	vector<ll> vals(n);
+	fore(i, 0, n) vals[i] = rand() % 100;
+
+	slow::Slow slow(vals);
+	LinkCutTree lct(vals);
+
+	set<ii> edges;
+
+	fore(_, 0, 1000) {
+		ll t = rand() % 4;
+		if (t == 0) { // link
+			ll u = rand() % n, v = rand() % n;
+			bool conn = lct.connected(u, v);
+			bool conn2 = slow.connected(u, v);
+			assert(conn == conn2);
+			if (conn) continue;
+			lct.link(u, v);
+			slow.link(u, v);
+			edges.insert(minmax(u, v));
+		} else if (t == 1) { // cut
+			if (edges.empty()) continue;
+			// get random element from edges
+			auto [u, v] = *next(edges.begin(), rand() % SZ(edges));
+			assert(lct.connected(u, v));
+			lct.cut(u, v);
+			slow.cut(u, v);
+			edges.erase(minmax(u, v));
+		} else if (t == 2) { // query
+			ll u = rand() % n, v = rand() % n;
+			bool conn = lct.connected(u, v);
+			bool conn2 = slow.connected(u, v);
+			assert(conn == conn2);
+			if (!conn) continue;
+			ll ans = lct.query(u, v);
+			ll ans2 = slow.query(u, v);
+			assert(ans == ans2);
+		} else { // modify
+			ll u = rand() % n, v = rand() % n;
+			bool conn = lct.connected(u, v);
+			bool conn2 = slow.connected(u, v);
+			assert(conn == conn2);
+			if (!conn) continue;
+			ll d = rand() % 100;
+			lct.modify(u, v, d);
+			slow.modify(u, v, d);
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+}
+
+int main() {
+	fore(_, 0, 1000) testCase();
+	cout << "Tests passed!" << endl;
 }

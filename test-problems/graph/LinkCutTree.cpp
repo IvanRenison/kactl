@@ -16,6 +16,7 @@ typedef pair<ll, ll> ii;
 typedef pair<ll, ll> pii;
 typedef vector<ll> vi;
 
+/// content/graph/LinkCutTree.h
 typedef ll T; // T: data type, L: lazy type
 typedef ll L;
 const L lneut = 0;
@@ -131,7 +132,7 @@ struct LinkCutTree {
 	}
 	bool connected(ll u, ll v) {
 		exv(u), exv(v);
-		return u == v ? true : nodes[u].p != 0;
+		return u == v ? true : nodes[u].p != -1;
 	}
 	void link(ll u, ll v) {
 		mkR(u);
