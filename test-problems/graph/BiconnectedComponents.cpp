@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/biconnected_components
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/211624
+// Submission: https://judge.yosupo.jp/submission/211633
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
