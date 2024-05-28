@@ -15,18 +15,18 @@ int main() {
 			ll v = (rand() >> 4) & 3;
 			if (v == 0 && !edges.empty()) { // remove
 				ll r = (rand() >> 4) % SZ(edges);
-				ii ed = edges[r];
+				auto [u, v] = edges[r];
 				swap(edges[r], edges.back());
 				edges.pop_back();
 				if (rand() & 16)
-					lc.cut(ed.fst, ed.snd);
+					lc.cut(u, v);
 				else
-					lc.cut(ed.snd, ed.fst);
+					lc.cut(v, u);
 			} else {
 				ll a = (rand() >> 4) % N;
 				ll b = (rand() >> 4) % N;
 				uf.e.assign(N, -1);
-				for(auto &ed: edges) uf.join(ed.fst, ed.snd);
+				for (auto [u, v] : edges) uf.join(u, v);
 				bool c = uf.sameSet(a, b);
 				if (!c && v != 1) {
 					lc.link(a, b);

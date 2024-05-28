@@ -7,7 +7,7 @@
 
 void test(ll n, const vector<ii>& ed) {
 	vi deg(n);
-	for (ii e : ed) ++deg[e.fst], ++deg[e.snd];
+	for (auto [u, v] : ed) ++deg[u], ++deg[v];
 	ll maxdeg = n == 0 ? 0 : *max_element(ALL(deg));
 	vi cols = edgeColoring(n, ed);
 	assert(SZ(cols) == SZ(ed));

@@ -52,7 +52,6 @@ vector<ii> genRandomTree(ll n) {
 		pruferCode.pb(rand()%(n-1) + 1);
 	}
 	auto edges = pruferCodeToTree(pruferCode);
-	for (auto &p: edges)
-		p.fst--, p.snd--;
+	for (auto &[u, v] : edges) u--, v--;
 	return edges;
 }

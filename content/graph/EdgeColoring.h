@@ -15,7 +15,7 @@
 
 vi edgeColoring(ll N, vector<ii> eds) {
 	vi cc(N + 1), ret(SZ(eds)), fan(N), free(N), loc;
-	for (ii e : eds) ++cc[e.fst], ++cc[e.snd];
+	for (auto [u, v] : eds) ++cc[u], ++cc[v];
 	ll u, v, ncols = *max_element(ALL(cc)) + 1;
 	vector<vi> adj(N, vi(ncols, -1));
 	for (ii e : eds) {

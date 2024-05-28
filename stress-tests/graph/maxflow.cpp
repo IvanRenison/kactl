@@ -69,13 +69,13 @@ int main() {
 
 		// Conservation of flow for EdmondsKarp
 		vector<ll> ekFlows(n);
-		fore(i,0,n) for(auto &e: origEk[i]) {
-			ll nc = ek[i][e.fst];
+		fore(i,0,n) for(auto [u, v]: origEk[i]) {
+			ll nc = ek[i][u];
 			assert(nc >= 0);
-			ll flow = e.snd - nc;
+			ll flow = v - nc;
 			if (flow > 0) {
 				ekFlows[i] += flow;
-				ekFlows[e.fst] -= flow;
+				ekFlows[u] -= flow;
 			}
 		}
 		assert(flows == ekFlows);

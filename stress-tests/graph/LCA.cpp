@@ -57,11 +57,11 @@ void test_n(ll n, ll num) {
 		auto graph = genRandomTree(n);
 		vector<vi> tree(n);
 		vector<vector<ii>> oldTree(n);
-		for (auto i: graph) {
-			tree[i.fst].pb(i.snd);
-			tree[i.snd].pb(i.fst);
-			oldTree[i.fst].pb({i.snd, 1});
-			oldTree[i.snd].pb({i.fst, 1});
+		for (auto [u, v] : graph) {
+			tree[u].pb(v);
+			tree[v].pb(u);
+			oldTree[u].pb({v, 1});
+			oldTree[v].pb({u, 1});
 		}
 		vector<ll> par(n), depth(n);
 		getPars(tree, 0, 0, 0, par, depth);

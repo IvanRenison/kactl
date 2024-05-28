@@ -14,8 +14,8 @@
 
 vector<ii> generalMatching(ll N, vector<ii>& ed) {
 	vector<vector<ll>> mat(N, vector<ll>(N)), A;
-	for (ii pa : ed) {
-		ll a = pa.fst, b = pa.snd, r = rand() % mod;
+	for (auto [u, v] : ed) {
+		ll a = u, b = v, r = rand() % mod;
 		mat[a][b] = r, mat[b][a] = (mod - r) % mod;
 	}
 

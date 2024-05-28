@@ -27,9 +27,9 @@ vector<ii> randomSimpleGraphAsEdgeList(ll n, ll m) {
 
 vector<vi> randomSimpleGraph(ll n, ll m) {
 	vector<vi> ed(n);
-	for (auto pa : randomSimpleGraphAsEdgeList(n, m)) {
-		ed[pa.fst].pb(pa.snd);
-		ed[pa.snd].pb(pa.fst);
+	for (auto [u, v] : randomSimpleGraphAsEdgeList(n, m)) {
+		ed[u].pb(v);
+		ed[v].pb(u);
 	}
 	for (auto& v : ed) shuffle_vec(v);
 	return ed;
