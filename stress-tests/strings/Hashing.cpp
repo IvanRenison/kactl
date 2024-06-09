@@ -35,6 +35,17 @@ int main() {
 
 		// No collisions
 		assert(sz(strs) == sz(hashes));
+
+		// Concat
+		rep(_, 0, 10) {
+			ll i = rand() % (n + 1);
+			H h0 = hi.hashInterval(0, i);
+			H h1 = hi.hashInterval(i, n);
+			H h0pw = hi.pw[n - i];
+
+			H h = concat(h0, h1, h0pw);
+			assert(h == hi.hashInterval(0, n));
+		}
 	}
 	cout<<"Tests passed!"<<endl;
 }
