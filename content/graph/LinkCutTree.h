@@ -59,13 +59,12 @@ struct LinkCutTree {
 	T getPV(ll u) {
 		return apply(nods[u].tVal, nods[u].d, nods[u].sz_);
 	}
-	void upd(ll u) {
+	void calc(ll u) {
 		Node& N = nods[u];
 		N.tVal = f(f(getPV(N.c[0]), apply(N.nVal, N.d, 1)),
 			getPV(N.c[1]));
 		N.sz_ = 1 + nods[N.c[0]].sz_ + nods[N.c[1]].sz_;
 	}
-
 	void conn(ll c, ll p, ll il) {
 		if (c) nods[c].p = p;
 		if (il >= 0) nods[p].c[!il] = c;
@@ -76,7 +75,7 @@ struct LinkCutTree {
 		conn(nods[u].c[isl], p, isl);
 		conn(p, u, !isl);
 		conn(u, g, gCh ? -1 : (p == nods[g].c[0]));
-		upd(p);
+		calc(p);
 	}
 	void spa(ll u) { // splay
 		while (!isRoot(u)) {
@@ -87,7 +86,7 @@ struct LinkCutTree {
 				rotate((u==nods[p].c[0]) ^ (p==nods[g].c[0]) ? u : p);
 			rotate(u);
 		}
-		push(u), upd(u);
+		push(u), calc(u);
 	}
 	ll lift_rec(ll u, ll t) {
 		if (!u) return 0;
@@ -103,7 +102,7 @@ struct LinkCutTree {
 	ll exv(ll u){ // expose
 		ll last = 0;
 		for (ll v = u; v; v = nods[v].p)
-			spa(v), nods[v].c[0] = last, upd(v), last = v;
+			spa(v), nods[v].c[0] = last, calc(v), last = v;
 		spa(u);
 		return last;
 	}
@@ -148,7 +147,7 @@ struct LinkCutTree {
 		mkR(u), exv(v);
 		return getPV(v);
 	}
-	void modify(ll u, ll v, L d) { // modify path from u to v
+	void upd(ll u, ll v, L d) { // modify path from u to v
 		mkR(u), exv(v);
 		nods[v].d = comb(nods[v].d, d);
 	}

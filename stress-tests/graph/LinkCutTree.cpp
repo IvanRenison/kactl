@@ -87,7 +87,7 @@ namespace slow {
 
 			return ans;
 		}
-		void modify(ll u, ll v, L d) {
+		void upd(ll u, ll v, L d) {
 			if (u == v) {
 				vals[u] = apply(vals[u], d, 1);
 				return;
@@ -170,8 +170,8 @@ void testCase() {
 			assert(conn == conn2);
 			if (!conn) continue;
 			ll d = rand() % 100;
-			lct.modify(u + 1, v + 1, d);
-			slow.modify(u, v, d);
+			lct.upd(u + 1, v + 1, d);
+			slow.upd(u, v, d);
 		}
 	}
 }
