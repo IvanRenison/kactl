@@ -15,11 +15,8 @@ typedef long long ll;
 typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
-/// content/graph/LinkCutTree.h
-typedef ll T; // T: data type, L: lazy type
-typedef ll L;
-const L lneut = 0;
-const L tneut = 0;
+typedef ll T; typedef ll L; // T: data type, L: lazy type
+const L lneut = 0; const L tneut = 0;
 T f(T a, T b) { return a + b; } // operation
 // new st according to lazy
 T apply(T v, L l, ll len) { return v + l * len; }
@@ -28,151 +25,143 @@ L comb(L a, L b) { return a + b; }
 //mostly generic
 struct LinkCutTree {
 	struct Node {
-		ll sz_;
-		T nVal, tVal;
-		L d;
-		bool rev;
-		ll c[2], p;
-		Node(T v = tneut) : sz_(1), nVal(v), tVal(v), d(lneut), rev(0), p(0) {
-			c[0] = c[1] = 0;
-		}
+		ll sz_; bool rev;
+		T nVal, tVal; L d;
+		array<ll, 2> c; ll p;
+		Node(T v = tneut) : sz_(1), nVal(v), tVal(v), d(lneut) {}
 	};
-	ll n;
-	vector<Node> nodes;
 
-	LinkCutTree(ll n) : n(n), nodes(n + 1) {
-		fore(i, 0, n) {
-			nodes[i + 1] = Node(tneut);
-		}
-		nodes[0] = Node(tneut);
-		nodes[0].sz_ = 0;
+	vector<Node> nods;
+
+	LinkCutTree(ll n) : nods(n + 1) {
+		fore(i, 0, n) nods[i + 1] = Node(tneut);
+		nods[0] = Node(tneut);
+		nods[0].sz_ = 0;
 	}
-	LinkCutTree(vector<T>& vals) : n(vals.size()), nodes(n + 1) {
-		fore(i, 0, n) {
-			nodes[i + 1] = Node(vals[i]);
-		}
-		nodes[0] = Node(tneut);
-		nodes[0].sz_ = 0;
+	LinkCutTree(vector<T>& a) : nods(SZ(a) + 1) {
+		fore(i, 0, SZ(a)) nods[i + 1] = Node(a[i]);
+		nods[0] = Node(tneut);
+		nods[0].sz_ = 0;
 	}
 
 	bool isRoot(ll u) {
-		return !nodes[u].p || (nodes[nodes[u].p].c[0] != u && nodes[nodes[u].p].c[1] != u);
+		Node N = nods[nods[u].p];
+		return N.c[0] != u && N.c[1] != u;
 	}
 	void push(ll u) {
-		if (nodes[u].rev) {
-			nodes[u].rev = 0;
-			swap(nodes[u].c[0], nodes[u].c[1]);
-			fore(x, 0, 2) if (nodes[u].c[x]) nodes[nodes[u].c[x]].rev ^= 1;
+		Node& N = nods[u];
+		if (N.rev) {
+			N.rev = 0;
+			swap(N.c[0], N.c[1]);
+			fore(x, 0, 2) if (N.c[x]) nods[N.c[x]].rev ^= 1;
 		}
-		nodes[u].nVal = apply(nodes[u].nVal, nodes[u].d, 1);
-		nodes[u].tVal = apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
-		fore(x, 0, 2) if (nodes[u].c[x])
-			nodes[nodes[u].c[x]].d = comb(nodes[nodes[u].c[x]].d, nodes[u].d);
-		nodes[u].d=lneut;
+		N.nVal = apply(N.nVal, N.d, 1);
+		N.tVal = apply(N.tVal, N.d, N.sz_);
+		fore(x, 0, 2) if (N.c[x])
+			nods[N.c[x]].d = comb(nods[N.c[x]].d, N.d);
+		N.d = lneut;
 	}
 	T getPV(ll u) {
-		return apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
-	}
-	ll getSz(ll u) {
-		return nodes[u].sz_ ;
+		return apply(nods[u].tVal, nods[u].d, nods[u].sz_);
 	}
 	void upd(ll u) {
-		nodes[u].tVal = f(
-			f(getPV(nodes[u].c[0]), apply(nodes[u].nVal, nodes[u].d, 1)),
-			getPV(nodes[u].c[1]));
-		nodes[u].sz_ = 1 + getSz(nodes[u].c[0]) + getSz(nodes[u].c[1]);
+		Node& N = nods[u];
+		N.tVal = f(f(getPV(N.c[0]), apply(N.nVal, N.d, 1)),
+			getPV(N.c[1]));
+		N.sz_ = 1 + nods[N.c[0]].sz_ + nods[N.c[1]].sz_;
 	}
 
 	void conn(ll c, ll p, ll il) {
-		if (c) nodes[c].p = p;
-		if (il >= 0) nodes[p].c[!il] = c;
+		if (c) nods[c].p = p;
+		if (il >= 0) nods[p].c[!il] = c;
 	}
 	void rotate(ll u) {
-		ll p = nodes[u].p, g = nodes[p].p;
-		bool gCh = isRoot(p), isl = u == nodes[p].c[0];
-		conn(nodes[u].c[isl], p, isl);
+		ll p = nods[u].p, g = nods[p].p;
+		bool gCh = isRoot(p), isl = u == nods[p].c[0];
+		conn(nods[u].c[isl], p, isl);
 		conn(p, u, !isl);
-		conn(u, g, gCh ? -1 : (p == nodes[g].c[0]));
+		conn(u, g, gCh ? -1 : (p == nods[g].c[0]));
 		upd(p);
 	}
 	void spa(ll u) { // splay
 		while (!isRoot(u)) {
-			ll p = nodes[u].p, g = nodes[p].p;
+			ll p = nods[u].p, g = nods[p].p;
 			if (!isRoot(p)) push(g);
 			push(p), push(u);
-			if (!isRoot(p)) rotate((u == nodes[p].c[0]) == (p == nodes[g].c[0]) ? p : u);
+			if (!isRoot(p))
+				rotate((u==nods[p].c[0]) ^ (p==nods[g].c[0]) ? u : p);
 			rotate(u);
 		}
 		push(u), upd(u);
 	}
 	ll lift_rec(ll u, ll t) {
-		if(!u) return 0;
-		ll s = getSz(nodes[u].c[0]);
-		if(t == s) {
+		if (!u) return 0;
+		Node N = nods[u];
+		ll s = nods[N.c[0]].sz_;
+		if (t == s) {
 			spa(u);
 			return u;
 		}
-		if(t < s) return lift_rec(nodes[u].c[0], t);
-		return lift_rec(nodes[u].c[1], t - s - 1);
+		if (t < s) return lift_rec(N.c[0], t);
+		return lift_rec(N.c[1], t - s - 1);
 	}
 	ll exv(ll u){ // expose
 		ll last = 0;
-		for (ll v = u; v; v = nodes[v].p)
-			spa(v), nodes[v].c[0] = last, upd(v), last = v;
+		for (ll v = u; v; v = nods[v].p)
+			spa(v), nods[v].c[0] = last, upd(v), last = v;
 		spa(u);
 		return last;
 	}
 
-	void mkR(ll u){ // makeRoot
+	void mkR(ll u){ // make root of its tree
 		exv(u);
-		nodes[u].rev ^= 1;
+		nods[u].rev ^= 1;
 	}
 	ll getR(ll u){
 		exv(u);
-		while (nodes[u].c[1]) u = nodes[u].c[1];
+		while (nods[u].c[1]) u = nods[u].c[1];
 		spa(u);
 		return u;
 	}
-	ll lca(ll u, ll v) {
+	ll lca(ll u, ll v) { // least common ancestor
 		exv(u);
 		return exv(v);
 	}
-	bool connected(ll u, ll v) {
+	bool connected(ll u, ll v) { // are u and v in the same tree
 		exv(u), exv(v);
-		return u == v ? true : nodes[u].p != 0;
+		return u == v || nods[u].p != 0;
 	}
-	void link(ll u, ll v) {
+	void link(ll u, ll v) { // add edge between u and v
 		mkR(u);
-		nodes[u].p = v;
+		nods[u].p = v;
 	}
-	void cut(ll u, ll v) {
+	void cut(ll u, ll v) { // remove edge u v
 		mkR(u), exv(v);
-		nodes[nodes[v].c[1]].p = 0, nodes[v].c[1] = 0;
+		nods[nods[v].c[1]].p = 0, nods[v].c[1] = 0;
 	}
-	ll father(ll u){
+	ll father(ll u) { // father of u, 0 if u is root
 		exv(u);
-		ll v = nodes[u].c[1];
-		if (!v) return 0;
-		while (nodes[v].c[0]) v = nodes[v].c[0];
+		ll v = nods[u].c[1];
+		while (nods[v].c[0]) v = nods[v].c[0];
 		return v;
 	}
 	void cut(ll u) { // cuts x from father keeping tree root
 		exv(u);
-		nodes[u].p = 0;
+		nods[u].p = 0;
 	}
-	T query(ll u, ll v) {
+	T query(ll u, ll v) { // query on path from u to v
 		mkR(u), exv(v);
 		return getPV(v);
 	}
-	void modify(ll u, ll v, L d) {
+	void modify(ll u, ll v, L d) { // modify path from u to v
 		mkR(u), exv(v);
-		nodes[v].d = comb(nodes[v].d, d);
+		nods[v].d = comb(nods[v].d, d);
 	}
 	ll depth(ll u) { // distance from x to its tree root
 		exv(u);
-		return nodes[u].sz_ - 1;
+		return nods[u].sz_ - 1;
 	}
-	ll lift(ll u, ll t) { // t-th ancestor of x (lift(x,1) is x's father)
+	ll lift(ll u, ll t) {//t ancestor of x, lift(x,1) is x father
 		exv(u);
 		return lift_rec(u, t);
 	}
