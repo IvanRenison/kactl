@@ -2,7 +2,7 @@
  * Author: Iván Renison
  * Date: 2024-05-26
  * Source: notebook el vasito
- * Description: Represents a forest of rooted trees with \textbf{nods indexed from one}.
+ * Description: Represents a forest of rooted trees with nodes \textbf{indexed from one}.
  * You can add and remove edges (as long as the result is still a forest),
  * make path queries and path updates
  * Time: All operations take amortized O(\log N).
@@ -10,35 +10,30 @@
  */
 #pragma once
 
-typedef ll T; typedef ll L; // T: data type, L: lazy type
-const L lneut = 0; const L tneut = 0;
-T f(T a, T b) { return a + b; } // operation
-// new st according to lazy
-T apply(T v, L l, ll len) { return v + l * len; }
-// cumulative effect of lazy
-L comb(L a, L b) { return a + b; }
-//mostly generic
 struct LinkCutTree {
+	typedef ll T; typedef ll L; // T: data type, L: lazy type
+	static constexpr L lneut = 0; static constexpr L tneut = 0;
+	T f(T a, T b) { return a + b; } // operation
+	// new st according to lazy
+	T apply(T v, L l, ll len) { return v + l * len; }
+	// cumulative effect of lazy
+	L comb(L a, L b) { return a + b; }
+
 	struct Node {
 		ll sz_; bool rev;
-		T nVal, tVal; L d;
+		T val, t; L d;
 		array<ll, 2> c; ll p;
-		Node(T v = tneut) : sz_(1), nVal(v), tVal(v), d(lneut) {}
+		Node(T v = tneut) : sz_(1), val(v), t(v), d(lneut) {}
 	};
-
 	vector<Node> nods;
-
 	LinkCutTree(ll n) : nods(n + 1) {
 		fore(i, 0, n) nods[i + 1] = Node(tneut);
-		nods[0] = Node(tneut);
-		nods[0].sz_ = 0;
+		nods[0] = Node(tneut), nods[0].sz_ = 0;
 	}
 	LinkCutTree(vector<T>& a) : nods(SZ(a) + 1) {
 		fore(i, 0, SZ(a)) nods[i + 1] = Node(a[i]);
-		nods[0] = Node(tneut);
-		nods[0].sz_ = 0;
+		nods[0] = Node(tneut), nods[0].sz_ = 0;
 	}
-
 	bool isRoot(ll u) {
 		Node N = nods[nods[u].p];
 		return N.c[0] != u && N.c[1] != u;
@@ -46,23 +41,21 @@ struct LinkCutTree {
 	void push(ll u) {
 		Node& N = nods[u];
 		if (N.rev) {
-			N.rev = 0;
-			swap(N.c[0], N.c[1]);
+			N.rev = 0, swap(N.c[0], N.c[1]);
 			fore(x, 0, 2) if (N.c[x]) nods[N.c[x]].rev ^= 1;
 		}
-		N.nVal = apply(N.nVal, N.d, 1);
-		N.tVal = apply(N.tVal, N.d, N.sz_);
+		N.val = apply(N.val, N.d, 1);
+		N.t = apply(N.t, N.d, N.sz_);
 		fore(x, 0, 2) if (N.c[x])
 			nods[N.c[x]].d = comb(nods[N.c[x]].d, N.d);
 		N.d = lneut;
 	}
-	T getPV(ll u) {
-		return apply(nods[u].tVal, nods[u].d, nods[u].sz_);
+	T get(ll u) {
+		return apply(nods[u].t, nods[u].d, nods[u].sz_);
 	}
 	void calc(ll u) {
 		Node& N = nods[u];
-		N.tVal = f(f(getPV(N.c[0]), apply(N.nVal, N.d, 1)),
-			getPV(N.c[1]));
+		N.t = f(f(get(N.c[0]), apply(N.val, N.d, 1)), get(N.c[1]));
 		N.sz_ = 1 + nods[N.c[0]].sz_ + nods[N.c[1]].sz_;
 	}
 	void conn(ll c, ll p, ll il) {
@@ -92,10 +85,7 @@ struct LinkCutTree {
 		if (!u) return 0;
 		Node N = nods[u];
 		ll s = nods[N.c[0]].sz_;
-		if (t == s) {
-			spa(u);
-			return u;
-		}
+		if (t == s) return spa(u), u;
 		if (t < s) return lift_rec(N.c[0], t);
 		return lift_rec(N.c[1], t - s - 1);
 	}
@@ -108,8 +98,7 @@ struct LinkCutTree {
 	}
 
 	void mkR(ll u){ // make root of its tree
-		exv(u);
-		nods[u].rev ^= 1;
+		exv(u), nods[u].rev ^= 1;
 	}
 	ll getR(ll u){
 		exv(u);
@@ -126,30 +115,26 @@ struct LinkCutTree {
 		return u == v || nods[u].p != 0;
 	}
 	void link(ll u, ll v) { // add edge between u and v
-		mkR(u);
-		nods[u].p = v;
+		mkR(u), nods[u].p = v;
 	}
 	void cut(ll u, ll v) { // remove edge u v
 		mkR(u), exv(v);
 		nods[nods[v].c[1]].p = 0, nods[v].c[1] = 0;
 	}
 	ll father(ll u) { // father of u, 0 if u is root
-		exv(u);
-		ll v = nods[u].c[1];
-		while (nods[v].c[0]) v = nods[v].c[0];
-		return v;
+		exv(u), u = nods[u].c[1];
+		while (nods[u].c[0]) u = nods[u].c[0];
+		return u;
 	}
 	void cut(ll u) { // cuts x from father keeping tree root
-		exv(u);
-		nods[u].p = 0;
+		exv(u), nods[u].p = 0;
 	}
 	T query(ll u, ll v) { // query on path from u to v
 		mkR(u), exv(v);
-		return getPV(v);
+		return get(v);
 	}
 	void upd(ll u, ll v, L d) { // modify path from u to v
-		mkR(u), exv(v);
-		nods[v].d = comb(nods[v].d, d);
+		mkR(u), exv(v), nods[v].d = comb(nods[v].d, d);
 	}
 	ll depth(ll u) { // distance from x to its tree root
 		exv(u);
