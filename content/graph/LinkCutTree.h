@@ -2,10 +2,11 @@
  * Author: Iván Renison
  * Date: 2024-05-26
  * Source: notebook el vasito
- * Description: Represents a forest of rooted trees. You can add and remove
- * edges (as long as the result is still a forest), make path queries ans path updates
+ * Description: Represents a forest of rooted trees with \textbf{nodes indexed from one}.
+ * You can add and remove edges (as long as the result is still a forest),
+ * make path queries and path updates
  * Time: All operations take amortized O(\log N).
- * Status: Stress-tested a bit for N <= 20
+ * Status: Stress-tested a bit
  */
 #pragma once
 
@@ -13,11 +14,11 @@ typedef ll T; // T: data type, L: lazy type
 typedef ll L;
 const L lneut = 0;
 const L tneut = 0;
-T f(T a, T b) { return T{a + b}; } // operation
+T f(T a, T b) { return a + b; } // operation
 // new st according to lazy
-T apply(T v, L l, ll len) { return T{v + l * len}; }
+T apply(T v, L l, ll len) { return v + l * len; }
 // cumulative effect of lazy
-L comb(L a, L b) { return L{a + b}; }
+L comb(L a, L b) { return a + b; }
 //mostly generic
 struct LinkCutTree {
 	struct Node {
@@ -26,44 +27,48 @@ struct LinkCutTree {
 		L d;
 		bool rev;
 		ll c[2], p;
-		Node(T v = tneut) : sz_(1), nVal(v), tVal(v), d(lneut), rev(0), p(-1) {
-			c[0] = c[1] = -1;
+		Node(T v = tneut) : sz_(1), nVal(v), tVal(v), d(lneut), rev(0), p(0) {
+			c[0] = c[1] = 0;
 		}
 	};
 	ll n;
 	vector<Node> nodes;
 
-	LinkCutTree(ll n) : n(n), nodes(n) {
+	LinkCutTree(ll n) : n(n), nodes(n + 1) {
 		fore(i, 0, n) {
-			nodes[i] = Node(tneut);
+			nodes[i + 1] = Node(tneut);
 		}
+		nodes[0] = Node(tneut);
+		nodes[0].sz_ = 0;
 	}
-	LinkCutTree(vector<T>& vals) : n(vals.size()), nodes(n) {
+	LinkCutTree(vector<T>& vals) : n(vals.size()), nodes(n + 1) {
 		fore(i, 0, n) {
-			nodes[i] = Node(vals[i]);
+			nodes[i + 1] = Node(vals[i]);
 		}
+		nodes[0] = Node(tneut);
+		nodes[0].sz_ = 0;
 	}
 
 	bool isRoot(ll u) {
-		return nodes[u].p == -1 || (nodes[nodes[u].p].c[0] != u && nodes[nodes[u].p].c[1] != u);
+		return !nodes[u].p || (nodes[nodes[u].p].c[0] != u && nodes[nodes[u].p].c[1] != u);
 	}
 	void push(ll u) {
 		if (nodes[u].rev) {
-			nodes[u].rev=0;
+			nodes[u].rev = 0;
 			swap(nodes[u].c[0], nodes[u].c[1]);
-			fore(x, 0, 2) if (nodes[u].c[x] != -1) nodes[nodes[u].c[x]].rev ^= 1;
+			fore(x, 0, 2) if (nodes[u].c[x]) nodes[nodes[u].c[x]].rev ^= 1;
 		}
 		nodes[u].nVal = apply(nodes[u].nVal, nodes[u].d, 1);
 		nodes[u].tVal = apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
-		fore(x, 0, 2) if(nodes[u].c[x] != -1)
+		fore(x, 0, 2) if (nodes[u].c[x])
 			nodes[nodes[u].c[x]].d = comb(nodes[nodes[u].c[x]].d, nodes[u].d);
 		nodes[u].d=lneut;
 	}
 	T getPV(ll u) {
-		return u == -1 ? tneut : apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
+		return apply(nodes[u].tVal, nodes[u].d, nodes[u].sz_);
 	}
 	ll getSz(ll u) {
-		return u == -1 ? 0 : nodes[u].sz_;
+		return nodes[u].sz_ ;
 	}
 	void upd(ll u) {
 		nodes[u].tVal = f(
@@ -73,7 +78,7 @@ struct LinkCutTree {
 	}
 
 	void conn(ll c, ll p, ll il) {
-		if (c != -1) nodes[c].p = p;
+		if (c) nodes[c].p = p;
 		if (il >= 0) nodes[p].c[!il] = c;
 	}
 	void rotate(ll u) {
@@ -95,7 +100,7 @@ struct LinkCutTree {
 		push(u), upd(u);
 	}
 	ll lift_rec(ll u, ll t) {
-		if(u == -1) return 0;
+		if(!u) return 0;
 		ll s = getSz(nodes[u].c[0]);
 		if(t == s) {
 			spa(u);
@@ -105,8 +110,8 @@ struct LinkCutTree {
 		return lift_rec(nodes[u].c[1], t - s - 1);
 	}
 	ll exv(ll u){ // expose
-		ll last = -1;
-		for (ll v = u; v != -1; v = nodes[v].p)
+		ll last = 0;
+		for (ll v = u; v; v = nodes[v].p)
 			spa(v), nodes[v].c[0] = last, upd(v), last = v;
 		spa(u);
 		return last;
@@ -128,7 +133,7 @@ struct LinkCutTree {
 	}
 	bool connected(ll u, ll v) {
 		exv(u), exv(v);
-		return u == v ? true : nodes[u].p != -1;
+		return u == v ? true : nodes[u].p != 0;
 	}
 	void link(ll u, ll v) {
 		mkR(u);
@@ -136,18 +141,18 @@ struct LinkCutTree {
 	}
 	void cut(ll u, ll v) {
 		mkR(u), exv(v);
-		nodes[nodes[v].c[1]].p = -1, nodes[v].c[1] = -1;
+		nodes[nodes[v].c[1]].p = 0, nodes[v].c[1] = 0;
 	}
 	ll father(ll u){
 		exv(u);
 		ll v = nodes[u].c[1];
-		if (v == -1) return -1;
-		while (nodes[v].c[0] != -1) v = nodes[v].c[0];
+		if (!v) return 0;
+		while (nodes[v].c[0]) v = nodes[v].c[0];
 		return v;
 	}
 	void cut(ll u) { // cuts x from father keeping tree root
 		exv(u);
-		nodes[u].p = -1;
+		nodes[u].p = 0;
 	}
 	T query(ll u, ll v) {
 		mkR(u), exv(v);

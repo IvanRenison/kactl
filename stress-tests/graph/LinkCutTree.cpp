@@ -139,38 +139,38 @@ void testCase() {
 		ll t = rand() % 4;
 		if (t == 0) { // link
 			ll u = rand() % n, v = rand() % n;
-			bool conn = lct.connected(u, v);
+			bool conn = lct.connected(u + 1, v + 1);
 			bool conn2 = slow.connected(u, v);
 			assert(conn == conn2);
 			if (conn) continue;
-			lct.link(u, v);
+			lct.link(u + 1, v + 1);
 			slow.link(u, v);
 			edges.insert(minmax(u, v));
 		} else if (t == 1) { // cut
 			if (edges.empty()) continue;
 			// get random element from edges
 			auto [u, v] = *next(edges.begin(), rand() % SZ(edges));
-			assert(lct.connected(u, v));
-			lct.cut(u, v);
+			assert(lct.connected(u + 1, v + 1));
+			lct.cut(u + 1, v + 1);
 			slow.cut(u, v);
 			edges.erase(minmax(u, v));
 		} else if (t == 2) { // query
 			ll u = rand() % n, v = rand() % n;
-			bool conn = lct.connected(u, v);
+			bool conn = lct.connected(u + 1, v + 1);
 			bool conn2 = slow.connected(u, v);
 			assert(conn == conn2);
 			if (!conn) continue;
-			ll ans = lct.query(u, v);
+			ll ans = lct.query(u + 1, v + 1);
 			ll ans2 = slow.query(u, v);
 			assert(ans == ans2);
 		} else { // modify
 			ll u = rand() % n, v = rand() % n;
-			bool conn = lct.connected(u, v);
+			bool conn = lct.connected(u + 1, v + 1);
 			bool conn2 = slow.connected(u, v);
 			assert(conn == conn2);
 			if (!conn) continue;
 			ll d = rand() % 100;
-			lct.modify(u, v, d);
+			lct.modify(u + 1, v + 1, d);
 			slow.modify(u, v, d);
 		}
 	}
