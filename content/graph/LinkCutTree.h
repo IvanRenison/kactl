@@ -20,19 +20,18 @@ struct LinkCutTree {
 	L comb(L a, L b) { return a + b; }
 
 	struct Node {
-		ll sz_; bool rev;
-		T val, t; L d;
-		array<ll, 2> c; ll p;
-		Node(T v = tneut) : sz_(1), val(v), t(v), d(lneut) {}
+		ll sz_ = 1; bool rev = 0;
+		T val, t; L d = lneut;
+		array<ll, 2> c = {0, 0}; ll p = 0;
+		Node(T v = tneut) : val(v), t(v) {}
 	};
 	vector<Node> nods;
 	LinkCutTree(ll n) : nods(n + 1) {
-		fore(i, 0, n) nods[i + 1] = Node(tneut);
-		nods[0] = Node(tneut), nods[0].sz_ = 0;
+		nods[0].sz_ = 0;
 	}
 	LinkCutTree(vector<T>& a) : nods(SZ(a) + 1) {
 		fore(i, 0, SZ(a)) nods[i + 1] = Node(a[i]);
-		nods[0] = Node(tneut), nods[0].sz_ = 0;
+		nods[0].sz_ = 0;
 	}
 	bool isRoot(ll u) {
 		Node N = nods[nods[u].p];
