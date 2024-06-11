@@ -1,146 +1,135 @@
 /**
  * Author: Iván Renison
- * Date: 2024-05-26
- * Source: notebook el vasito
- * Description: Represents a forest of rooted trees with nodes \textbf{indexed from one}.
- * You can add and remove edges (as long as the result is still a forest),
- * make path queries and path updates
+ * Date: 2024-05-23
+ * Source: https://github.com/ngthanhtrung23/ACM_Notebook_new/blob/master/DataStructure/LinkCutTree.h
+ * Description:
  * Time: All operations take amortized O(\log N).
- * Status: Stress-tested a bit
+ * Status: Untested
  */
 #pragma once
 
-struct LinkCutTree {
-	typedef ll T; typedef ll L; // T: data type, L: lazy type
-	static constexpr L lneut = 0; static constexpr L tneut = 0;
-	T f(T a, T b) { return a + b; } // operation
-	// new st according to lazy
-	T apply(T v, L l, ll len) { return v + l * len; }
-	// cumulative effect of lazy
-	L comb(L a, L b) { return a + b; }
-
+typedef ll T;
+T f(T a, T b) { return a + b; } // associative & commutative
+T neg(T a, T b) { return a - b; } // Inverse of f
+// (neg only is for subtree queries)
+struct SplayTree {
 	struct Node {
-		ll sz_ = 1; bool rev = 0;
-		T val, t; L d = lneut;
-		array<ll, 2> c = {0, 0}; ll p = 0;
-		Node(T v = tneut) : val(v), t(v) {}
+		array<ll, 2> child = {0, 0};
+		ll parent = 0;
+		array<T, 2> path;
+		T self, sub, vir;
+		bool reverse = false;
 	};
-	vector<Node> nods;
-	LinkCutTree(ll n) : nods(n + 1) {
-		nods[0].sz_ = 0;
-	}
-	LinkCutTree(vector<T>& a) : nods(SZ(a) + 1) {
-		fore(i, 0, SZ(a)) nods[i + 1] = Node(a[i]);
-		nods[0].sz_ = 0;
-	}
-	bool isRoot(ll u) {
-		Node N = nods[nods[u].p];
-		return N.c[0] != u && N.c[1] != u;
-	}
-	void push(ll u) {
-		Node& N = nods[u];
-		if (N.rev) {
-			N.rev = 0, swap(N.c[0], N.c[1]);
-			fore(x, 0, 2) if (N.c[x]) nods[N.c[x]].rev ^= 1;
-		}
-		N.val = apply(N.val, N.d, 1);
-		N.t = apply(N.t, N.d, N.sz_);
-		fore(x, 0, 2) if (N.c[x])
-			nods[N.c[x]].d = comb(nods[N.c[x]].d, N.d);
-		N.d = lneut;
-	}
-	T get(ll u) {
-		return apply(nods[u].t, nods[u].d, nods[u].sz_);
-	}
-	void calc(ll u) {
-		Node& N = nods[u];
-		N.t = f(f(get(N.c[0]), apply(N.val, N.d, 1)), get(N.c[1]));
-		N.sz_ = 1 + nods[N.c[0]].sz_ + nods[N.c[1]].sz_;
-	}
-	void conn(ll c, ll p, ll il) {
-		if (c) nods[c].p = p;
-		if (il >= 0) nods[p].c[!il] = c;
-	}
-	void rotate(ll u) {
-		ll p = nods[u].p, g = nods[p].p;
-		bool gCh = isRoot(p), isl = u == nods[p].c[0];
-		conn(nods[u].c[isl], p, isl);
-		conn(p, u, !isl);
-		conn(u, g, gCh ? -1 : (p == nods[g].c[0]));
-		calc(p);
-	}
-	void spa(ll u) { // splay
-		while (!isRoot(u)) {
-			ll p = nods[u].p, g = nods[p].p;
-			if (!isRoot(p)) push(g);
-			push(p), push(u);
-			if (!isRoot(p))
-				rotate((u==nods[p].c[0]) ^ (p==nods[g].c[0]) ? u : p);
-			rotate(u);
-		}
-		push(u), calc(u);
-	}
-	ll lift_rec(ll u, ll t) {
-		if (!u) return 0;
-		Node N = nods[u];
-		ll s = nods[N.c[0]].sz_;
-		if (t == s) return spa(u), u;
-		if (t < s) return lift_rec(N.c[0], t);
-		return lift_rec(N.c[1], t - s - 1);
-	}
-	ll exv(ll u){ // expose
-		ll last = 0;
-		for (ll v = u; v; v = nods[v].p)
-			spa(v), nods[v].c[0] = last, calc(v), last = v;
-		spa(u);
-		return last;
-	}
+	vector<Node> nodes;
 
-	void mkR(ll u){ // make root of its tree
-		exv(u), nods[u].rev ^= 1;
+	SplayTree(ll n) : nodes(n + 1) {}
+
+	void splay(ll x) {
+		for (pushDown(x); ~getDirection(x); ) {
+			ll y = nodes[x].parent, z = nodes[y].parent;
+			pushDown(z), pushDown(y), pushDown(x);
+			ll dx = getDirection(x), dy = getDirection(y);
+			if (~dy) rotate(dx != dy ? x : y);
+			rotate(x);
+		}
 	}
-	ll getR(ll u){
-		exv(u);
-		while (nods[u].c[1]) u = nods[u].c[1];
-		spa(u);
-		return u;
+	ll getDirection(ll x) {
+		ll p = nodes[x].parent;
+		if (!p) return -1;
+		if (nodes[p].child[0] == x) return 0;
+		return nodes[p].child[1] == x ? 1 : -1;
 	}
-	ll lca(ll u, ll v) { // least common ancestor
-		exv(u);
-		return exv(v);
+	void rotate(ll x) {
+		ll y = nodes[x].parent, dx = getDirection(x);
+		ll z = nodes[y].parent, dy = getDirection(y);
+		setChild(y, nodes[x].child[!dx], dx), setChild(x, y, !dx);
+		if (~dy) setChild(z, x, dy);
+		nodes[x].parent = z;
 	}
-	bool connected(ll u, ll v) { // are u and v in the same tree
-		exv(u), exv(v);
-		return u == v || nods[u].p != 0;
+	void pushDown(ll x) {
+		if (!x) return;
+		if (nodes[x].reverse) {
+			auto [l, r] = nodes[x].child;
+			nodes[l].reverse ^= 1, nodes[r].reverse ^= 1;
+			swap(nodes[x].child[0], nodes[x].child[1]);
+			swap(nodes[x].path[0], nodes[x].path[1]);
+			nodes[x].reverse = false;
+		}
 	}
-	void link(ll u, ll v) { // add edge between u and v
-		mkR(u), nods[u].p = v;
+	void pushUp(ll x) {
+		auto [l, r] = nodes[x].child;
+		pushDown(l), pushDown(r);
+		nodes[x].path[0] =
+			f(f(nodes[l].path[0], nodes[x].self), nodes[r].path[0]);
+		nodes[x].path[1] =
+			f(f(nodes[r].path[1], nodes[x].self), nodes[l].path[1]);
+		nodes[x].sub = f(
+			f(f(nodes[x].vir, nodes[l].sub), nodes[r].sub),
+			nodes[x].self);
 	}
-	void cut(ll u, ll v) { // remove edge u v
-		mkR(u), exv(v);
-		nods[nods[v].c[1]].p = 0, nods[v].c[1] = 0;
+	void setChild(ll x, ll y, ll dir) {
+		nodes[x].child[dir] = y;
+		nodes[y].parent = x;
+		pushUp(x);
 	}
-	ll father(ll u) { // father of u, 0 if u is root
-		exv(u), u = nods[u].c[1];
-		while (nods[u].c[0]) u = nods[u].c[0];
-		return u;
+};
+
+struct LinkCut : SplayTree {
+	LinkCut(ll n) : SplayTree(n) {}
+
+	bool is_connected(ll u, ll v) {
+		return LCA(u, v) > 0;
 	}
-	void cut(ll u) { // cuts x from father keeping tree root
-		exv(u), nods[u].p = 0;
+	void link(ll u, ll v) { // Add edge
+		reroot(u), access(v);
+		nodes[v].vir = f(nodes[v].vir, nodes[u].sub);
+		nodes[u].parent = v;
+		pushUp(v);
 	}
-	T query(ll u, ll v) { // query on path from u to v
-		mkR(u), exv(v);
-		return get(v);
+	void cut(ll u, ll v) { // Remove edge
+		reroot(u), access(v);
+		nodes[v].child[0] = nodes[u].parent = 0;
+		pushUp(v);
 	}
-	void upd(ll u, ll v, L d) { // modify path from u to v
-		mkR(u), exv(v), nods[v].d = comb(nods[v].d, d);
+	// Returns 0 if u and v are not connected
+	ll LCA(ll u, ll v) {
+		if (u == v) return u;
+		access(u);
+		ll ret = access(v);
+		return nodes[u].parent ? ret : 0;
 	}
-	ll depth(ll u) { // distance from x to its tree root
-		exv(u);
-		return nods[u].sz_ - 1;
+	T getPath(ll u, ll v) { // query on path
+		reroot(u), access(v);
+		return nodes[v].path[1];
 	}
-	ll lift(ll u, ll t) {//t ancestor of x, lift(x,1) is x father
-		exv(u);
-		return lift_rec(u, t);
+	void set(ll u, T val) { // Update value of node
+		access(u);
+		nodes[u].self = val;
+		pushUp(u);
+	}
+	T get(ll u) { // Queries element
+		return nodes[u].self;
+	}
+	T getSubtree(ll u, ll v) { // Queries subtree
+		reroot(v); access(u);
+		return f(nodes[u].vir, nodes[u].self);
+	}
+	void reroot(ll x) {
+		access(x);
+		nodes[x].reverse ^= 1;
+		pushDown(x);
+	}
+	ll access(ll x) {
+		ll u = x, v = 0;
+		for (; u; v = u, u = nodes[u].parent) {
+			splay(u);
+			ll& ov = nodes[u].child[1];
+			nodes[u].vir = f(nodes[u].vir, nodes[ov].sub);
+#ifdef SUBTREE_QUERIES
+			nodes[u].vir = neg(nodes[u].vir, nodes[v].sub);
+#endif
+			ov = v; pushUp(u);
+		}
+		return splay(x), v;
 	}
 };

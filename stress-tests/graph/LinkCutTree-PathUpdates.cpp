@@ -1,6 +1,6 @@
 #include "../utilities/template.h"
 
-#include "../../content/graph/LinkCutTree.h"
+#include "../../content/graph/LinkCutTree-PathUpdates.h"
 
 namespace slow {
 	typedef ll T; // T: data type, L: lazy type

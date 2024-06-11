@@ -1,21 +1,15 @@
-// Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
-// Status: AC
-// Submission: https://judge.yosupo.jp/submission/214246
-#include <bits/stdc++.h>
-using namespace std;
+/**
+ * Author: Iván Renison
+ * Date: 2024-05-26
+ * Source: notebook el vasito
+ * Description: Represents a forest of rooted trees with nodes \textbf{indexed from one}.
+ * You can add and remove edges (as long as the result is still a forest),
+ * make path queries and path updates
+ * Time: All operations take amortized O(\log N).
+ * Status: Stress-tested a bit
+ */
+#pragma once
 
-#define fst first
-#define snd second
-#define pb push_back
-#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
-#define ALL(x) begin(x), end(x)
-#define SZ(x) (ll)(x).size()
-#define mset(a, v) memset((a), (v), sizeof(a))
-typedef long long ll;
-typedef pair<ll, ll> ii;
-typedef vector<ll> vi;
-
-/// content/graph/LinkCutTree.h
 struct LinkCutTree {
 	typedef ll T; typedef ll L; // T: data type, L: lazy type
 	static constexpr L lneut = 0; static constexpr L tneut = 0;
@@ -150,43 +144,3 @@ struct LinkCutTree {
 		return lift_rec(u, t);
 	}
 };
-/// END content
-
-int main() {
-	cin.tie(0)->sync_with_stdio(0);
-
-	ll N, Q;
-	cin >> N >> Q;
-
-	vi vals(N);
-	for (ll& a : vals) {
-		cin >> a;
-	}
-	LinkCutTree lct(vals);
-
-	fore(i, 0, N - 1) {
-		ll a, b;
-		cin >> a >> b;
-		lct.link(a + 1, b + 1);
-	}
-
-	while (Q--) {
-		ll t;
-		cin >> t;
-		if (t == 0) {
-			ll u, v, w, x;
-			cin >> u >> v >> w >> x;
-			lct.cut(u + 1, v + 1);
-			lct.link(w + 1, x + 1);
-		} else if (t == 1) {
-			ll p, x;
-			cin >> p >> x;
-			lct.upd(p + 1, p + 1, x);
-		} else {
-			ll u, v;
-			cin >> u >> v;
-			ll val = lct.query(u + 1, v + 1);
-			cout << val << '\n';
-		}
-	}
-}
