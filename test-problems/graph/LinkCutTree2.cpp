@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
-// Status:
-// Submission:
+// Status: AS
+// Submission: https://judge.yosupo.jp/submission/214860
 #include <bits/stdc++.h>
 using namespace std;
 

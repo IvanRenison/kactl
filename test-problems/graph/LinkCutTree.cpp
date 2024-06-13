@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_subtree_sum
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/214854
+// Submission: https://judge.yosupo.jp/submission/214862
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -18,7 +18,7 @@ typedef vector<ll> vi;
 /// content/graph/LinkCutTree.h
 typedef ll T;
 const T neut = 0;
-T f(T a, T b) { return a + b; } // associative & commutative
+T f(T a, T b) { return a + b; } // associative
 T neg(T a, T b) { return a - b; } // inverse of f
 // (neg only is for subtree queries)
 struct SplayTree {
