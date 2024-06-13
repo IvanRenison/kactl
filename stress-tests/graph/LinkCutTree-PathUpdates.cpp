@@ -2,126 +2,117 @@
 
 #include "../../content/graph/LinkCutTree-PathUpdates.h"
 
-namespace slow {
-	typedef ll T; // T: data type, L: lazy type
-	typedef ll L;
-	const L lneut = 0;
-	const L tneut = 0;
-	T f(T a, T b) { return T{a + b}; } // operation
+struct Slow { // indexed from 0
+	typedef ll T; typedef ll L; // T: data type, L: lazy type
+	static constexpr L lneut = 0; static constexpr L tneut = 0;
+	T f(T a, T b) { return a + b; } // operation
 	// new st according to lazy
-	T apply(T v, L l, ll len) { return T{v + l * len}; }
+	T apply(T v, L l, ll len) { return v + l * len; }
 	// cumulative effect of lazy
-	L comb(L a, L b) { return L{a + b}; }
+	L comb(L a, L b) { return a + b; }
 
-	struct Slow {
-		ll n;
-		vector<T> vals;
-		set<ii> edges;
+	ll n;
+	vector<T> vals;
+	set<ii> edges;
 
-		Slow(ll n) : n(n), vals(n, tneut) {}
-		Slow(vector<T>& vals) : n(SZ(vals)), vals(vals) {}
+	Slow(ll n) : n(n), vals(n, tneut) {}
+	Slow(vector<T>& vals) : n(SZ(vals)), vals(vals) {}
 
-		bool connected(ll u, ll v) {
-			vector<vi> adj(n);
-			for (auto [u, v] : edges) {
-				adj[u].pb(v), adj[v].pb(u);
+	bool connected(ll u, ll v) {
+		vector<vi> adj(n);
+		for (auto [u, v] : edges) {
+			adj[u].pb(v), adj[v].pb(u);
+		}
+
+		vector<ii> s = {{u, u}};
+
+		while (!s.empty()) {
+			auto [x, p] = s.back();
+			s.pop_back();
+
+			if (x == v) return true;
+
+			for (ll y : adj[x]) {
+				if (y != p) s.pb({y, x});
 			}
+		}
 
-			vector<ii> s = {{u, u}};
+		return false;
+	}
+	void link(ll u, ll v) {
+		assert(!connected(u, v));
+		edges.insert(minmax(u, v));
+	}
+	void cut(ll u, ll v) {
+		assert(edges.count(minmax(u, v)));
+		edges.erase(minmax(u, v));
+	}
+	T query(ll u, ll v) {
+		if (u == v) return vals[u];
 
-			while (!s.empty()) {
-				auto [x, p] = s.back();
-				s.pop_back();
+		vector<vi> adj(n);
+		for (auto [u, v] : edges) {
+			adj[u].pb(v), adj[v].pb(u);
+		}
 
-				if (x == v) return true;
+		vector<ll> ps(n, -1);
+		ps[u] = -2;
+		vi s = {u};
+		while (!s.empty()) {
+			ll x = s.back();
+			s.pop_back();
 
-				for (ll y : adj[x]) {
-					if (y != p) s.pb({y, x});
+			if (x == v) break;
+
+			for (ll y : adj[x]) {
+				if (ps[y] == -1) {
+					ps[y] = x;
+					s.pb(y);
 				}
 			}
-
-			return false;
 		}
-		void link(ll u, ll v) {
-			assert(!connected(u, v));
-			edges.insert(minmax(u, v));
+		assert(ps[v] != -1);
+
+		T ans = tneut;
+		for (ll x = v; x != -2; x = ps[x]) {
+			ans = f(ans, vals[x]);
 		}
-		void cut(ll u, ll v) {
-			assert(edges.count(minmax(u, v)));
-			edges.erase(minmax(u, v));
+		return ans;
+	}
+	void upd(ll u, ll v, L d) {
+		if (u == v) {
+			vals[u] = apply(vals[u], d, 1);
+			return;
 		}
-		T query(ll u, ll v) {
-			if (u == v) return vals[u];
 
-			vector<vi> adj(n);
-			for (auto [u, v] : edges) {
-				adj[u].pb(v), adj[v].pb(u);
-			}
+		vector<vi> adj(n);
+		for (auto [u, v] : edges) {
+			adj[u].pb(v), adj[v].pb(u);
+		}
 
-			vector<ll> ps(n, -1);
-			ps[u] = -2;
-			vi s = {u};
-			while (!s.empty()) {
-				ll x = s.back();
-				s.pop_back();
+		vector<ll> ps(n, -1);
+		ps[u] = -2;
+		vi s = {u};
+		while (!s.empty()) {
+			ll x = s.back();
+			s.pop_back();
 
-				if (x == v) {
-					break;
-				}
+			if (x == v) break;
 
-				for (ll y : adj[x]) {
-					if (ps[y] == -1) {
-						ps[y] = x;
-						s.pb(y);
-					}
+			for (ll y : adj[x]) {
+				if (ps[y] == -1) {
+					ps[y] = x;
+					s.pb(y);
 				}
 			}
-
-			assert(ps[v] != -1);
-
-			T ans = tneut;
-
-			for (ll x = v; x != -2; x = ps[x]) {
-				ans = f(ans, vals[x]);
-			}
-
-			return ans;
 		}
-		void upd(ll u, ll v, L d) {
-			if (u == v) {
-				vals[u] = apply(vals[u], d, 1);
-				return;
-			}
 
-			vector<vi> adj(n);
-			for (auto [u, v] : edges) {
-				adj[u].pb(v), adj[v].pb(u);
-			}
+		assert(ps[v] != -1);
 
-			vector<ll> ps(n, -1);
-			ps[u] = -2;
-			vi s = {u};
-			while (!s.empty()) {
-				ll x = s.back();
-				s.pop_back();
-
-				if (x == v) break;
-
-				for (ll y : adj[x]) {
-					if (ps[y] == -1) {
-						ps[y] = x;
-						s.pb(y);
-					}
-				}
-			}
-
-			assert(ps[v] != -1);
-
-			for (ll x = v; x != -2; x = ps[x]) {
-				vals[x] = apply(vals[x], d, 1);
-			}
+		for (ll x = v; x != -2; x = ps[x]) {
+			vals[x] = apply(vals[x], d, 1);
 		}
-	};
+	}
 };
 
 void testCase() {
@@ -130,7 +121,7 @@ void testCase() {
 	vector<ll> vals(n);
 	fore(i, 0, n) vals[i] = rand() % 100;
 
-	slow::Slow slow(vals);
+	Slow slow(vals);
 	LinkCutTree lct(vals);
 
 	set<ii> edges;
