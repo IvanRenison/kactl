@@ -1,19 +1,36 @@
-/**
- * Author: Iván Renison
- * Date: 2024-05-23
- * Source: https://github.com/ngthanhtrung23/ACM_Notebook_new/blob/master/DataStructure/LinkCutTree.h
- * Description: Represents a forest of rooted trees with nodes \textbf{indexed from one}.
- * You can add and remove edges (as long as the result is still a forest),
- * make path queries, subtree queries, point updates and select a node as root of its subtree.
- * Time: All operations take amortized O(\log N).
- * Status: Untested
- */
-#pragma once
+// Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
+// Status:
+// Submission:
+#include <bits/stdc++.h>
+using namespace std;
 
-typedef ll T;
-const T neut = 0;
-T f(T a, T b) { return a + b; } // associative
-T neg(T a, T b) { return a - b; } // inverse of f
+#define fst first
+#define snd second
+#define pb push_back
+#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
+#define ALL(x) begin(x), end(x)
+#define SZ(x) (ll)(x).size()
+#define mset(a, v) memset((a), (v), sizeof(a))
+typedef long long ll;
+typedef pair<ll, ll> ii;
+typedef vector<ll> vi;
+
+const ll mod = 998244353;
+
+/// content/graph/LinkCutTree.h
+/// START diff
+struct T {
+	ll a, b;
+	ll operator()(ll x) {
+		return (a * x + b) % mod;
+	}
+};
+const T neut = {1, 0};
+T f(T a, T b) {
+	return {(a.a * b.a) % mod, (a.a * b.b + a.b) % mod};
+} // associative
+//T neg(T a, T b) { return a - b; } // inverse of f
+/// END diff
 // (neg only is for subtree queries)
 struct SplayTree {
 	struct Node {
@@ -85,7 +102,9 @@ struct LinkCutTree : SplayTree {
 			spa(u);
 			ll& ov = nods[u].c[1];
 			nods[u].vir = f(nods[u].vir, nods[ov].sub);
-			nods[u].vir = neg(nods[u].vir, nods[v].sub); // SUBTREE
+			/// START diff
+			//nods[u].vir = neg(nods[u].vir, nods[v].sub); // SUBTREE
+			/// END diff
 			ov = v; pushUp(u);
 		}
 		return spa(x), v;
@@ -108,10 +127,12 @@ struct LinkCutTree : SplayTree {
 	T query(ll u) { // query single element
 		return nods[u].self;
 	}
-	T querySub(ll u) { // query subtree of u
-		access(u);
-		return f(nods[u].vir, nods[u].self);
-	}
+	/// START diff
+	// T querySub(ll u) { // query subtree of u
+	// 	access(u);
+	// 	return f(nods[u].vir, nods[u].self);
+	// }
+	/// END diff
 	void upd(ll u, T val) { // update value of u
 		access(u);
 		nods[u].self = val;
@@ -134,3 +155,46 @@ struct LinkCutTree : SplayTree {
 		return nods[v].path[1];
 	}
 };
+/// END content
+
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+
+	ll N, Q;
+	cin >> N >> Q;
+
+	LinkCutTree lct(N);
+
+	fore(i, 0, N) {
+		ll a, b;
+		cin >> a >> b;
+		lct.upd(i + 1, {a, b});
+	}
+
+	fore(_, 0, N - 1) {
+		ll u, v;
+		cin >> u >> v;
+		lct.link(u + 1, v + 1);
+	}
+
+	while (Q--) {
+		ll t;
+		cin >> t;
+		if (t == 0) {
+			ll u, v, w, x;
+			cin >> u >> v >> w >> x;
+			lct.cut(u + 1, v + 1);
+			lct.link(w + 1, x + 1);
+		} else if (t == 1) {
+			ll p, c, d;
+			cin >> p >> c >> d;
+			lct.upd(p + 1, {c, d});
+		} else {
+			ll u, v, x;
+			cin >> u >> v >> x;
+			ll val = lct.queryPath(u + 1, v + 1)(x);
+			cout << val << '\n';
+		}
+	}
+}
