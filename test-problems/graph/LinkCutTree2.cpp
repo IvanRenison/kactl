@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
-// Status: AS
-// Submission: https://judge.yosupo.jp/submission/214860
+// Status: AC
+// Submission: https://judge.yosupo.jp/submission/214992
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -128,7 +128,7 @@ struct LinkCutTree : SplayTree {
 		return nods[u].self;
 	}
 	/// START diff
-	// T querySub(ll u) { // query subtree of u
+	// T querySub(ll u) { // query SUBTREE of u
 	// 	access(u);
 	// 	return f(nods[u].vir, nods[u].self);
 	// }

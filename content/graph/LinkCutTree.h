@@ -5,6 +5,7 @@
  * Description: Represents a forest of rooted trees with nodes \textbf{indexed from one}.
  * You can add and remove edges (as long as the result is still a forest),
  * make path queries, subtree queries, point updates and select a node as root of its subtree.
+ * If you don't have subtree queries you can remove the parts that say SUBTREE.
  * Time: All operations take amortized O(\log N).
  * Status: Untested
  */
@@ -13,8 +14,7 @@
 typedef ll T;
 const T neut = 0;
 T f(T a, T b) { return a + b; } // associative
-T neg(T a, T b) { return a - b; } // inverse of f
-// (neg only is for subtree queries)
+T neg(T a, T b) { return a - b; } // inverse of f for SUBTREE
 struct SplayTree {
 	struct Node {
 		array<ll, 2> c = {0, 0};
@@ -108,7 +108,7 @@ struct LinkCutTree : SplayTree {
 	T query(ll u) { // query single element
 		return nods[u].self;
 	}
-	T querySub(ll u) { // query subtree of u
+	T querySub(ll u) { // query SUBTREE of u
 		access(u);
 		return f(nods[u].vir, nods[u].self);
 	}

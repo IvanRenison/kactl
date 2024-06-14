@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_subtree_sum
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/214862
+// Submission: https://judge.yosupo.jp/submission/214991
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -19,8 +19,7 @@ typedef vector<ll> vi;
 typedef ll T;
 const T neut = 0;
 T f(T a, T b) { return a + b; } // associative
-T neg(T a, T b) { return a - b; } // inverse of f
-// (neg only is for subtree queries)
+T neg(T a, T b) { return a - b; } // inverse of f for SUBTREE
 struct SplayTree {
 	struct Node {
 		array<ll, 2> c = {0, 0};
@@ -114,7 +113,7 @@ struct LinkCutTree : SplayTree {
 	T query(ll u) { // query single element
 		return nods[u].self;
 	}
-	T querySub(ll u) { // query subtree of u
+	T querySub(ll u) { // query SUBTREE of u
 		access(u);
 		return f(nods[u].vir, nods[u].self);
 	}
