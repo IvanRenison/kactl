@@ -1,12 +1,12 @@
 /**
  * Author: Iván Renison
- * Date: 2024-05-26
+ * Date: 2024-06-14
  * Source: notebook el vasito
  * Description: Represents a forest of rooted trees with nodes \textbf{indexed from one}.
  * You can add and remove edges (as long as the result is still a forest),
  * make path queries and path updates and select a node as root of its subtree.
  * Time: All operations take amortized O(\log N).
- * Status: Stress-tested a bit
+ * Status: Stress-tested a bit and tested with library checker
  */
 #pragma once
 
