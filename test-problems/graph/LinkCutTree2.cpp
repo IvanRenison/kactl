@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/214992
+// Submission: https://judge.yosupo.jp/submission/214998
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -29,9 +29,8 @@ const T neut = {1, 0};
 T f(T a, T b) {
 	return {(a.a * b.a) % mod, (a.a * b.b + a.b) % mod};
 } // associative
-//T neg(T a, T b) { return a - b; } // inverse of f
+//T neg(T a, T b) {  } // inverse of f for SUBTREE
 /// END diff
-// (neg only is for subtree queries)
 struct SplayTree {
 	struct Node {
 		array<ll, 2> c = {0, 0};
