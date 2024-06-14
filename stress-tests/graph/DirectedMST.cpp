@@ -46,8 +46,8 @@ ll Directed_MST(ll root, ll NV, ll NE) {
 	ll ret = 0;
 	ll u, v;
 	while (true) {
-		rep(i,0,NV)   In[i] = inf;
-		rep(i,0,NE) {
+		fore(i,0,NV)   In[i] = inf;
+		fore(i,0,NE) {
 			u = E_copy[i].u;
 			v = E_copy[i].v;
 			if(E_copy[i].cost < In[v] && u != v) {
@@ -55,19 +55,19 @@ ll Directed_MST(ll root, ll NV, ll NE) {
 				pre[v] = u;
 			}
 		}
-		rep(i,0,NV) {
+		fore(i,0,NV) {
 			if(i == root)   continue;
 			if(In[i] == inf)    return -1; // no solution
 		}
 
 		ll cnt = 0;
-		rep(i,0,NV) {
+		fore(i,0,NV) {
 			ID[i] = -1;
 			vis[i] = -1;
 		}
 		In[root] = 0;
 
-		rep(i,0,NV) {
+		fore(i,0,NV) {
 			ret += In[i];
 			ll v = i;
 			while(vis[v] != i && ID[v] == -1 && v != root) {
@@ -81,11 +81,11 @@ ll Directed_MST(ll root, ll NV, ll NE) {
 				ID[v] = cnt++;
 			}
 		}
-		if(cnt == 0)    break;
-		rep(i,0,NV) {
+		if(cnt == 0) break;
+		fore(i,0,NV) {
 			if(ID[i] == -1) ID[i] = cnt++;
 		}
-		rep(i,0,NE) {
+		fore(i,0,NE) {
 			v = E_copy[i].v;
 			E_copy[i].u = ID[E_copy[i].u];
 			E_copy[i].v = ID[E_copy[i].v];
@@ -102,31 +102,31 @@ ll Directed_MST(ll root, ll NV, ll NE) {
 
 ll adj[105][105];
 int main() {
-	rep(it,0,50000) {
+	fore(it,0,50000) {
 		bumpalloc.reset();
 		ll n = (rand()%20)+1;
 		ll density = rand() % 101;
 		ll r = rand()%n;
 		ll cnt = 0;
 		vector<Edge> edges;
-		rep(i,0,n)
-			rep(j,0,n){
+		fore(i,0,n)
+			fore(j,0,n){
 				if (i==j) continue;
 				if (rand() % 100 >= density) continue;
 				ll weight = rand()%100;
 				mit::E[cnt++] = {i,j, weight};
-				edges.push_back({i,j,weight});
+				edges.pb({i,j,weight});
 				adj[i][j] = weight;
 			}
 
 		ll ans1 = mit::Directed_MST(r, n, cnt);
 		auto pa = dmst(n, r, edges);
-		ll ans2 = pa.first;
+		ll ans2 = pa.fst;
 		assert(ans1 == ans2);
 
 		// Verifying reconstruction:
 		if (ans1 != -1) {
-			vi par = pa.second;
+			vi par = pa.snd;
 			if (0) {
 				cout << "r = " << r << endl;
 				for(auto &x: par) cout << x << ' ';
@@ -137,22 +137,22 @@ int main() {
 			}
 			ll sum = 0;
 			vector<vi> ch(n);
-			rep(i,0,n) {
+			fore(i,0,n) {
 				if (i == r) assert(par[i] == -1);
 				else {
 					assert(par[i] != -1);
 					sum += adj[par[i]][i];
-					ch[par[i]].push_back(i);
+					ch[par[i]].pb(i);
 				}
 			}
 			assert(sum == ans1);
 			vi seen(n), q = {r};
-			rep(qi,0,sz(q)) {
+			for (ll qi = 0; qi < SZ(q); qi++) {
 				ll s = q[qi];
 				if (!seen[s]++)
-					for(auto &x: ch[s]) q.push_back(x);
+					for(auto &x: ch[s]) q.pb(x);
 			}
-			assert(count(all(seen), 0) == 0);
+			assert(count(ALL(seen), 0) == 0);
 		}
 	}
 	cout<<"Tests passed!"<<endl;

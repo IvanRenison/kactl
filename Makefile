@@ -49,9 +49,9 @@ test-session.pdf: content/test-session/test-session.tex content/test-session/cha
 	cp build/test-session.pdf test-session.pdf
 
 test-style:
-	python doc/scripts/styleCheck.py --path=./content --tabs --lineLength 63
-	python doc/scripts/styleCheck.py --path=./stress-tests --tabs
-	python doc/scripts/styleCheck.py --path=./test-problems --tabs
+	python3 doc/scripts/styleCheck.py --path=./content --tabs --lineLength 63
+	python3 doc/scripts/styleCheck.py --path=./stress-tests --tabs
+	python3 doc/scripts/styleCheck.py --path=./test-problems --tabs
 
 test-test-problems:
 	bash ./doc/scripts/checkAllTestProblems.sh

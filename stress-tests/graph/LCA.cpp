@@ -6,28 +6,28 @@
 #include "../../content/data-structures/RMQ.h"
 
 namespace old {
-typedef vector<pii> vpi;
-typedef vector<vpi> graph;
+typedef vector<ii> vii;
+typedef vector<vii> graph;
 
 struct LCA {
 	vi time;
-	vector<ll> dist;
-	RMQ<pii> rmq;
+	vi dist;
+	RMQ<ii> rmq;
 
-	LCA(graph& C) : time(sz(C), -99), dist(sz(C)), rmq(dfs(C)) {}
+	LCA(graph& C) : time(SZ(C), -99), dist(SZ(C)), rmq(dfs(C)) {}
 
-	vpi dfs(graph& C) {
+	vii dfs(graph& C) {
 		vector<tuple<ll, ll, ll, ll>> q(1);
-		vpi ret;
+		vii ret;
 		ll T = 0, v, p, d; ll di;
 		while (!q.empty()) {
 			tie(v, p, d, di) = q.back();
 			q.pop_back();
-			if (d) ret.emplace_back(d, p);
+			if (d) ret.pb({d, p});
 			time[v] = T++;
 			dist[v] = di;
-			for(auto &e: C[v]) if (e.first != p)
-				q.emplace_back(e.first, v, d+1, di + e.second);
+			for(auto &e: C[v]) if (e.fst != p)
+				q.pb({e.fst, v, d+1, di + e.snd});
 		}
 		return ret;
 	}
@@ -35,7 +35,7 @@ struct LCA {
 	ll query(ll a, ll b) {
 		if (a == b) return a;
 		a = time[a], b = time[b];
-		return rmq.query(min(a, b), max(a, b)).second;
+		return rmq.query(min(a, b), max(a, b)).snd;
 	}
 	ll distance(ll a, ll b) {
 		ll lca = query(a, b);
@@ -45,7 +45,7 @@ struct LCA {
 }
 
 
-void getPars(vector<vi> &tree, ll cur, ll p, ll d, vector<ll> &par, vector<ll> &depth) {
+void getPars(vector<vi> &tree, ll cur, ll p, ll d, vi &par, vi &depth) {
 	par[cur] = p;
 	depth[cur] = d;
 	for(auto i: tree[cur]) if (i != p) {
@@ -56,14 +56,12 @@ void test_n(ll n, ll num) {
 	for (ll out=0; out<num; out++) {
 		auto graph = genRandomTree(n);
 		vector<vi> tree(n);
-		vector<vector<pair<ll, ll>>> oldTree(n);
-		for (auto i: graph) {
-			tree[i.first].push_back(i.second);
-			tree[i.second].push_back(i.first);
-			oldTree[i.first].push_back({i.second, 1});
-			oldTree[i.second].push_back({i.first, 1});
+		vector<vector<ii>> oldTree(n);
+		for (auto [u, v] : graph) {
+			tree[u].pb(v), tree[v].pb(u);
+			oldTree[u].pb({v, 1}), oldTree[v].pb({u, 1});
 		}
-		vector<ll> par(n), depth(n);
+		vi par(n), depth(n);
 		getPars(tree, 0, 0, 0, par, depth);
 		vector<vi> tbl = treeJump(par);
 		LCA new_lca(tree);
@@ -85,4 +83,3 @@ signed main() {
 	test_n(1000, 10);
 	cout<<"Tests passed!"<<endl;
 }
-

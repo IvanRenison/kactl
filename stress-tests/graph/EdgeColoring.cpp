@@ -5,17 +5,17 @@
 
 #include "../../content/graph/EdgeColoring.h"
 
-void test(ll n, const vector<pii>& ed) {
+void test(ll n, const vector<ii>& ed) {
 	vi deg(n);
-	for (pii e : ed) ++deg[e.first], ++deg[e.second];
-	ll maxdeg = n == 0 ? 0 : *max_element(all(deg));
+	for (auto [u, v] : ed) ++deg[u], ++deg[v];
+	ll maxdeg = n == 0 ? 0 : *max_element(ALL(deg));
 	vi cols = edgeColoring(n, ed);
-	assert(sz(cols) == sz(ed));
+	assert(SZ(cols) == SZ(ed));
 	vector<vector<bool>> usedCols(n, vector<bool>(maxdeg+1));
-	rep(i,0,sz(cols)) {
+	fore(i,0,SZ(cols)) {
 		ll col = cols[i];
 		assert(cols[i] <= maxdeg);
-		for (ll x : {ed[i].first, ed[i].second}) {
+		for (ll x : {ed[i].fst, ed[i].snd}) {
 			assert(!usedCols[x][col]);
 			usedCols[x][col] = 1;
 		}
@@ -23,40 +23,40 @@ void test(ll n, const vector<pii>& ed) {
 }
 
 void testCorrect() {
-	rep(n,0,7) {
-		rep(edbits,0,(1 << (n*(n-1)/2))) {
-			vector<pii> ed;
+	fore(n,0,7) {
+		fore(edbits,0,(1 << (n*(n-1)/2))) {
+			vector<ii> ed;
 			ll it = 0;
-			rep(i,0,n) rep(j,i+1,n) {
+			fore(i,0,n) fore(j,i+1,n) {
 				if (edbits & 1 << (it++)) {
-					ed.push_back({i, j});
+					ed.pb({i, j});
 				}
 			}
-			if (n <= 4 || n + sz(ed) <= 9) {
+			if (n <= 4 || n + SZ(ed) <= 9) {
 				// test all k!*2^k input orders
-				sort(all(ed));
+				sort(ALL(ed));
 				if (n != 0) do {
-					rep(bi,0,(1 << sz(ed))) {
+					fore(bi,0,(1 << SZ(ed))) {
 						if (bi) {
 							ll ind = __builtin_ctzll(bi);
-							swap(ed[ind].first, ed[ind].second);
+							swap(ed[ind].fst, ed[ind].snd);
 						}
 						test(n, ed);
 					}
-				} while (next_permutation(all(ed)));
+				} while (next_permutation(ALL(ed)));
 			} else {
 				ll its = n == 5 ? 10 : 5;
-				rep(it,0,its) {
+				fore(it,0,its) {
 					shuffle_vec(ed);
-					for (auto& e : ed) if (randBool()) swap(e.first, e.second);
+					for (auto& e : ed) if (randBool()) swap(e.fst, e.snd);
 					test(n, ed);
 				}
 			}
 		}
 	}
-	rep(n,10,30) rep(it,0,200) {
+	fore(n,10,30) fore(it,0,200) {
 		ll m = randIncl(n * (n-1) / 2);
-		vector<pii> ed = randomSimpleGraphAsEdgeList(n, m);
+		vector<ii> ed = randomSimpleGraphAsEdgeList(n, m);
 		test(n, ed);
 	}
 	for (ll n = 1; n <= 1000000; n *= 2) {
@@ -68,7 +68,7 @@ void testCorrect() {
 }
 
 void testPerfRandom() {
-	rep(i,0,100) {
+	fore(i,0,100) {
 		ll n = 1000;
 		ll m = 20000;
 		auto ed = randomSimpleGraphAsEdgeList(n, m);
@@ -80,8 +80,8 @@ void testPerfRegular() {
 	ll n = 3000;
 	ll k = 30;
 	// m = 45000
-	vector<pii> ed = randomRegularGraphAsEdgeList(n, k);
-	rep(i,0,100) edgeColoring(n, ed);
+	vector<ii> ed = randomRegularGraphAsEdgeList(n, k);
+	fore(i,0,100) edgeColoring(n, ed);
 }
 
 int main(int argc, char** argv) {

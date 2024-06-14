@@ -22,13 +22,13 @@ template<class G>
 void flow_add_edge(G& g, ll s, ll t,
 		Flow c, Flow cost = 0) {
 	assert(s != t);
-	g[s].push_back(FlowEdge(t, sz(g[t]), c, cost));
-	g[t].push_back(FlowEdge(s, sz(g[s]) - 1, 0, cost));
+	g[s].pb(FlowEdge(t, SZ(g[t]), c, cost));
+	g[t].pb(FlowEdge(s, SZ(g[s]) - 1, 0, cost));
 }
 
 template<class G>
 pair<Flow, Flow> aug(G &g, ll s, ll t) {
-	ll n = sz(g);
+	ll n = SZ(g);
 	vi mark(n, -1);
 	vector<Flow> mindist(n, inf);
 	bool changed = true; mindist[s] = 0;
@@ -61,9 +61,9 @@ pair<Flow, Flow> aug(G &g, ll s, ll t) {
 template<class G>
 pair<Flow, Flow> min_cost_max_flow(G& graph, ll s, ll t) {
 	pair<Flow, Flow> flow, inc;
-	while ((inc = aug(graph, s, t)).first){
-		flow.first += inc.first;
-		flow.second += inc.second;
+	while ((inc = aug(graph, s, t)).fst){
+		flow.fst += inc.fst;
+		flow.snd += inc.snd;
 	}
 	return flow;
 }
