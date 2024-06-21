@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/215642
+// Submission: https://judge.yosupo.jp/submission/216406
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -55,31 +55,26 @@ struct Node {
 	Node *l = 0, *r = 0;
 	T val, acc; L lazy = lneut;
 	ll y, c = 1;
-	Node(T val) : val(val), acc(val), y(rand()) {}
+	Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 	void recalc() {
-		c = 1;
-		acc = tneut;
+		c = 1, acc = tneut;
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);
 		if (r) r->push(), acc = f(acc, r->acc), c += r->c;
 	}
 	void push() {
-		val = apply(val, lazy, 1);
-		acc = apply(acc, lazy, c);
+		val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
 		if (l) l->lazy = comb(l->lazy, lazy);
 		if (r) r->lazy = comb(r->lazy, lazy);
 		lazy = lneut;
 	}
-
 	ll cnt(Node* n) { return n ? n->c : 0; }
-
 	Node* split(ll k) {
 		assert(k > 0);
 		if (k >= c) return NULL;
 		push();
 		if (k <= cnt(l)) { // "k <= val" for lower_bound(k)
-			Node* nl = l->split(k);
-			Node* ret = l;
+			Node* nl = l->split(k),* ret = l;
 			l = nl;
 			recalc();
 			swap(*this, *ret);
@@ -91,15 +86,13 @@ struct Node {
 			return ret;
 		} else {
 			Node* ret = r->split(k - cnt(l) - 1); // and just "k"
-			recalc();
-			ret->recalc();
+			recalc(), ret->recalc();
 			return ret;
 		}
 	}
-
 	void merge(Node* ri) {
 		if (!ri) return;
-		push(); ri->push();
+		push(), ri->push();
 		if (y > ri->y) {
 			if (r) r->merge(ri);
 			else r = ri;
@@ -111,40 +104,12 @@ struct Node {
 		recalc();
 	}
 
-	T query() {
+	T query() { // Querie full range
 		push();
 		return acc;
 	}
-	void upd(L v) { lazy = comb(lazy, v); }
-
-	void free() {
-		if (l) l->free();
-		if (r) r->free();
-		delete l;
-		delete r;
-	}
+	void upd(L v) { lazy = comb(lazy, v); } // Update full range
 };
-
-
-template<class F> void each(Node* n, F f) {
-	if (n) { each(n->l, f); f(n->val); each(n->r, f); }
-}
-
-
-/*
-Node* ins(Node* t, Node* n, ll pos) {
-	auto pa = split(t, pos);
-	return merge(merge(pa.fst, n), pa.snd);
-}
-
-// Example application: move the range [l, r) to index k
-void move(Node*& t, ll l, ll r, ll k) {
-	Node *a, *b, *c;
-	tie(a,b) = split(t, l); tie(b,c) = split(b, r - l);
-	if (k <= l) t = merge(ins(a, b, k), c);
-	else t = merge(a, ins(c, b, k - r));
-}
- */
 /// END content
 
 void update(Node& n, ll p, ll q, T v) {
@@ -179,10 +144,12 @@ void solveCase() {
 
 	ll a, b;
 	cin >> a >> b;
-	Node t(T(a, b));
-	fore(i, 0, N - 1) {
+	vector<Node> nodes(N);
+	Node& t = nodes[0] = Node(T(a, b));
+	fore(i, 1, N) {
 		cin >> a >> b;
-		t.merge(new Node(T(a, b)));
+		nodes[i] = Node(T(a, b));
+		t.merge(&nodes[i]);
 	}
 
 	fore(_, 0, C) {
@@ -200,8 +167,6 @@ void solveCase() {
 			cout << ans(x) << '\n';
 		}
 	}
-
-	t.free();
 }
 
 int main() {
