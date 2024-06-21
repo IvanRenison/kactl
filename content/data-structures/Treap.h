@@ -3,8 +3,8 @@
  * Date: 2017-03-14
  * Source: folklore
  * Description: A short self-balancing tree. It acts as a
- *  sequential container with log-time splits/joins, and
- *  is easy to augment with additional data.
+ *  sequential container with log-time splits, joins, queries ans updates.
+ *  Can also support reversals with the commented REVERSE lines
  * Time: $O(\log N)$
  * Status: stress-tested and problem tested
  */
@@ -22,14 +22,20 @@ struct Node {
 	Node *l = 0, *r = 0;
 	T val, acc; L lazy = lneut;
 	ll y, c = 1;
+	// bool rev = false; // REVERSE
 	Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 	void recalc() {
+		// if (rev) swap(l, r), rev = false; // REVERSE
 		c = 1, acc = tneut;
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);
 		if (r) r->push(), acc = f(acc, r->acc), c += r->c;
 	}
 	void push() {
+		// if (rev) { // REVERSE
+		//   swap(l, r), rev = false;
+		//   if (l) l->rev ^= 1; if (r) r->rev ^= 1;
+		// }
 		val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
 		if (l) l->lazy = comb(l->lazy, lazy);
 		if (r) r->lazy = comb(r->lazy, lazy);
@@ -76,4 +82,5 @@ struct Node {
 		return acc;
 	}
 	void upd(L v) { lazy = comb(lazy, v); } // Update full range
+	// void reverse() { rev = !rev; } // REVERSE
 };

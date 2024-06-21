@@ -1,8 +1,10 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/216406
+// Submission: https://judge.yosupo.jp/submission/216412
 #include <bits/stdc++.h>
 using namespace std;
+
+#pragma GCC optimize("O3")
 
 #define fst first
 #define snd second
@@ -55,14 +57,20 @@ struct Node {
 	Node *l = 0, *r = 0;
 	T val, acc; L lazy = lneut;
 	ll y, c = 1;
+	// bool rev = false; // REVERSE
 	Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 	void recalc() {
+		// if (rev) swap(l, r), rev = false; // REVERSE
 		c = 1, acc = tneut;
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);
 		if (r) r->push(), acc = f(acc, r->acc), c += r->c;
 	}
 	void push() {
+		// if (rev) { // REVERSE
+		//   swap(l, r), rev = false;
+		//   if (l) l->rev ^= 1; if (r) r->rev ^= 1;
+		// }
 		val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
 		if (l) l->lazy = comb(l->lazy, lazy);
 		if (r) r->lazy = comb(r->lazy, lazy);
@@ -109,6 +117,7 @@ struct Node {
 		return acc;
 	}
 	void upd(L v) { lazy = comb(lazy, v); } // Update full range
+	// void reverse() { rev = !rev; } // REVERSE
 };
 /// END content
 
@@ -138,7 +147,9 @@ T query(Node& n, ll p, ll q) {
 	return ans;
 }
 
-void solveCase() {
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+
 	ll N, C;
 	cin >> N >> C;
 
@@ -167,10 +178,4 @@ void solveCase() {
 			cout << ans(x) << '\n';
 		}
 	}
-}
-
-int main() {
-	cin.tie(0)->sync_with_stdio(0);
-
-	solveCase();
 }

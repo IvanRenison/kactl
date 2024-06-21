@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/2072
-// Status: ACCEPTED
-// Submission: https://cses.fi/problemset/result/9620040/
+// Status: https://cses.fi/problemset/result/9620141/
+// Submission: ACCEPTED
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -30,14 +30,20 @@ struct Node {
 	Node *l = 0, *r = 0;
 	T val, acc; L lazy = lneut;
 	ll y, c = 1;
+	// bool rev = false; // REVERSE
 	Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 	void recalc() {
+		// if (rev) swap(l, r), rev = false; // REVERSE
 		c = 1, acc = tneut;
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);
 		if (r) r->push(), acc = f(acc, r->acc), c += r->c;
 	}
 	void push() {
+		// if (rev) { // REVERSE
+		//   swap(l, r), rev = false;
+		//   if (l) l->rev ^= 1; if (r) r->rev ^= 1;
+		// }
 		val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
 		if (l) l->lazy = comb(l->lazy, lazy);
 		if (r) r->lazy = comb(r->lazy, lazy);
@@ -84,6 +90,7 @@ struct Node {
 		return acc;
 	}
 	void upd(L v) { lazy = comb(lazy, v); } // Update full range
+	// void reverse() { rev = !rev; } // REVERSE
 };
 /// END content
 
