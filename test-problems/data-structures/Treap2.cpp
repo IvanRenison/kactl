@@ -104,7 +104,7 @@ struct Node {
 		recalc();
 	}
 
-	T query() { // Querie full range
+	T query() { // Query full range
 		push();
 		return acc;
 	}
