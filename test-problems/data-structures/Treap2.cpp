@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/216412
+// Submission: https://judge.yosupo.jp/submission/216413
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -60,7 +60,6 @@ struct Node {
 	// bool rev = false; // REVERSE
 	Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 	void recalc() {
-		// if (rev) swap(l, r), rev = false; // REVERSE
 		c = 1, acc = tneut;
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);

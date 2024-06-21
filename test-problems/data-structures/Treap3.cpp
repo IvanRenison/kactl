@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/2072
-// Status: https://cses.fi/problemset/result/9620141/
-// Submission: ACCEPTED
+// Status: ACCEPTED
+// Submission: https://cses.fi/problemset/result/9620169/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -33,7 +33,6 @@ struct Node {
 	// bool rev = false; // REVERSE
 	Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 	void recalc() {
-		// if (rev) swap(l, r), rev = false; // REVERSE
 		c = 1, acc = tneut;
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);

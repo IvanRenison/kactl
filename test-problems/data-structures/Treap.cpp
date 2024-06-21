@@ -30,7 +30,6 @@ struct Node {
 	// bool rev = false; // REVERSE
 	Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 	void recalc() {
-		// if (rev) swap(l, r), rev = false; // REVERSE
 		c = 1, acc = tneut;
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);
