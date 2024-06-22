@@ -10,7 +10,8 @@
  */
 #pragma once
 
-#include <bits/extc++.h> /** keep-include */
+#include "ext/pb_ds/assoc_container.hpp" /** keep-include */
+#include "ext/pb_ds/tree_policy.hpp" /** keep-include */
 using namespace __gnu_pbds;
 
 template<class T>
