@@ -45,7 +45,7 @@ struct Node {
 		if (r) r->lazy = comb(r->lazy, lazy);
 		lazy = lneut;
 	}
-	ll cnt(Node* n) { return n ? n->c : 0; }
+	static ll cnt(Node* n) { return n ? n->c : 0; }
 	Node* split(ll k) {
 		assert(k > 0);
 		if (k >= c) return NULL;

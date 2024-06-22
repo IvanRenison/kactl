@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/2072
 // Status: ACCEPTED
-// Submission: https://cses.fi/problemset/result/9620169/
+// Submission: https://cses.fi/problemset/result/9625147/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -48,7 +48,7 @@ struct Node {
 		if (r) r->lazy = comb(r->lazy, lazy);
 		lazy = lneut;
 	}
-	ll cnt(Node* n) { return n ? n->c : 0; }
+	static ll cnt(Node* n) { return n ? n->c : 0; }
 	Node* split(ll k) {
 		assert(k > 0);
 		if (k >= c) return NULL;

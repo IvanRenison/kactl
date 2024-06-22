@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/216413
+// Submission: https://judge.yosupo.jp/submission/216489
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -75,7 +75,7 @@ struct Node {
 		if (r) r->lazy = comb(r->lazy, lazy);
 		lazy = lneut;
 	}
-	ll cnt(Node* n) { return n ? n->c : 0; }
+	static ll cnt(Node* n) { return n ? n->c : 0; }
 	Node* split(ll k) {
 		assert(k > 0);
 		if (k >= c) return NULL;
