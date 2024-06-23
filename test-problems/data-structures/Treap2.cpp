@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/216489
+// Submission: https://judge.yosupo.jp/submission/216687
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -75,24 +75,24 @@ struct Node {
 		if (r) r->lazy = comb(r->lazy, lazy);
 		lazy = lneut;
 	}
-	static ll cnt(Node* n) { return n ? n->c : 0; }
 	Node* split(ll k) {
 		assert(k > 0);
 		if (k >= c) return NULL;
 		push();
-		if (k <= cnt(l)) { // "k <= val" for lower_bound(k)
+		ll cnt = l ? l-> c : 0;
+		if (k <= cnt) { // "k <= val" for lower_bound(k)
 			Node* nl = l->split(k),* ret = l;
 			l = nl;
 			recalc();
 			swap(*this, *ret);
 			return ret;
-		} else if (k == cnt(l) + 1) { // k == val
+		} else if (k == cnt + 1) { // k == val
 			Node* ret = r;
 			r = NULL;
 			recalc();
 			return ret;
 		} else {
-			Node* ret = r->split(k - cnt(l) - 1); // and just "k"
+			Node* ret = r->split(k - cnt - 1); // and just "k"
 			recalc(), ret->recalc();
 			return ret;
 		}
