@@ -44,7 +44,7 @@ struct Node {
 		assert(k > 0);
 		if (k >= c) return NULL;
 		push();
-		ll cnt = l ? l-> c : 0;
+		ll cnt = l ? l->c : 0;
 		if (k <= cnt) { // "k <= val" for lower_bound(k)
 			Node* nl = l->split(k),* ret = l;
 			l = nl;
