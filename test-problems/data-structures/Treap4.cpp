@@ -46,8 +46,8 @@ struct Node {
 	void push() {
 		/// START diff
 		if (rev) { // REVERSE
-		  swap(l, r), rev = false;
-		  if (l) l->rev ^= 1; if (r) r->rev ^= 1;
+			swap(l, r), rev = false;
+			if (l) l->rev ^= 1; if (r) r->rev ^= 1;
 		}
 		/// END diff
 		val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
