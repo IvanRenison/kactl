@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/217877
+// Submission: https://judge.yosupo.jp/submission/217882
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -70,18 +70,18 @@ struct Node {
 	}
 	void push() {
 		// if (rev) { // REVERSE
-		//   swap(l, r), rev = false;
-		//   if (l) l->rev ^= 1; if (r) r->rev ^= 1;
+		// 	swap(l, r), rev = false;
+		// 	if (l) l->rev ^= 1; if (r) r->rev ^= 1;
 		// }
 		val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
 		if (l) l->lazy = comb(l->lazy, lazy);
 		if (r) r->lazy = comb(r->lazy, lazy);
 		lazy = lneut;
 	}
-  // void pullAll() { // PARENT
-  //   if (p) p->pullAll();
-  //   push();
-  // }
+	// void pullAll() { // PARENT
+	// 	if (p) p->pullAll();
+	// 	push();
+	// }
 
 	Node* split(ll k) {
 		assert(k > 0);
@@ -118,13 +118,13 @@ struct Node {
 		}
 		recalc();
 	}
-  // ll pos() { // In witch position I am // PARENT
-  //   pullAll();
-  //   ll ans = l ? l->c : 0;
-  //   if (!p) return ans;
-  //   if (p->r == this) return ans + p->pos() + 1;
-  //   else return p->pos() + 1 - (r ? r->c : 0);
-  // }
+	// ll pos() { // In witch position I am // PARENT
+	// 	pullAll();
+	// 	ll ans = l ? l->c : 0;
+	// 	if (!p) return ans;
+	// 	if (p->r == this) return ans + p->pos() + 1;
+	// 	else return p->pos() + 1 - (r ? r->c : 0);
+	// }
 	T query() { // Query full range
 		push();
 		return acc;

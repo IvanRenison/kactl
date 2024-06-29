@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/2073
 // Status: ACCEPTED
-// Submission: https://cses.fi/problemset/result/9696188/
+// Submission: https://cses.fi/problemset/result/9696232/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -55,10 +55,10 @@ struct Node {
 		if (r) r->lazy = comb(r->lazy, lazy);
 		lazy = lneut;
 	}
-  // void pullAll() { // PARENT
-  //   if (p) p->pullAll();
-  //   push();
-  // }
+	// void pullAll() { // PARENT
+	// 	if (p) p->pullAll();
+	// 	push();
+	// }
 
 	Node* split(ll k) {
 		assert(k > 0);
@@ -95,13 +95,13 @@ struct Node {
 		}
 		recalc();
 	}
-  // ll pos() { // In witch position I am // PARENT
-  //   pullAll();
-  //   ll ans = l ? l->c : 0;
-  //   if (!p) return ans;
-  //   if (p->r == this) return ans + p->pos() + 1;
-  //   else return p->pos() + 1 - (r ? r->c : 0);
-  // }
+	// ll pos() { // In witch position I am // PARENT
+	// 	pullAll();
+	// 	ll ans = l ? l->c : 0;
+	// 	if (!p) return ans;
+	// 	if (p->r == this) return ans + p->pos() + 1;
+	// 	else return p->pos() + 1 - (r ? r->c : 0);
+	// }
 	T query() { // Query full range
 		push();
 		return acc;
