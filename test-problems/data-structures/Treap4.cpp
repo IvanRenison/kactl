@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/2073
 // Status: ACCEPTED
-// Submission: https://cses.fi/problemset/result/9635133/
+// Submission: https://cses.fi/problemset/result/9696188/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -28,6 +28,7 @@ L comb(L a, L b) { return a; }
 /// END diff
 struct Node {
 	Node *l = 0, *r = 0;
+  // Node *p = 0; // PARENT
 	T val, acc; L lazy = lneut;
 	ll y, c = 1;
 	/// START diff
@@ -39,12 +40,14 @@ struct Node {
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);
 		if (r) r->push(), acc = f(acc, r->acc), c += r->c;
+    // if (l) l->p = this; // PARENT
+    // if (r) r->p = this;
 	}
 	void push() {
 		/// START diff
 		if (rev) { // REVERSE
-			swap(l, r), rev = false;
-			if (l) l->rev ^= 1; if (r) r->rev ^= 1;
+		  swap(l, r), rev = false;
+		  if (l) l->rev ^= 1; if (r) r->rev ^= 1;
 		}
 		/// END diff
 		val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
@@ -52,11 +55,16 @@ struct Node {
 		if (r) r->lazy = comb(r->lazy, lazy);
 		lazy = lneut;
 	}
+  // void pullAll() { // PARENT
+  //   if (p) p->pullAll();
+  //   push();
+  // }
+
 	Node* split(ll k) {
 		assert(k > 0);
-		if (k >= c) return NULL;
+		if (k >= c) return 0;
 		push();
-		ll cnt = l ? l-> c : 0;
+		ll cnt = l ? l->c : 0;
 		if (k <= cnt) { // "k <= val" for lower_bound(k)
 			Node* nl = l->split(k),* ret = l;
 			l = nl;
@@ -65,7 +73,7 @@ struct Node {
 			return ret;
 		} else if (k == cnt + 1) { // k == val
 			Node* ret = r;
-			r = NULL;
+			r = 0;
 			recalc();
 			return ret;
 		} else {
@@ -87,7 +95,13 @@ struct Node {
 		}
 		recalc();
 	}
-
+  // ll pos() { // In witch position I am // PARENT
+  //   pullAll();
+  //   ll ans = l ? l->c : 0;
+  //   if (!p) return ans;
+  //   if (p->r == this) return ans + p->pos() + 1;
+  //   else return p->pos() + 1 - (r ? r->c : 0);
+  // }
 	T query() { // Query full range
 		push();
 		return acc;
