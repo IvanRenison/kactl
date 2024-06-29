@@ -21,7 +21,7 @@ L comb(L a, L b) { return a + b; }
 
 struct Node {
 	Node *l = 0, *r = 0;
-  // Node *p = 0; // PARENT
+	// Node *p = 0; // PARENT
 	T val, acc; L lazy = lneut;
 	ll y, c = 1;
 	// bool rev = false; // REVERSE
@@ -31,8 +31,8 @@ struct Node {
 		if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 		acc = f(acc, val);
 		if (r) r->push(), acc = f(acc, r->acc), c += r->c;
-    // if (l) l->p = this; // PARENT
-    // if (r) r->p = this;
+		// if (l) l->p = this; // PARENT
+		// if (r) r->p = this;
 	}
 	void push() {
 		// if (rev) { // REVERSE
