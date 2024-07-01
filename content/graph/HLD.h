@@ -7,9 +7,10 @@
  * edges such that the path from any leaf to the root contains at most log(n)
  * light edges. Code does additive modifications and sum queries, but can
  * support commutative segtree modifications/queries on paths and subtrees.
- * Takes as input the full adjacency list. VALS\_EDGES being true means that
+ * Takes as input the full adjacency list. VALS\_ED being true means that
  * values are stored in the edges, as opposed to the nodes. All values
  * initialized to the segtree default. Root must be 0.
+ * If you only have point updates you can use normal segment tree instead of lazy.
  * Time: O((\log N)^2)
  * Status: stress-tested a but
  */
@@ -17,7 +18,7 @@
 
 #include "../data-structures/LazySegmentTree.h"
 
-template <bool VALS_EDGES> struct HLD {
+template <bool VALS_ED> struct HLD {
 	ll N, tim = 0;
 	vector<vi> adj;
 	vi par, siz, depth, rt, pos;
@@ -47,12 +48,12 @@ template <bool VALS_EDGES> struct HLD {
 			op(pos[rt[v]], pos[v] + 1);
 		}
 		if (depth[u] > depth[v]) swap(u, v);
-		op(pos[u] + VALS_EDGES, pos[v] + 1);
+		op(pos[u] + VALS_ED, pos[v] + 1);
 	}
 	void updPath(ll u, ll v, L val) {
 		process(u, v, [&](ll l, ll r) { t.upd(l, r, val); });
 	}
-	T queryPath(ll u, ll v) { // Modify depending on problem
+	T queryPath(ll u, ll v) {
 		T res = tneut;
 		process(u, v, [&](ll l, ll r) {
 				res = f(res, t.query(l, r));
@@ -60,6 +61,9 @@ template <bool VALS_EDGES> struct HLD {
 		return res;
 	}
 	T querySubtree(ll v) { // updSubtree is similar
-		return t.query(pos[v] + VALS_EDGES, pos[v] + siz[v]);
+		return t.query(pos[v] + VALS_ED, pos[v] + siz[v]);
 	}
+	// void updPoint(ll v, T val) { // For normal segment tree
+	// 	t.upd(pos[v] + VALS_ED, val); // queryPoint is similar
+	// }
 };
