@@ -52,3 +52,7 @@ vector<H> getHashes(string& str, ll length) {
 }
 
 H hashString(string& s){H h{}; for(char c:s) h=h*C+c;return h;}
+
+// hashString(s + t) = concat(hashString(s), hashString(t), pw)
+// Where pw is C**|t| and can be obtained from a HashInterval
+H concat(H h0, H h1, H h1pw) { return h0 * h1pw + h1; }
