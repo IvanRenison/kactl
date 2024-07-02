@@ -4,10 +4,10 @@ Each file should start with:
 ```cpp
 // Problem: link/to/problem
 // Status: Accepted (or in other branches may be something else)
-// Submission: link/to/submission (only for judges in witch solutions are public)
+// Submission: link/to/submission (only for judges in which solutions are public)
 ```
 
-The part of the file in witch the content is used should be surrounded with comments:
+The part of the file in which the content is used should be surrounded with comments:
 ```cpp
 /// content/folder/file.h
 content
