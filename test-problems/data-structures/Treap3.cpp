@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/2072
 // Status: ACCEPTED
-// Submission:
+// Submission: https://cses.fi/problemset/result/9729833/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -91,7 +91,7 @@ struct Node {
 		}
 		recalc();
 	}
-	// ll pos() { // In witch position I am // PARENT
+	// ll pos() { // In which position I am // PARENT
 	// 	pullAll();
 	// 	ll ans = l ? l->c : 0;
 	// 	if (!p) return ans;

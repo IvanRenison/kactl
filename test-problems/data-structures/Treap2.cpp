@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/217882
+// Submission: https://judge.yosupo.jp/submission/218654
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -118,7 +118,7 @@ struct Node {
 		}
 		recalc();
 	}
-	// ll pos() { // In witch position I am // PARENT
+	// ll pos() { // In which position I am // PARENT
 	// 	pullAll();
 	// 	ll ans = l ? l->c : 0;
 	// 	if (!p) return ans;
