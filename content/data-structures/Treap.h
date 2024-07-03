@@ -3,7 +3,7 @@
  * Date: 2017-03-14
  * Source: folklore
  * Description: A short self-balancing tree. It acts as a
- *  sequential container with log-time splits, joins, queries ans updates.
+ *  sequential container with log-time splits, joins, queries and updates.
  *  Can also support reversals with the commented REVERSE lines and getting the
  *  position of a node with the PARENT lines.
  * Time: $O(\log N)$
