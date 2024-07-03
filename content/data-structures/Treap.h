@@ -5,9 +5,9 @@
  * Description: A short self-balancing tree. It acts as a
  *  sequential container with log-time splits, joins, queries ans updates.
  *  Can also support reversals with the commented REVERSE lines and getting the
- * position of a node with the PARENT lines.
+ *  position of a node with the PARENT lines.
  * Time: $O(\log N)$
- * Status: stress-tested and problem tested
+ * Status: stress-tested a bit and problem tested
  */
 #pragma once
 
