@@ -9,7 +9,8 @@
  */
 #pragma once
 
-#include <bits/extc++.h> /** keep-include */
+#include "ext/pb_ds/assoc_container.hpp" /** keep-include */
+#include "ext/pb_ds/tree_policy.hpp" /** keep-include */
 // To use most bits rather than just the lowest ones:
 struct chash { // large odd number for C
 	const uint64_t C = ll(4e18 * acos(0)) | 71;
