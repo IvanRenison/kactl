@@ -42,7 +42,7 @@ void ntt(vl &a) {
 }
 vl conv(const vl &a, const vl &b) {
 	if (a.empty() || b.empty()) return {};
-	ll s = sz(a) + sz(b) - 1, B = 32 - __builtin_clzll(s),
+	ll s = sz(a) + sz(b) - 1, B = 64 - __builtin_clzll(s),
 	    n = 1 << B;
 	ll inv = modpow(n, mod - 2);
 	vl L(a), R(b), out(n);
