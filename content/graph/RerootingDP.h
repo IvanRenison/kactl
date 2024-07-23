@@ -10,54 +10,9 @@
  * Status: stress-tested
  */
 #pragma once
-#include "./template.h"
 
 struct Data {};
 typedef vector<Data> vd;
-
-// accumulated(p, S) = a such that finalize(a, ...) is the
-// answer for p if S were its only children
-
-// finalize(const Data& accumulated, ll node, ll p_ei) -> Data
-// applied before returning answer for node if g[node][p_ei]
-// was its parent; generally just identity function
-// acc(Data& p_ans, const Data& child_ans, ll p, ll ei) -> void
-// given accumulated(p, S) and the answer for g[p][ei], compute
-// accumulated(p, S \cup {g[p][ei]}). Mutate p_ans
-auto v1 = [&acc](vd& exc, vd& a, Data& neut, ll node) {
-	ll d = SZ(a);
-	fill(begin(exc), begin(exc) + d, neut);
-	for (ll b = bit_width((unsigned)d) - 1; b >= 0; b--) {
-		for (ll i = d - 1; i >= 0; i--) exc[i] = exc[i >> 1];
-		fore(i,0,d-(d&!b)) acc(exc[(i >> b)^1], a[i], node, i);
-	}
-};
-
-// merge(const Data& a, const Data& b, ll p) -> Data
-// given accumulated(p, S) and accumulated(p, T), with S and T
-// disjoint, compute accumulated(p, S \cup T)
-// extend(const Data& a, ll p, ll ei) -> Data:
-// given the answer for g[p][ei], compute b such that
-// merge(neuts[p], b, p) = accumulated(p, {g[p][ei]})
-auto v2 = [&extend, &merge](vd& exc, vd a, Data& neut, ll v) {
-	ll d = SZ(a);
-	vd p(d + 1, neut), s(d + 1, neut);
-	fore(i,0,d) p[i+1]=merge(p[i],a[i] = extend(a[i],v,i), v);
-	for (ll i = d-1;i>=0;i--) s[i] = merge(a[i], s[i + 1], v);
-	fore(i, 0, d) exc[i] = merge(p[i], s[i + 1], v);
-};
-
-// unacc(Data& ans, const Data& child_ans, ll p, ll ei) -> void
-// given accumulated(p, g[p]) and the answer for g[p][ei],
-// compute accumulated(p, S). Mutate ans
-auto v3 = [&acc, &unacc](vd& exc, vd& a, Data& neut, ll node) {
-	ll d = SZ(a);
-	Data b = neut;
-	fore(i, 0, d) acc(b, a[i], node, i);
-	fill(begin(exc), begin(exc) + d, b);
-	fore(i, 0, d) unacc(exc[i], a[i], node, i);
-};
-
 // rootDP[v] = answer for the whole tree with v as root
 // fdp[v][ei] = answer for g[v][ei] if v is the root
 // bdp[v][ei] = answer for v if g[v][ei] is the root
@@ -86,4 +41,60 @@ auto reroot(vector<vi>& g, vd& neuts, auto& exclusive,
 		fore(i, 0, SZ(g[u])) dp[g[u][i]] = bdp[u][i];
 	}
 	return tuple(root_dp, fdp, bdp);
+}
+
+// accumulated(p, S) = a such that finalize(a, ...) is the
+// answer for p if S were its only children
+void solve() {
+	// applied before returning answer for node if
+	// g[node][p_ei] was its parent; generally just identity
+	// function
+	auto finalize = [&](Data& a, ll node, ll p_ei) -> Data {
+		return a;
+	};
+	// given accumulated(p, S) and accumulated(p, T), with S
+	// and T disjoint, compute accumulated(p, S \cup T)
+	auto merge = [](const Data& a, const Data& b, ll p)->Data {
+		return Data{};
+	};
+	// given the answer for g[p][ei], compute b such that
+	// merge(neuts[p], b, p) = accumulated(p, {g[p][ei]})
+	auto extend = [](const Data& a, ll p, ll ei) -> Data {
+		return Data{};
+	};
+	// given accumulated(p, S) and the answer for g[p][ei],
+	// compute accumulated(p, S \cup {g[p][ei]}). Mutate p_ans.
+	// leave as-is for v2
+	auto acc = [&](Data& p_ans, const Data& child_ans, ll p,
+				   ll ei) -> void {
+		p_ans = merge(p_ans, extend(child_ans, p, ei), p);
+	};
+	auto v1 = [&acc](vd& exc, vd& a, Data& neut, ll node) {
+		ll d = SZ(a);
+		fill(begin(exc), begin(exc) + d, neut);
+		for (ll b = bit_width((unsigned)d) - 1; b >= 0; b--) {
+			for (ll i = d-1; i >= 0; i--)exc[i] = exc[i >> 1];
+			fore(i,0,d-(d&!b))acc(exc[(i>>b)^1],a[i],node,i);
+		}
+	};
+	auto v2 = [&extend,&merge](vd&exc, vd a, Data& neut,ll v) {
+		ll d = SZ(a);
+		vd p(d + 1, neut), s(d + 1, neut);
+		fore(i,0,d)p[i+1]=merge(p[i],a[i]=extend(a[i],v,i),v);
+		for (ll i=d-1;i>=0;i--) s[i] = merge(a[i],s[i+1],v);
+		fore(i, 0, d) exc[i] = merge(p[i], s[i + 1], v);
+	};
+
+	// unacc(Data& ans, const Data& child_ans, ll p, ll ei) ->
+	// void given accumulated(p, g[p]) and the answer for
+	// g[p][ei], compute accumulated(p, S). Mutate ans
+	auto unacc = [&](Data& ans, const Data& child_ans, ll p,
+					 ll ei) -> void {};
+	auto v3 = [&acc,&unacc](vd& exc,vd& a,Data& neut,ll node) {
+		ll d = SZ(a);
+		Data b = neut;
+		fore(i, 0, d) acc(b, a[i], node, i);
+		fill(begin(exc), begin(exc) + d, b);
+		fore(i, 0, d) unacc(exc[i], a[i], node, i);
+	};
 }
