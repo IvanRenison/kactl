@@ -116,15 +116,15 @@ int main() {
 			ll d = SZ(a);
 			fill(begin(exc), begin(exc) + d, neut);
 			for (ll b = bit_width((unsigned)d) - 1; b >= 0; b--) {
-				for (ll i = d - 1; i >= 0; i--) exc[i] = exc[i >> 1];
-				fore(i,0,d-(d&!b)) acc(exc[(i >> b)^1], a[i], node, i);
+				for (ll i = d-1; i >= 0; i--)exc[i] = exc[i >> 1];
+				fore(i,0,d-(d&!b))acc(exc[(i>>b)^1],a[i],node,i);
 			}
 		};
-		auto v2 = [&extend, &merge](vd& exc, vd a, Data& neut, ll v) {
+		auto v2 = [&extend,&merge](vd&exc, vd a, Data& neut,ll v) {
 			ll d = SZ(a);
 			vd p(d + 1, neut), s(d + 1, neut);
-			fore(i,0,d) p[i+1]=merge(p[i],a[i] = extend(a[i],v,i), v);
-			for (ll i = d-1;i>=0;i--) s[i] = merge(a[i], s[i + 1], v);
+			fore(i,0,d)p[i+1]=merge(p[i],a[i]=extend(a[i],v,i),v);
+			for (ll i=d-1;i>=0;i--) s[i] = merge(a[i],s[i+1],v);
 			fore(i, 0, d) exc[i] = merge(p[i], s[i + 1], v);
 		};
 		auto v3 = [&acc, &unacc](vd& exc, vd& a, Data& neut, ll node) {
