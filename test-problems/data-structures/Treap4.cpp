@@ -1,30 +1,39 @@
-/**
- * Author: someone on Codeforces and then modified by Iván Renison
- * Date: 2017-03-14
- * Source: folklore
- * Description: A short self-balancing tree. It acts as a
- *  sequential container with log-time splits, joins, queries and updates.
- *  Can also support reversals with the commented REVERSE lines and getting the
- *  position of a node with the PARENT lines.
- * Time: $O(\log N)$
- * Status: stress-tested a bit and problem tested
- */
-#pragma once
+// Problem: https://cses.fi/problemset/task/2073
+// Status: ACCEPTED
+// Submission: https://cses.fi/problemset/result/9729836/
+#include <bits/stdc++.h>
+using namespace std;
 
-typedef ll T; typedef ll L; // T: data type, L: lazy type
+#define fst first
+#define snd second
+#define pb push_back
+#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
+#define ALL(x) begin(x), end(x)
+#define SZ(x) (ll)(x).size()
+#define mset(a, v) memset((a), (v), sizeof(a))
+typedef long long ll;
+typedef pair<ll, ll> ii;
+typedef vector<ll> vi;
+
+/// content/data-structures/Treap.h
+/// START diff
+// We are not interested  in queries
+typedef char T; typedef ll L; // T: data type, L: lazy type
 const T tneut = 0; const L lneut = 0; // neutrals
-T f(T a, T b) { return a + b; } // operation
+T f(T a, T b) { return a; } // operation
 // new st according to lazy
-T apply(T v, L l, ll len) { return v + l * len; }
+T apply(T v, L l, ll len) { return v; }
 // cumulative effect of lazy
-L comb(L a, L b) { return a + b; }
-
+L comb(L a, L b) { return a; }
+/// END diff
 struct Node {
 	Node *l = 0, *r = 0;
 	// Node *p = 0; // PARENT
 	T val, acc; L lazy = lneut;
 	ll y, c = 1;
-	// bool rev = false; // REVERSE
+	/// START diff
+	bool rev = false; // REVERSE
+	/// END diff
 	Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 	void recalc() {
 		c = 1, acc = tneut;
@@ -35,10 +44,12 @@ struct Node {
 		// if (r) r->p = this;
 	}
 	void push() {
-		// if (rev) { // REVERSE
-		// 	swap(l, r), rev = false;
-		// 	if (l) l->rev ^= 1; if (r) r->rev ^= 1;
-		// }
+		/// START diff
+		if (rev) { // REVERSE
+			swap(l, r), rev = false;
+			if (l) l->rev ^= 1; if (r) r->rev ^= 1;
+		}
+		/// END diff
 		val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
 		if (l) l->lazy = comb(l->lazy, lazy);
 		if (r) r->lazy = comb(r->lazy, lazy);
@@ -96,5 +107,54 @@ struct Node {
 		return acc;
 	}
 	void upd(L v) { lazy = comb(lazy, v); } // Update full range
-	// void reverse() { rev = !rev; } // REVERSE
+	/// START diff
+	void reverse() { rev = !rev; } // REVERSE
+	/// END diff
 };
+/// END content
+
+string getVals(Node* t) {
+	if (!t) return "";
+	t->push();
+	string ans = getVals(t->l);
+	ans += t->val;
+	ans += getVals(t->r);
+	return ans;
+}
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+
+	ll n, m;
+	cin >> n >> m;
+	string s;
+	cin >> s;
+
+	vector<Node> nodes(n);
+	fore(i, 0, n) nodes[i] = Node(s[i]);
+
+	Node* t = &nodes[0];
+	fore(i, 1, n) {
+		t->merge(&nodes[i]);
+	}
+
+	while (m--) {
+		ll a, b;
+		cin >> a >> b;
+		a--;
+
+		Node* r = t->split(b);
+		if (a == 0) {
+			t->reverse();
+			t->merge(r);
+		} else {
+			Node* m = t->split(a);
+			m->reverse();
+			t->merge(m);
+			t->merge(r);
+		}
+	}
+
+	string ans = getVals(t);
+	cout << ans << '\n';
+}

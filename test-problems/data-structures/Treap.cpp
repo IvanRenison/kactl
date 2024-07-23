@@ -1,16 +1,20 @@
-/**
- * Author: someone on Codeforces and then modified by Iván Renison
- * Date: 2017-03-14
- * Source: folklore
- * Description: A short self-balancing tree. It acts as a
- *  sequential container with log-time splits, joins, queries and updates.
- *  Can also support reversals with the commented REVERSE lines and getting the
- *  position of a node with the PARENT lines.
- * Time: $O(\log N)$
- * Status: stress-tested a bit and problem tested
- */
-#pragma once
+// Problem: https://www.spoj.com/problems/HORRIBLE/
+// Status: accepted
+#include <bits/stdc++.h>
+using namespace std;
 
+#define fst first
+#define snd second
+#define pb push_back
+#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
+#define ALL(x) begin(x), end(x)
+#define SZ(x) (ll)(x).size()
+#define mset(a, v) memset((a), (v), sizeof(a))
+typedef long long ll;
+typedef pair<ll, ll> ii;
+typedef vector<ll> vi;
+
+/// content/data-structures/Treap.h
 typedef ll T; typedef ll L; // T: data type, L: lazy type
 const T tneut = 0; const L lneut = 0; // neutrals
 T f(T a, T b) { return a + b; } // operation
@@ -98,3 +102,68 @@ struct Node {
 	void upd(L v) { lazy = comb(lazy, v); } // Update full range
 	// void reverse() { rev = !rev; } // REVERSE
 };
+/// END content
+
+void update(Node& n, ll p, ll q, ll v) {
+	Node* r = n.split(q);
+	if (p > 0) {
+		Node* m = n.split(p);
+		m->upd(v);
+		n.merge(m);
+	} else {
+		n.upd(v);
+	}
+	n.merge(r);
+}
+
+ll query(Node& n, ll p, ll q) {
+	Node* r = n.split(q);
+	ll ans;
+	if (p > 0) {
+		Node* m = n.split(p);
+		ans = m->query();
+		n.merge(m);
+	} else {
+		ans = n.query();
+	}
+	n.merge(r);
+	return ans;
+}
+
+void solveCase() {
+	ll N, C;
+	cin >> N >> C;
+
+	vector<Node> nodes(N);
+	Node& t = nodes[0];
+	fore(i, 1, N) {
+		nodes[i] = Node(0);
+		t.merge(&nodes[i]);
+	}
+
+	fore(_, 0, C) {
+		ll ty, p, q;
+		cin >> ty >> p >> q;
+		p--;
+
+		if (ty == 0) { // Update
+			ll v;
+			cin >> v;
+			update(t, p, q, v);
+		} else { // Query
+			ll ans = query(t, p, q);
+			cout << ans << '\n';
+		}
+	}
+}
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+
+	ll T;
+	cin >> T;
+
+	fore(_, 0, T) {
+		solveCase();
+	}
+}
