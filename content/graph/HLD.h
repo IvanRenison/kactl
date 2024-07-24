@@ -12,7 +12,7 @@
  * initialized to the segtree default. Root must be 0.
  * If you only have point updates you can use normal segment tree instead of lazy.
  * Time: O((\log N)^2)
- * Status: stress-tested a but
+ * Status: stress-tested a bit
  */
 #pragma once
 
