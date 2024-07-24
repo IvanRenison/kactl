@@ -1,16 +1,21 @@
-/**
- * Author: Iván Renison
- * Date: 2024-06-14
- * Source: https://github.com/ngthanhtrung23/ACM_Notebook_new/blob/master/DataStructure/LinkCutTree.h
- * Description: Represents a forest of rooted trees with nodes \textbf{indexed from one}.
- * You can add and remove edges (as long as the result is still a forest),
- * make path queries, subtree queries, point updates and select a node as root of its subtree.
- * If you don't have subtree queries you can remove the parts that say SUBTREE.
- * Time: All operations take amortized O(\log N).
- * Status: Stress-tested a bit and tested with library checker
- */
-#pragma once
+// Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_subtree_sum
+// Status: AC
+// Submission: https://judge.yosupo.jp/submission/214991
+#include <bits/stdc++.h>
+using namespace std;
 
+#define fst first
+#define snd second
+#define pb push_back
+#define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
+#define ALL(x) begin(x), end(x)
+#define SZ(x) (ll)(x).size()
+#define mset(a, v) memset((a), (v), sizeof(a))
+typedef long long ll;
+typedef pair<ll, ll> ii;
+typedef vector<ll> vi;
+
+/// content/graph/LinkCutTree.h
 typedef ll T;
 const T neut = 0;
 T f(T a, T b) { return a + b; } // associative
@@ -134,3 +139,49 @@ struct LinkCutTree : SplayTree {
 		return nods[v].path[1];
 	}
 };
+/// END content
+
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+
+	ll N, Q;
+	cin >> N >> Q;
+
+	LinkCutTree lct(N);
+
+	fore(i, 0, N) {
+		ll a;
+		cin >> a;
+		lct.upd(i + 1, a);
+	}
+
+	fore(_, 0, N - 1) {
+		ll u, v;
+		cin >> u >> v;
+		lct.link(u + 1, v + 1);
+	}
+
+	while (Q--) {
+		ll t;
+		cin >> t;
+		if (t == 0) {
+			ll u, v, w, x;
+			cin >> u >> v >> w >> x;
+			lct.cut(u + 1, v + 1);
+			lct.link(w + 1, x + 1);
+		} else if (t == 1) {
+			ll p, x;
+			cin >> p >> x;
+			ll a = lct.query(p + 1);
+			a += x;
+			lct.upd(p + 1, a);
+		} else {
+			ll u, p;
+			cin >> u >> p;
+			lct.mkR(p + 1);
+			ll val = lct.querySub(u + 1);
+			cout << val << '\n';
+		}
+	}
+}

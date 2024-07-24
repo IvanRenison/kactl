@@ -88,7 +88,7 @@ struct Node {
 		}
 		recalc();
 	}
-	// ll pos() { // In witch position I am // PARENT
+	// ll pos() { // In which position I am // PARENT
 	// 	pullAll();
 	// 	ll ans = l ? l->c : 0;
 	// 	if (!p) return ans;

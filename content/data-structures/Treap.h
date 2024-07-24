@@ -3,11 +3,11 @@
  * Date: 2017-03-14
  * Source: folklore
  * Description: A short self-balancing tree. It acts as a
- *  sequential container with log-time splits, joins, queries ans updates.
+ *  sequential container with log-time splits, joins, queries and updates.
  *  Can also support reversals with the commented REVERSE lines and getting the
- * position of a node with the PARENT lines.
+ *  position of a node with the PARENT lines.
  * Time: $O(\log N)$
- * Status: stress-tested and problem tested
+ * Status: stress-tested a bit and problem tested
  */
 #pragma once
 
@@ -84,7 +84,7 @@ struct Node {
 		}
 		recalc();
 	}
-	// ll pos() { // In witch position I am // PARENT
+	// ll pos() { // In which position I am // PARENT
 	// 	pullAll();
 	// 	ll ans = l ? l->c : 0;
 	// 	if (!p) return ans;
