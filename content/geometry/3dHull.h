@@ -24,8 +24,8 @@ struct PR {
 struct F { P3 q; ll a, b, c; };
 
 vector<F> hull3d(const vector<P3>& A) {
-	assert(sz(A) >= 4);
-	vector<vector<PR>> E(sz(A), vector<PR>(sz(A), {-1, -1}));
+	assert(SZ(A) >= 4);
+	vector<vector<PR>> E(SZ(A), vector<PR>(SZ(A), {-1, -1}));
 #define E(x,y) E[f.x][f.y]
 	vector<F> FS;
 	auto mf = [&](ll i, ll j, ll k, ll l) {
@@ -34,13 +34,13 @@ vector<F> hull3d(const vector<P3>& A) {
 			q = q * -1;
 		F f{q, i, j, k};
 		E(a,b).ins(k); E(a,c).ins(j); E(b,c).ins(i);
-		FS.push_back(f);
+		FS.pb(f);
 	};
-	rep(i,0,4) rep(j,i+1,4) rep(k,j+1,4)
+	fore(i,0,4) fore(j,i+1,4) fore(k,j+1,4)
 		mf(i, j, k, 6 - i - j - k);
 
-	rep(i,4,sz(A)) {
-		rep(j,0,sz(FS)) {
+	fore(i,4,SZ(A)) {
+		fore(j,0,SZ(FS)) {
 			F f = FS[j];
 			if(f.q.dot(A[i]) > f.q.dot(A[f.a])) {
 				E(a,b).rem(f.c);
@@ -50,8 +50,8 @@ vector<F> hull3d(const vector<P3>& A) {
 				FS.pop_back();
 			}
 		}
-		ll nw = sz(FS);
-		rep(j,0,nw) {
+		ll nw = SZ(FS);
+		fore(j,0,nw) {
 			F f = FS[j];
 #define C(a, b, c) if (E(a,b).cnt() != 2) mf(f.a, f.b, i, f.c);
 			C(a, b, c); C(a, c, b); C(b, c, a);

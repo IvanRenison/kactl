@@ -18,12 +18,12 @@ typedef Point<double> P;
 double rat(P a, P b) { return sgn(b.x) ? a.x/b.x : a.y/b.y; }
 double polyUnion(vector<vector<P>>& poly) {
 	double ret = 0;
-	rep(i,0,sz(poly)) rep(v,0,sz(poly[i])) {
-		P A = poly[i][v], B = poly[i][(v + 1) % sz(poly[i])];
+	fore(i,0,SZ(poly)) fore(v,0,SZ(poly[i])) {
+		P A = poly[i][v], B = poly[i][(v + 1) % SZ(poly[i])];
 		vector<pair<double, ll>> segs = {{0, 0}, {1, 0}};
-		rep(j,0,sz(poly)) if (i != j) {
-			rep(u,0,sz(poly[j])) {
-				P C = poly[j][u], D = poly[j][(u + 1) % sz(poly[j])];
+		fore(j,0,SZ(poly)) if (i != j) {
+			fore(u,0,SZ(poly[j])) {
+				P C = poly[j][u], D = poly[j][(u + 1) % SZ(poly[j])];
 				ll sc = sideOf(A, B, C), sd = sideOf(A, B, D);
 				if (sc != sd) {
 					double sa = C.cross(D, A), sb = C.cross(D, B);
@@ -35,13 +35,13 @@ double polyUnion(vector<vector<P>>& poly) {
 				}
 			}
 		}
-		sort(all(segs));
-		for (auto& s : segs) s.first = min(max(s.first, 0.0), 1.0);
+		sort(ALL(segs));
+		for (auto& s : segs) s.fst = min(max(s.fst, 0.0), 1.0);
 		double sum = 0;
-		ll cnt = segs[0].second;
-		rep(j,1,sz(segs)) {
-			if (!cnt) sum += segs[j].first - segs[j - 1].first;
-			cnt += segs[j].second;
+		ll cnt = segs[0].snd;
+		fore(j,1,SZ(segs)) {
+			if (!cnt) sum += segs[j].fst - segs[j - 1].fst;
+			cnt += segs[j].snd;
 		}
 		ret += A.cross(B) * sum;
 	}

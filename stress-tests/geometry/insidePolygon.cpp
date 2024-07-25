@@ -1,16 +1,6 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include "../utilities/template.h"
 
-#define rep(i, a, b) for(ll i = a; i < ll(b); ++i)
-#define all(x) x.begin(), x.end()
-#define sz(x) (ll)(x).size()
-
-typedef long long ll;
-typedef pair<ll, ll> pii;
-typedef vector<ll> vi;
-
-
-const double EPS =1e-8;
+const double EPS = 1e-8;
 #include "../utilities/genPolygon.h"
 #include "../../content/geometry/InsidePolygon.h"
 namespace old {
@@ -40,15 +30,15 @@ bool eq(P a, P b) {
 const ll NUMPOLY=100;
 const ll PTPERPOLY=100;
 void test(ll numPts, ll range) {
-	rep(i,0,NUMPOLY) {
+	fore(i,0,NUMPOLY) {
 		vector<P> poly;
-		rep(j,0, numPts)
-			poly.push_back(P(rand()%range, rand()%range));
+		fore(j,0, numPts)
+			poly.pb(P(rand()%range, rand()%range));
 		poly = genPolygon(poly);
-		rep(i,0,PTPERPOLY){
+		fore(i,0,PTPERPOLY){
 			P p(rand()%range, rand()%range);
-			assert(inPolygon(poly, p, true) == old::insidePolygon(all(poly), p, true));
-			assert(inPolygon(poly, p, false) == old::insidePolygon(all(poly), p, false));
+			assert(inPolygon(poly, p, true) == old::insidePolygon(ALL(poly), p, true));
+			assert(inPolygon(poly, p, false) == old::insidePolygon(ALL(poly), p, false));
 		}
 	}
 
@@ -57,5 +47,5 @@ int main() {
 	test(20,5);
 	test(1001,100);
 	test(1000,1000);
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

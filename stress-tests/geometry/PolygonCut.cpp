@@ -8,18 +8,18 @@
 
 typedef Point<double> P;
 int main() {
-	rep(it,0,500) {
+	fore(it,0,500) {
 		ll N = rand() % 10 + 3;
 		vector<P> ps;
-		rep(i,0,N) ps.emplace_back(rand() % 10 - 5, rand() % 10 - 5);
+		fore(i,0,N) ps.emplace_back(rand() % 10 - 5, rand() % 10 - 5);
 		P p(rand() % 10 - 5), q(rand() % 10 - 5);
-		rep(i,0,N) rep(j,i+1,N) {
+		fore(i,0,N) fore(j,i+1,N) {
 			P a = ps[i], b = ps[(i+1)%N];
 			P c = ps[j], d = ps[(j+1)%N];
 			P r1, r2;
 			auto r = segInter(a, b, c, d);
-			if (sz(r) == 2) goto fail;
-			if (sz(r) == 1) {
+			if (SZ(r) == 2) goto fail;
+			if (SZ(r) == 1) {
 				if (i+1 == j || (j+1) % N == i) ;
 				else goto fail;
 			}
@@ -28,7 +28,7 @@ int main() {
 
 		ll count = 0;
 		const ll ITS = 400000;
-		rep(it,0,ITS) {
+		fore(it,0,ITS) {
 			double x = rand() / (RAND_MAX + 1.0) * 10 - 5;
 			double y = rand() / (RAND_MAX + 1.0) * 10 - 5;
 			if (!inPolygon(ps, P{x,y}, true)) continue;
@@ -49,5 +49,5 @@ int main() {
 			// cout << x.x << ' ' << x.y << endl;
 		// }
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

@@ -14,16 +14,16 @@ signed main() {
 			auto tans = tangents(c1, r1, c2, sgn * r2);
 
 			if (tans.size() ==1) {
-				assert((tans[0].first - tans[0].second).dist() < 1e-8);
-				assert(abs((tans[0].first-c1).dist() - r1) < 1e-8);
-				assert(abs((tans[0].first-c2).dist() - r2) < 1e-8);
+				assert((tans[0].fst - tans[0].snd).dist() < 1e-8);
+				assert(abs((tans[0].fst-c1).dist() - r1) < 1e-8);
+				assert(abs((tans[0].fst-c2).dist() - r2) < 1e-8);
 			} else if (tans.size() == 2) {
 				for (auto l : tans) {
-					assert(abs(abs(lineDist(l.first, l.second, c1))-r1) < 1e-8);
-					assert(abs(abs(lineDist(l.first, l.second, c2))-r2) < 1e-8);
+					assert(abs(abs(lineDist(l.fst, l.snd, c1))-r1) < 1e-8);
+					assert(abs(abs(lineDist(l.fst, l.snd, c2))-r2) < 1e-8);
 				}
 			}
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

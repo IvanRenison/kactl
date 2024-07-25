@@ -4,7 +4,7 @@
 #include "../../content/geometry/lineDistance.h"
 
 int main() {
-	rep(t,0,1000000) {
+	fore(t,0,1000000) {
 		const ll GRID=10;
 		Point<double>
 			a(rand()%GRID, rand()%GRID),
@@ -12,10 +12,10 @@ int main() {
 			c(rand()%GRID, rand()%GRID),
 			d(rand()%GRID, rand()%GRID);
 		auto pa = lineInter(a,b,c,d);
-		if (pa.first == 1) {
-			assert(lineDist(a, b, pa.second) < 1e-8);
-			assert(lineDist(c, d, pa.second) < 1e-8);
+		if (pa.fst == 1) {
+			assert(lineDist(a, b, pa.snd) < 1e-8);
+			assert(lineDist(c, d, pa.snd) < 1e-8);
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }
