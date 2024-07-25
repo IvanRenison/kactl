@@ -37,7 +37,7 @@ bool circ(P p, P a, P b, P c) { // is p in the circumcircle?
 Q makeEdge(P orig, P dest) {
 	Q r = H ? H : new Quad{new Quad{new Quad{new Quad{0}}}};
 	H = r->o; r->r()->r() = r;
-	fore(i,0,4) r = r->rot, r->p = arb, r->o = i & 1 ? r : r->r();
+	fore(i,0,4) r = r->rot, r->p = arb, r->o = i&1 ? r : r->r();
 	r->p = orig; r->F() = dest;
 	return r;
 }
