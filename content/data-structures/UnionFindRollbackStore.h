@@ -6,14 +6,14 @@
  * Description: Disjoint-set data structure, with undo and support for
  * storing additional data in each component and global data.
  * Default operations and data are for sum in each component and count of components.
- * Time: $O(\alpha(N))$
+ * Time: $O(\log(N))$
  * Status: stress tested a bit
  */
 #pragma once
 
-struct RollbackSUF {
-	typedef ll T; // Global data
-	typedef ll D; // Component data
+typedef ll T; // Global data
+typedef ll D; // Component data
+struct RSUF {
 	T ans; // Global data initial value, set in constructor
 	void merge(D& large, const D& small) {
 		large = large + small, ans--;
@@ -22,8 +22,8 @@ struct RollbackSUF {
 	ll n;
 	vi e; vector<D> d;
 	vector<tuple<ll,ll,ll,D,T>> st;
-	RollbackSUF(ll n) : ans(n), n(n), e(n, -1), d(n) {}
-	RollbackSUF(vector<D>& d) : n(SZ(d)), ans(n), e(n,-1), d(d){}
+	RSUF(ll n) : ans(n), n(n), e(n, -1), d(n) {}
+	RSUF(vector<D>& d) : ans(SZ(d)), n(SZ(d)), e(n,-1), d(d){}
 	ll size(ll x) { return -e[find(x)]; }
 	ll find(ll x) { return e[x] < 0 ? x : find(e[x]); }
 	ll time() { return SZ(st); }

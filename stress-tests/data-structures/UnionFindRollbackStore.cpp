@@ -72,7 +72,7 @@ void testCase() {
 		d[i] = rand() % 100;
 	}
 
-	RollbackSUF uf(d);
+	RSUF uf(d);
 	Slow slow(d);
 
 	vi times_uf, times_slow;
