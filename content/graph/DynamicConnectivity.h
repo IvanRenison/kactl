@@ -5,8 +5,8 @@
  * Source: notebook el vasito
  * Description: Offline disjoint-set data structure with remove of arbitrary edges.
  * Uses UnionFindRollbackStore so it also supports queries of global value of RSUF.
- * Usage: First use add, remove and query to make operations and then call process
- * to get the answers of the queries in the variable ans.
+ * First use add, remove and query to make operations and then call process to get
+ * the answers of the queries in the variable ans.
  * Time: O(Q \log^2 N)
  * Status: stress tested a bit and tested in codeforces
  */
