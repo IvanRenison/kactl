@@ -8,7 +8,7 @@
  * Usage: First use add, remove and query to make operations and then call process
  * to get the answers of the queries in the variable ans.
  * Time: O(Q \log^2 N)
- * Status: stress tested a bit
+ * Status: stress tested a bit and tested in codeforces
  */
 #pragma once
 
@@ -50,8 +50,8 @@ struct DynCon {
 	void go(ll s, ll e) {
 		if (s + 1 == e) {
 			if (q[s].type == QUERY) { // Answer query using DSU
-				ans.push_back(uf.ans); // Maybe you want to use
-			}                        // uf.get(x) for some x
+				ans.pb(uf.ans); // Maybe you want to use uf.get(x)
+			}                 // for some x stored in Query
 			return;
 		}
 		ll k = uf.time(), m = (s + e) / 2;
