@@ -40,7 +40,7 @@ vector<F> hull3d(const vector<P3>& A) {
 		mf(i, j, k, 6 - i - j - k);
 
 	fore(i,4,SZ(A)) {
-		fore(j,0,SZ(FS)) {
+		for (ll j = 0; j < SZ(FS); j++) {
 			F f = FS[j];
 			if(f.q.dot(A[i]) > f.q.dot(A[f.a])) {
 				E(a,b).rem(f.c);
