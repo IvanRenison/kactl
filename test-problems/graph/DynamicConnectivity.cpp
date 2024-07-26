@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/1140/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/1140/submission/272720142
+// Submission: https://codeforces.com/contest/1140/submission/272721785
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -101,9 +101,8 @@ struct DynCon {
 			return;
 		}
 		ll k = uf.time(), m = (s + e) / 2;
-		for (ll i = e; --i >= m;) {
+		for (ll i = e; --i >= m;)
 			if (0 <= mt[i] && mt[i] < s) uf.join(q[i].x, q[i].y);
-		}
 		go(s, m);
 		uf.rollback(k);
 		for (ll i = m; --i >= s;)
