@@ -59,7 +59,7 @@ ll main1() {
 		ll xrange = rand() % 50 + 1;
 		ll yrange = rand() % 50 + 1;
 		fore(i,0,N) {
-			ps.emplace_back(rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange);
+			ps.pb(P{rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange});
 		}
 
 		auto coc = [&](ll i, ll j, ll k, ll l) {
@@ -144,7 +144,7 @@ ll main2() {
 	ll xrange = 20000;
 	ll yrange = 20000;
 	fore(i,0,N) {
-		ps.emplace_back(rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange);
+		ps.pb(P{rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange});
 	}
 	sort(ALL(ps));
 	ps.erase(unique(ALL(ps)), ps.end());

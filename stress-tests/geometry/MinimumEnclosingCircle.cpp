@@ -9,7 +9,7 @@ int main() {
 		// ll N = 4;
 		vector<P> ps;
 		fore(i,0,N) {
-			ps.emplace_back(rand() % 21 - 10, rand() % 21 - 10);
+			ps.pb(P{rand() % 21 - 10, rand() % 21 - 10});
 		}
 
 		pair<P, double> pa = mec(ps);

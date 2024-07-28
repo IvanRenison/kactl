@@ -11,7 +11,7 @@ int main() {
 	fore(it,0,500) {
 		ll N = rand() % 10 + 3;
 		vector<P> ps;
-		fore(i,0,N) ps.emplace_back(rand() % 10 - 5, rand() % 10 - 5);
+		fore(i,0,N) ps.pb(P{rand() % 10 - 5, rand() % 10 - 5});
 		P p(rand() % 10 - 5), q(rand() % 10 - 5);
 		fore(i,0,N) fore(j,i+1,N) {
 			P a = ps[i], b = ps[(i+1)%N];

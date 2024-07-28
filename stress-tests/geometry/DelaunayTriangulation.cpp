@@ -14,7 +14,7 @@ int main() {
 		vector<P> ps;
 		ll N = rand() % 20 + 1;
 		fore(i,0,N) {
-			ps.emplace_back(rand() % 100 - 50, rand() % 100 - 50);
+			ps.pb(P{rand() % 100 - 50, rand() % 100 - 50});
 		}
 
 		auto coc = [&](ll i, ll j, ll k, ll l) {

@@ -70,7 +70,7 @@ int main() {
 		// cout<<"it: "<<it<<endl;
 		ll N = rand() % 15;
 		vector<P> ps2;
-		fore(i,0,N) ps2.emplace_back(rand() % 20 - 10, rand() % 20 - 10);
+		fore(i,0,N) ps2.pb(P{rand() % 20 - 10, rand() % 20 - 10});
 		vector<P> ps = convexHull(ps2);
 		if (ps.empty()) continue;
 		P p{rand() % 20 - 10, rand() % 20 - 10};
@@ -120,7 +120,7 @@ int main() {
 					if (iter == 1 && !waspar && !(r.fst == i || r.snd == i)) FAIL();
 					if (iter == 0) corner = i;
 					if (iter == 0) gen++;
-					if (iter == 0) hits.emplace_back(r1, i);
+					if (iter == 0) hits.pb({r1, i});
 				}
 				else if (r1 == ps[j]) {
 					if (!(r.fst == i || r.snd == i || r.fst == j || r.snd == j)) FAIL();
@@ -131,7 +131,7 @@ int main() {
 				else {
 					if (!(r.fst == i || r.snd == i)) FAIL();
 					if (iter == 0) gen = 10;
-					if (iter == 0) hits.emplace_back(r1, i);
+					if (iter == 0) hits.pb({r1, i});
 				}
 				any = 1;
 			}

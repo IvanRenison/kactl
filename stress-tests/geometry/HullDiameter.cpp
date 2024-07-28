@@ -9,7 +9,7 @@ int main() {
 		ll N = (rand() % 10) + 1;
 		vector<Point<ll>> ps;
 		fore(i,0,N) {
-			ps.emplace_back(rand() % 11 - 5, rand() % 11 - 5);
+			ps.pb(P{rand() % 11 - 5, rand() % 11 - 5});
 		}
 		ll r1 = 0;
 		fore(i,0,N) fore(j,0,i) {

@@ -78,7 +78,7 @@ int main() {
 		fore(i,0,n) {
 			ll x = rand() % maxx + biasx;
 			ll y = rand() % maxy + biasy;
-			ps.emplace_back(x, y);
+			ps.pb(P{x, y});
 		}
 		ll foundDist = -1, oldDist = -1, theDist = -1;
 		if (mode == 1 || mode == 3) {
@@ -110,7 +110,7 @@ int main() {
 		fore(i,0,n) {
 			ll x = rand() % maxx + biasx;
 			ll y = rand() % maxy + biasy;
-			ps.emplace_back(x, y);
+			ps.pb(P{x, y});
 		}
 		ll minDist = LLONG_MAX;
 		fore(i,0,n) fore(j,i+1,n) {

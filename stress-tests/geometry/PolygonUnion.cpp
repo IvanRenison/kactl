@@ -34,7 +34,7 @@ db polygon_union(vector<pt> poly[], ll n) {
 		for (size_t v = 0; v < poly[i].size(); ++v) {
 			pt A = poly[i][v], B = poly[i][(v + 1) % poly[i].size()];
 			vector<pair<db, ll>> segs;
-			segs.emplace_back(0, 0), segs.emplace_back(1, 0);
+			segs.pb({0, 0}), segs.pb({1, 0});
 			for (ll j = 0; j < n; ++j)
 				if (i != j) {
 					for (size_t u = 0; u < poly[j].size(); ++u) {
@@ -42,14 +42,14 @@ db polygon_union(vector<pt> poly[], ll n) {
 						ll sc = sgn(vect(B - A, C - A)), sd = sgn(vect(B - A, D - A));
 						if (!sc && !sd) {
 							if (sgn(scal(B - A, D - C)) > 0 && i > j) {
-								segs.emplace_back(ratio(A, B, C), 1), segs.emplace_back(ratio(A, B, D), -1);
+								segs.pb({ratio(A, B, C), 1}), segs.pb({ratio(A, B, D), -1});
 							}
 						} else {
 							db sa = vect(D - C, A - C), sb = vect(D - C, B - C);
 							if (sc >= 0 && sd < 0)
-								segs.emplace_back(sa / (sa - sb), 1);
+								segs.pb({sa / (sa - sb), 1});
 							else if (sc < 0 && sd >= 0)
-								segs.emplace_back(sa / (sa - sb), -1);
+								segs.pb({sa / (sa - sb), -1});
 						}
 					}
 				}
