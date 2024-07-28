@@ -3,15 +3,10 @@
 
 #include "../../content/graph/HLD.h"
 
-namespace old {
-#include "oldHLD.h"
-}
 struct bruteforce { // values in nodes
 	vector<vi> tree;
-	vi vals;
+	vector<T> vals;
 	vi pars;
-	ll unit = -1e9;
-	ll f(ll a, ll b) { return max(a, b); }
 	void root(ll cur, ll p = -1) {
 		pars[cur] = p;
 		for (auto i: tree[cur]) {
@@ -21,121 +16,92 @@ struct bruteforce { // values in nodes
 	bruteforce(vector<vi> _tree): tree(_tree), vals(SZ(tree)), pars(SZ(tree)) {
 		root(0);
 	}
-	bool dfsModify(ll cur, ll target, ll val, ll p=-1) {
+	bool dfsModify(ll cur, ll target, L val, ll p=-1) {
 		if (cur == target) {
-			vals[cur] += val;
+			vals[cur] = apply(vals[cur], val, 0, 1);
 			return true;
 		}
 		bool alongPath = false;
-		for (auto i: tree[cur]) {
+		for (auto i : tree[cur]) {
 			if (i == p) continue;
 			alongPath |= dfsModify(i, target, val, cur);
 		}
-		if (alongPath) vals[cur] += val;
+		if (alongPath) vals[cur] = apply(vals[cur], val, 0, 1);
 		return alongPath;
 	}
-	void modifyPath(ll a, ll b, ll val) {
+	void updPath(ll a, ll b, L val) {
 		dfsModify(a, b, val);
 	}
 
-	ll dfsQuery(ll cur, ll target, ll p = -1) {
+	pair<T, bool> dfsQuery(ll cur, ll target, ll p = -1) {
 		if (cur == target) {
-			return vals[cur];
+			return {vals[cur], true};
 		}
-		ll res = unit;
-		for (auto i: tree[cur]) {
+		T res = tneut;
+		bool alongPath = false;
+		for (auto i : tree[cur]) {
 			if (i == p) continue;
-			res = f(res, dfsQuery(i, target, cur));
+			auto [subres, subalongPath] = dfsQuery(i, target, cur);
+			if (subalongPath) res = f(res, subres);
+			alongPath |= subalongPath;
 		}
-		if (res != unit) {
-			return f(res, vals[cur]);
+		if (alongPath) {
+			return {f(res, vals[cur]), true};
 		}
-		return res;
+		return {res, false};
 	}
-	ll queryPath(ll a, ll b) {
-		return dfsQuery(a, b);
+	T queryPath(ll a, ll b) {
+		return dfsQuery(a, b).fst;
 	}
-	ll dfsSubtree(ll cur, ll p) {
+	T dfsSubtree(ll cur, ll p) {
 		ll res = vals[cur];
-		for (auto i: tree[cur]) {
+		for (auto i : tree[cur]) {
 			if (i != p)
 				res = f(res, dfsSubtree(i, cur));
 		}
 		return res;
 	}
-	ll querySubtree(ll a) {
+	T querySubtree(ll a) {
 		return dfsSubtree(a, pars[a]);
 	}
 };
 
-void testAgainstOld(ll n, ll iters, ll queries) {
-	for (ll trees = 0; trees < iters; trees++) {
-		auto graph = genRandomTree(n);
-		vector<vi> tree1(n);
-		vector<vector<ii>> tree2(n);
-		for (auto [u, v] : graph) {
-			tree1[u].pb(v), tree1[v].pb(u);
-		}
-		for (ll i = 0; i < SZ(tree1); i++) {
-			for (auto j : tree1[i]) {
-				tree2[i].pb({j, 0});
-			}
-		}
-		HLD<false> hld(tree1);
-		old::HLD hld2(tree2);
-		hld.tree->set(0, n, 0);
-		for (ll itr = 0; itr < queries; itr++) {
-			if (rand() % 2) {
-				ll node = rand() % n;
-				ll val = rand() % 10;
-				hld2.upd(node, val);
-				hld.modifyPath(node, node, val - hld.queryPath(node, node));
-			} else {
-				ll a = rand() % n;
-				ll b = rand() % n;
-				assert(hld.queryPath(a, b) == hld2.query2(a, b).fst);
-			}
-		}
-	}
-}
 void testAgainstBrute(ll n, ll iters, ll queries) {
 	for (ll trees = 0; trees < iters; trees++) {
-		auto graph = genRandomTree(n);
+		vector<ii> graph = genRandomTree(n);
 		vector<vi> tree1(n);
 		for (auto [u, v] : graph) {
 			tree1[u].pb(v), tree1[v].pb(u);
 		}
 		HLD<false> hld(tree1);
 		bruteforce hld2(tree1);
-		hld.tree->set(0, n, 0);
 		for (ll itr = 0; itr < queries; itr++) {
 			ll rng = rand() % 3;
 			if (rng == 0) {
 				ll a = rand() % n;
 				ll b = rand() % n;
 				ll val = rand() % 10;
-				hld.modifyPath(a, b, val);
-				hld2.modifyPath(a, b, val);
+				hld.updPath(a, b, val);
+				hld2.updPath(a, b, val);
 			} else if (rng == 1){
 				ll a = rand() % n;
 				ll b = rand() % n;
 				hld.queryPath(a, b);
 				hld2.queryPath(a, b);
-				assert(hld.queryPath(a, b) == hld2.queryPath(a, b));
+				ll ans = hld.queryPath(a, b);
+				ll ans2 = hld2.queryPath(a, b);
+				assert(ans == ans2);
 			} else if (rng == 2) {
 				ll a = rand() % n;
 				assert(hld.querySubtree(a) == hld2.querySubtree(a));
 			}
 		}
 	}
-
 }
+
 int main() {
 	srand(2);
 	testAgainstBrute(5, 1000, 10000);
 	testAgainstBrute(1000, 100, 100);
-	testAgainstOld(5, 1000, 100);
-	testAgainstOld(10000, 100, 1000);
-	cout<<"Tests passed!"<<endl;
-	return 0;
+	cout << "Tests passed!" << endl;
 }

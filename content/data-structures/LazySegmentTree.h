@@ -15,15 +15,16 @@
  */
 #pragma once
 
+typedef ll T; typedef ll L; // T: data type, L: lazy type
+// neutrals
+constexpr static T tneut = 0; constexpr static L lneut = 0;
+T f(T a, T b) { return a + b; } // operation
+// new st according to lazy
+T apply(T v, L l, ll s, ll e) { return v + l * (e - s); }
+// cumulative effect of lazy
+L comb(L a, L b) { return a + b; }
+
 struct Tree { // example: range sum with range addition
-	typedef ll T; typedef ll L; // T: data type, L: lazy type
-	// neutrals
-	constexpr static T tneut = 0; constexpr static L lneut = 0;
-	T f(T a, T b) { return a + b; } // operation
-	// new st according to lazy
-	T apply(T v, L l, ll s, ll e) { return v + l * (e - s); }
-	// cumulative effect of lazy
-	L comb(L a, L b) { return a + b; }
 	ll n;
 	vector<T> st;
 	vector<L> lazy;
