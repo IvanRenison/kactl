@@ -15,8 +15,8 @@ Products of three coordinates are used in intermediate steps so watch out for ov
 \end{minipage}
  * Usage:
  * 	auto res = lineInter(s1,e1,s2,e2);
- * 	if (res.first == 1)
- * 		cout << "intersection point at " << res.second << endl;
+ * 	if (res.fst == 1)
+ * 		cout << "intersection point at " << res.snd << endl;
  * Status: stress-tested, and tested through half-plane tests
  */
 #pragma once

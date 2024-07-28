@@ -1,15 +1,4 @@
-#include <bits/stdc++.h>
-
-#define all(x) begin(x), end(x)
-typedef long long ll;
-using namespace std;
-
-#define rep(i, a, b) for (ll i = a; i < (b); ++i)
-#define all(x) begin(x), end(x)
-#define sz(x) (ll)(x).size()
-typedef long long ll;
-typedef pair<ll, ll> pii;
-typedef vector<ll> vi;
+#include "../utilities/template.h"
 
 #include "../../content/geometry/Point.h"
 #include "../../content/geometry/sideOf.h"
@@ -45,7 +34,7 @@ db polygon_union(vector<pt> poly[], ll n) {
 		for (size_t v = 0; v < poly[i].size(); ++v) {
 			pt A = poly[i][v], B = poly[i][(v + 1) % poly[i].size()];
 			vector<pair<db, ll>> segs;
-			segs.emplace_back(0, 0), segs.emplace_back(1, 0);
+			segs.pb({0, 0}), segs.pb({1, 0});
 			for (ll j = 0; j < n; ++j)
 				if (i != j) {
 					for (size_t u = 0; u < poly[j].size(); ++u) {
@@ -53,25 +42,25 @@ db polygon_union(vector<pt> poly[], ll n) {
 						ll sc = sgn(vect(B - A, C - A)), sd = sgn(vect(B - A, D - A));
 						if (!sc && !sd) {
 							if (sgn(scal(B - A, D - C)) > 0 && i > j) {
-								segs.emplace_back(ratio(A, B, C), 1), segs.emplace_back(ratio(A, B, D), -1);
+								segs.pb({ratio(A, B, C), 1}), segs.pb({ratio(A, B, D), -1});
 							}
 						} else {
 							db sa = vect(D - C, A - C), sb = vect(D - C, B - C);
 							if (sc >= 0 && sd < 0)
-								segs.emplace_back(sa / (sa - sb), 1);
+								segs.pb({sa / (sa - sb), 1});
 							else if (sc < 0 && sd >= 0)
-								segs.emplace_back(sa / (sa - sb), -1);
+								segs.pb({sa / (sa - sb), -1});
 						}
 					}
 				}
 			sort(segs.begin(), segs.end());
-			db pre = min(max(segs[0].first, 0.0), 1.0), now, sum = 0;
-			ll cnt = segs[0].second;
+			db pre = min(max(segs[0].fst, 0.0), 1.0), now, sum = 0;
+			ll cnt = segs[0].snd;
 			for (size_t j = 1; j < segs.size(); ++j) {
-				now = min(max(segs[j].first, 0.0), 1.0);
+				now = min(max(segs[j].fst, 0.0), 1.0);
 				if (!cnt)
 					sum += now - pre;
-				cnt += segs[j].second;
+				cnt += segs[j].snd;
 				pre = now;
 			}
 			ret += vect(A, B) * sum;
@@ -104,9 +93,8 @@ double polygonUnion(vector<vector<P>> &polygons, ll lim) {
 namespace lovelive {
 #define re real
 #define im imag
-#define pb push_back
-#define fir first
-#define sec second
+#define fir fst
+#define sec snd
 typedef double db;
 const db pi = acos(db(-1));
 inline ll sgn(db x) { return (x > 1e-8) - (x < -1e-8); }
@@ -174,11 +162,11 @@ void testRandom(ll n, ll numPts = 10, ll lim = 5, bool brute = false) {
 		vector<P> pts;
 		ll k = randIncl(3, numPts);
 		for (ll j = 0; j < k; j++) {
-			pts.push_back(randPt(lim)); // rndEps(lim, 1e-10));
+			pts.pb(randPt(lim)); // rndEps(lim, 1e-10));
 		}
-		polygons.push_back(genPolygon(pts));
+		polygons.pb(genPolygon(pts));
 		if (polygonArea2(polygons.back()) < 0) {
-			reverse(all(polygons.back()));
+			reverse(ALL(polygons.back()));
 		}
 	}
 	auto val1 = polyUnion(polygons);
@@ -186,20 +174,20 @@ void testRandom(ll n, ll numPts = 10, ll lim = 5, bool brute = false) {
 	for (auto i : polygons) {
 		vector<blackhorse::pt> t;
 		for (auto j : i)
-			t.push_back({j.x, j.y});
-		polygons2.push_back(t);
+			t.pb({j.x, j.y});
+		polygons2.pb(t);
 	}
 	vector<vector<lovelive::cpoi>> polygons3;
 	for (auto i : polygons) {
 		vector<lovelive::cpoi> t;
 		for (auto j : i)
-			t.push_back({j.x, j.y});
-		polygons3.push_back(t);
+			t.pb({j.x, j.y});
+		polygons3.pb(t);
 	}
-	auto val3 = blackhorse::polygon_union(polygons2.data(), sz(polygons2));
-	auto val4 = lovelive::polygon_union(polygons3.data(), sz(polygons3));
+	auto val3 = blackhorse::polygon_union(polygons2.data(), SZ(polygons2));
+	auto val4 = lovelive::polygon_union(polygons3.data(), SZ(polygons3));
 	if (abs(val1 - val3) > 1e-8 || abs(val1 - val4) > 1e-8) {
-		rep(i, 0, n) {
+		fore(i, 0, n) {
 			for (auto &x : polygons[i]) {
 				cout << x << ' ';
 			}

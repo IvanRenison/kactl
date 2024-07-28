@@ -4,17 +4,17 @@
 
 int main() {
 	srand(2);
-	rep(it,0,1000000) {
+	fore(it,0,1000000) {
 		ll N = rand() % 20 + 1;
 		// ll N = 4;
 		vector<P> ps;
-		rep(i,0,N) {
-			ps.emplace_back(rand() % 21 - 10, rand() % 21 - 10);
+		fore(i,0,N) {
+			ps.pb(P{rand() % 21 - 10, rand() % 21 - 10});
 		}
 
 		pair<P, double> pa = mec(ps);
-		P mid = pa.first;
-		double rad = pa.second;
+		P mid = pa.fst;
+		double rad = pa.snd;
 		double maxDist = 0;
 		for(auto &p: ps) {
 			maxDist = max(maxDist, (p - mid).dist());
@@ -22,7 +22,7 @@ int main() {
 
 		assert(abs(maxDist - rad) < 1e-6);
 
-		rep(it2,0,50) {
+		fore(it2,0,50) {
 			P q2 = mid - P(0, 1e-6).rotate(it2);
 			for(auto &p: ps) {
 				if((p - q2).dist() > rad - 1e-7) goto fail;
@@ -31,5 +31,5 @@ int main() {
 fail:;
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

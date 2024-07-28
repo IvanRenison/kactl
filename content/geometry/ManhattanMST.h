@@ -15,20 +15,20 @@
 
 typedef Point<ll> P;
 vector<array<ll, 3>> manhattanMST(vector<P> ps) {
-	vi id(sz(ps));
-	iota(all(id), 0);
+	vi id(SZ(ps));
+	iota(ALL(id), 0);
 	vector<array<ll, 3>> edges;
-	rep(k,0,4) {
-		sort(all(id), [&](ll i, ll j) {
+	fore(k,0,4) {
+		sort(ALL(id), [&](ll i, ll j) {
 			return (ps[i]-ps[j]).x < (ps[j]-ps[i]).y;});
 		map<ll, ll> sweep;
 		for (ll i : id) {
 			for (auto it = sweep.lower_bound(-ps[i].y);
 					it != sweep.end(); sweep.erase(it++)) {
-				ll j = it->second;
+				ll j = it->snd;
 				P d = ps[i] - ps[j];
 				if (d.y > d.x) break;
-				edges.push_back({d.y + d.x, i, j});
+				edges.pb({d.y + d.x, i, j});
 			}
 			sweep[-ps[i].y] = i;
 		}

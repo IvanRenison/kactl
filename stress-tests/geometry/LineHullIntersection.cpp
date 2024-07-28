@@ -65,32 +65,32 @@ ll segmentIntersection(const P& s1, const P& e1,
 
 int main() {
 	srand(2);
-	rep(it,0,1000000) {
+	fore(it,0,1000000) {
 		// cout<<endl;
 		// cout<<"it: "<<it<<endl;
 		ll N = rand() % 15;
 		vector<P> ps2;
-		rep(i,0,N) ps2.emplace_back(rand() % 20 - 10, rand() % 20 - 10);
+		fore(i,0,N) ps2.pb(P{rand() % 20 - 10, rand() % 20 - 10});
 		vector<P> ps = convexHull(ps2);
 		if (ps.empty()) continue;
 		P p{rand() % 20 - 10, rand() % 20 - 10};
 		P q{rand() % 20 - 10, rand() % 20 - 10};
 
-		N = sz(ps);
+		N = SZ(ps);
 
 		P delta = q - p, farp = p - delta * 50, farq = p + delta * 50;
 
 		auto res = lineHull(p, q, ps);
-		pii r = {res[0], res[1]};
+		ii r = {res[0], res[1]};
 
 		if (p == q) continue;
 
 		auto fail = [&](ll line) {
-			cerr << sz(ps) << endl;
+			cerr << SZ(ps) << endl;
 			for(auto &p: ps) cout << p<<' ';
 			cout<<endl;
 			cout << "line: "<<p<<' '<<q<<endl;
-			cout << "-> " << r.first << ' ' << r.second << endl;
+			cout << "-> " << r.fst << ' ' << r.snd << endl;
 			cout << "@line " << line << endl;
 			abort();
 		};
@@ -98,16 +98,16 @@ int main() {
 
 		ll any = 0, gen = 0, corner = -1, waspar = 0;
 		vector<pair<Point<double>, ll>> hits;
-		rep(iter,0,2) rep(i,0,N) {
+		fore(iter,0,2) fore(i,0,N) {
 			Point<double> r1, r2;
 			ll j = (i+1) % N;
 			ll qu = segmentIntersection(farp, farq, ps[i], ps[j], r1, r2);
 			if (qu && (q - p).cross(ps[j] - ps[i]) == 0) { // parallel
 				if (N != 2) {
-					if (!(r.first == i || r.second == i)) FAIL();
+					if (!(r.fst == i || r.snd == i)) FAIL();
 				}
-				// cerr << i << ' ' << j << ' ' << r.first << ' ' << r.second << endl;
-				// assert(r.first == i && r.second == j);
+				// cerr << i << ' ' << j << ' ' << r.fst << ' ' << r.snd << endl;
+				// assert(r.fst == i && r.snd == j);
 				any = 1;
 				if (iter == 0) gen = 10;
 				waspar = 1;
@@ -116,51 +116,51 @@ int main() {
 				assert(qu != 2);
 				if (r1 == ps[i]) {
 					ll k = (i-1+N) % N;
-					if (!(r.first == i || r.second == i || r.first == k || r.second == k)) FAIL();
-					if (iter == 1 && !waspar && !(r.first == i || r.second == i)) FAIL();
+					if (!(r.fst == i || r.snd == i || r.fst == k || r.snd == k)) FAIL();
+					if (iter == 1 && !waspar && !(r.fst == i || r.snd == i)) FAIL();
 					if (iter == 0) corner = i;
 					if (iter == 0) gen++;
-					if (iter == 0) hits.emplace_back(r1, i);
+					if (iter == 0) hits.pb({r1, i});
 				}
 				else if (r1 == ps[j]) {
-					if (!(r.first == i || r.second == i || r.first == j || r.second == j)) FAIL();
-					if (iter == 1 && !waspar && !(r.first == j || r.second == j)) FAIL();
+					if (!(r.fst == i || r.snd == i || r.fst == j || r.snd == j)) FAIL();
+					if (iter == 1 && !waspar && !(r.fst == j || r.snd == j)) FAIL();
 					if (iter == 0) corner = j;
 					if (iter == 0) gen++;
 				}
 				else {
-					if (!(r.first == i || r.second == i)) FAIL();
+					if (!(r.fst == i || r.snd == i)) FAIL();
 					if (iter == 0) gen = 10;
-					if (iter == 0) hits.emplace_back(r1, i);
+					if (iter == 0) hits.pb({r1, i});
 				}
 				any = 1;
 			}
 		}
 
 		if (!any) {
-			assert(r.first == -1 && r.second == -1);
+			assert(r.fst == -1 && r.snd == -1);
 			continue;
 		}
 		if (!waspar) {
-			if (r.first == r.second) FAIL();
+			if (r.fst == r.snd) FAIL();
 		}
 		if (gen == 2) {
-			assert(r.first == corner);
-			if (r.second != -1) FAIL();
+			assert(r.fst == corner);
+			if (r.snd != -1) FAIL();
 		}
-		if (N > 2 && (sz(hits) == 1) != (r.second == -1 || r.first == r.second)) {
-			cout<<"res: "<<r.first<<' '<<r.second<<endl;
+		if (N > 2 && (SZ(hits) == 1) != (r.snd == -1 || r.fst == r.snd)) {
+			cout<<"res: "<<r.fst<<' '<<r.snd<<endl;
 			FAIL();
 		}
-		assert(sz(hits) <= 2);
-		if (r.first != r.second && sz(hits) == 2) {
-			assert(r.second != -1);
-			assert(hits[0].second != hits[1].second);
-			assert(hits[0].second == r.first || hits[0].second == r.second);
-			assert(hits[1].second == r.first || hits[1].second == r.second);
-			double dist0 = (hits[0].first - Point<double>(p)).dot(delta);
-			double dist1 = (hits[1].first - Point<double>(p)).dot(delta);
-			if (hits[0].second == r.first) {
+		assert(SZ(hits) <= 2);
+		if (r.fst != r.snd && SZ(hits) == 2) {
+			assert(r.snd != -1);
+			assert(hits[0].snd != hits[1].snd);
+			assert(hits[0].snd == r.fst || hits[0].snd == r.snd);
+			assert(hits[1].snd == r.fst || hits[1].snd == r.snd);
+			double dist0 = (hits[0].fst - Point<double>(p)).dot(delta);
+			double dist1 = (hits[1].fst - Point<double>(p)).dot(delta);
+			if (hits[0].snd == r.fst) {
 				if (!(dist0 <= dist1)) FAIL();
 			}
 			else {
@@ -169,17 +169,17 @@ int main() {
 		}
 
 		res = lineHull(q, p, ps);
-		pii R = {res[0], res[1]};
-		if (r.second == -1) {
+		ii R = {res[0], res[1]};
+		if (r.snd == -1) {
 			assert(R == r);
 		}
-		else if (N == 2 && r.first == r.second) {
-			assert(R.first == R.second);
+		else if (N == 2 && r.fst == r.snd) {
+			assert(R.fst == R.snd);
 		}
 		else {
-			assert(R.first == r.second);
-			assert(R.second == r.first);
+			assert(R.fst == r.snd);
+			assert(R.snd == r.fst);
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

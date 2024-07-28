@@ -36,25 +36,25 @@ bool eq(P a, P b) {
 	return (a-b).dist()<1e-8;
 }
 int main() {
-	rep(t,0,1000000) {
+	fore(t,0,1000000) {
 		const ll GRID=6;
 		P a(rand()%GRID, rand()%GRID), b(rand()%GRID, rand()%GRID), c(rand()%GRID, rand()%GRID), d(rand()%GRID, rand()%GRID);
 		P tmp1, tmp2;
 		auto res = oldImpl::segmentIntersection(a,b,c,d, tmp1, tmp2);
 		auto res2 = segInter(a,b,c,d);
-		if (res != sz(res2)) {
+		if (res != SZ(res2)) {
 			cout<<a<<' '<<b<<' '<<c<<' '<<d<<endl;
-			cout<<"old: "<<res<<" new: "<<sz(res2)<<endl;
+			cout<<"old: "<<res<<" new: "<<SZ(res2)<<endl;
 		}
-		assert(res==sz(res2));
+		assert(res==SZ(res2));
 		if (res==1) {
 			assert(eq(*res2.begin(), tmp1));
 		} else if (res==2) {
 			vector<P> a(res2.begin(), res2.end());
 			vector<P> b({tmp1, tmp2});
-			sort(all(b));
+			sort(ALL(b));
 			assert(eq(a[0], b[0]) && eq(a[1],b[1]));
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

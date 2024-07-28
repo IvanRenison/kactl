@@ -24,8 +24,8 @@ long double areaCT(P pa, P pb, long double r) {
 }
 long double circlePoly(P c, long double r, vector<P> poly) {
 	long double area = 0;
-	rep(i,0,sz(poly)){
-		auto a = poly[i] - c, b = poly[(i+1)%sz(poly)] - c;
+	fore(i,0,SZ(poly)){
+		auto a = poly[i] - c, b = poly[(i+1)%SZ(poly)] - c;
 		area += areaCT(a, b, r) * sgn(a.cross(b));
 	}
 	return area;
@@ -36,12 +36,12 @@ signed main() {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	const ll lim=5;
-	for (ll i=0;i<100000; i++) {
+	fore(i, 0, 100000) {
 
 		vector<Point<ll>> pts;
-		for (ll j=0; j<10; j++) {
+		fore(j, 0, 10) {
 			ll x = rand()%lim, y = rand()%lim;
-			pts.push_back(Point<ll>(x, y));
+			pts.pb(Point<ll>(x, y));
 		}
 
 		auto polyInt = genPolygon(pts);
@@ -53,9 +53,9 @@ signed main() {
 
 		vector<P> poly;
 		vector<orig::P> poly2;
-		for (auto j: polyInt) {
-			poly.push_back(P(j.x, j.y));
-			poly2.push_back(orig::P(j.x, j.y));
+		for (auto [x, y] : polyInt) {
+			poly.pb(P(x, y));
+			poly2.pb(orig::P(x, y));
 		}
 		auto res1 = circlePoly(c, r, poly);
 		auto res2 = orig::circlePoly(c2, r, poly2);
@@ -65,5 +65,5 @@ signed main() {
 			assert(false);
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

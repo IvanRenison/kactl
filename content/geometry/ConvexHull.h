@@ -22,11 +22,11 @@ Points on the edge of the hull between two other points are not considered part 
 
 typedef Point<ll> P;
 vector<P> convexHull(vector<P> pts) {
-	if (sz(pts) <= 1) return pts;
-	sort(all(pts));
-	vector<P> h(sz(pts)+1);
+	if (SZ(pts) <= 1) return pts;
+	sort(ALL(pts));
+	vector<P> h(SZ(pts)+1);
 	ll s = 0, t = 0;
-	for (ll it = 2; it--; s = --t, reverse(all(pts)))
+	for (ll it = 2; it--; s = --t, reverse(ALL(pts)))
 		for (P p : pts) {
 			while (t >= s + 2 && h[t-2].cross(h[t-1], p) <= 0) t--;
 			h[t++] = p;

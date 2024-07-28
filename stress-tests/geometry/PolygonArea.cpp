@@ -10,7 +10,7 @@ int main() {
 	vector<P> ps = {P{0,0}, P{6,4}, P{0,9}};
 	ll count = 0;
 	P su{0,0};
-	rep(it,0,100000) {
+	fore(it,0,100000) {
 		double x = rand() / (RAND_MAX + 1.0);
 		double y = rand() / (RAND_MAX + 1.0);
 		x *= 10;
@@ -24,5 +24,5 @@ int main() {
 	assert(abs(polygonArea2(ps)/2.0 - approxArea) < 1);
 	auto p = polygonCenter(ps);
 	assert(abs(p.x - su.x) < 1e-1 && abs(p.y - su.y) < 1e-1);
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

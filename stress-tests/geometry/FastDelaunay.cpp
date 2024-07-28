@@ -40,10 +40,10 @@ struct Bumpalloc {
 template<class A, class F>
 void dela(A& v, F f) {
 	auto ret = triangulate(v);
-	assert(sz(ret) % 3 == 0);
+	assert(SZ(ret) % 3 == 0);
 	map<P, ll> lut;
-	rep(i,0,sz(v)) lut[v[i]] = i;
-	for (ll a = 0; a < sz(ret); a += 3) {
+	fore(i,0,SZ(v)) lut[v[i]] = i;
+	for (ll a = 0; a < SZ(ret); a += 3) {
 		f(lut[ret[a]], lut[ret[a+1]], lut[ret[a+2]]);
 	}
 }
@@ -51,15 +51,15 @@ void dela(A& v, F f) {
 ll main1() {
 	srand(2);
 	feenableexcept(29);
-	rep(it,0,3000000) {{
+	fore(it,0,3000000) {{
 		bumpalloc.reset();
 		// if (it % 200 == 0) cerr << endl;
 		vector<P> ps;
 		ll N = rand() % 20 + 1;
 		ll xrange = rand() % 50 + 1;
 		ll yrange = rand() % 50 + 1;
-		rep(i,0,N) {
-			ps.emplace_back(rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange);
+		fore(i,0,N) {
+			ps.pb(P{rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange});
 		}
 
 		auto coc = [&](ll i, ll j, ll k, ll l) {
@@ -73,22 +73,22 @@ ll main1() {
 			return abs(q) < 1e-4;
 		};
 
-		rep(i,0,N) rep(j,0,i) {
+		fore(i,0,N) fore(j,0,i) {
 			// identical
 			if (ps[i] == ps[j]) {  goto fail; }
 		}
-		if (false) rep(i,0,N) rep(j,0,i) rep(k,0,j) {
+		if (false) fore(i,0,N) fore(j,0,i) fore(k,0,j) {
 			// colinear
 			if (ps[i].cross(ps[j], ps[k]) == 0) {  goto fail; }
 		}
-		if (false) rep(i,0,N) rep(j,0,i) rep(k,0,j) rep(l,0,k) {
+		if (false) fore(i,0,N) fore(j,0,i) fore(k,0,j) fore(l,0,k) {
 			// concyclic
 			if (coc(i,j,k,l) || coc(i,j,l,k) || coc(i,l,j,k) || coc(i,l,k,j)) {  goto fail; }
 		}
 
 		bool allColinear = true;
 		if (N >= 3) {
-			rep(i,2,N) if ((ps[i] - ps[0]).cross(ps[1] - ps[0])) allColinear = false;
+			fore(i,2,N) if ((ps[i] - ps[0]).cross(ps[1] - ps[0])) allColinear = false;
 		}
 
 		auto fail = [&]() {
@@ -116,12 +116,12 @@ ll main1() {
 			sumar += ar;
 			P2 c = ccCenter(top(ps[i]), top(ps[j]), top(ps[k]));
 			double ra = ccRadius(top(ps[i]), top(ps[j]), top(ps[k]));
-			rep(l,0,N) {
+			fore(l,0,N) {
 				if ((top(ps[l]) - c).dist() < ra - 1e-5) fail();
 			}
 		});
 		if (!allColinear) {
-			rep(i,0,N) if (!used[i]) fail();
+			fore(i,0,N) if (!used[i]) fail();
 		} else {
 			assert(!any);
 		}
@@ -133,7 +133,7 @@ ll main1() {
 		continue; }
 fail:;
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	// cerr << endl;
 	return 0;
 }
@@ -143,13 +143,13 @@ ll main2() {
 	ll N = 100000;
 	ll xrange = 20000;
 	ll yrange = 20000;
-	rep(i,0,N) {
-		ps.emplace_back(rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange);
+	fore(i,0,N) {
+		ps.pb(P{rand() % (2*xrange) - xrange, rand() % (2*yrange) - yrange});
 	}
-	sort(all(ps));
-	ps.erase(unique(all(ps)), ps.end());
+	sort(ALL(ps));
+	ps.erase(unique(ALL(ps)), ps.end());
 
-	cout << sz(ps) << endl;
+	cout << SZ(ps) << endl;
 	triangulate(ps);
 	return 0;
 }

@@ -8,7 +8,7 @@
  *  Sometimes also represents points or vectors.
  * Usage:
  *  vector<Angle> v = {w[0], w[0].t360() ...}; // sorted
- *  ll j = 0; rep(i,0,n) { while (v[j] < v[i].t180()) ++j; }
+ *  ll j = 0; fore(i,0,n) { while (v[j] < v[i].t180()) ++j; }
  *  // sweeps j such that (j-i) represents the number of positively oriented triangles with vertices at 0 and i
  * Status: Used, works well
  */
