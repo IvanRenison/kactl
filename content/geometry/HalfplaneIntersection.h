@@ -18,32 +18,32 @@
 
 typedef Point<double> P;
 typedef pair<P, P> Line;
-#define sp(a) a.fst, a.snd
-#define ang(a) (a.snd - a.fst).angle()
+#define L(a) a.fst, a.snd
 
-ll angDiff(Line a, Line b) { return sgn(ang(a) - ang(b)); }
-bool cmp(Line a, Line b) {
-	ll s = angDiff(a, b);
-	return (s ? s : sideOf(sp(a), b.fst)) < 0;
+ll angDiff(Line a, Line b) {
+	return sgn((a.snd-a.fst).angle() - (b.snd-b.fst).angle());
 }
-vector<P> halfPlaneIntersection(vector<Line> vs) {
+vector<P> halfPlaneIntersection(vector<Line> v) {
 	const double eps = sqrt(2) * 1e-8;
-	sort(ALL(vs), cmp);
-	vector<Line> deq(SZ(vs) + 5);
-	vector<P> ans(SZ(vs) + 5);
-	deq[0] = vs[0];
-	ll ah = 0, at = 0, n = SZ(vs);
-	fore(i,1,n+1) {
-		if (i == n) vs.push_back(deq[ah]);
-		if (angDiff(vs[i], vs[i - 1]) == 0) continue;
-		while (ah<at && sideOf(sp(vs[i]), ans[at-1], eps) < 0)
-			at--;
-		while (i!=n && ah<at && sideOf(sp(vs[i]),ans[ah],eps)<0)
-			ah++;
-		auto res = lineInter(sp(vs[i]), sp(deq[at]));
-		if (res.first != 1) continue;
-		ans[at++] = res.second, deq[at] = vs[i];
+	sort(ALL(v), [&](Line a, Line b) {
+		ll s = angDiff(a, b);
+		return (s ? s : sideOf(L(a), b.fst)) < 0;
+	});
+	ll ah = 0, at = 0, n = SZ(v);
+	vector<Line> deq(n + 1);
+	vector<P> ans(n);
+	deq[0] = v[0];
+	fore(i, 1, n + 1) {
+		if (i == n) v.pb(deq[ah]);
+		if (angDiff(v[i], v[i - 1])) {
+			while (ah < at && sideOf(L(v[i]), ans[at-1], eps) < 0)
+				at--;
+			while (i < n && ah < at && sideOf(L(v[i]),ans[ah],eps)<0)
+				ah++;
+			auto [r, p] = lineInter(L(v[i]), L(deq[at]));
+			if (r == 1) ans[at++] = p, deq[at] = v[i];
+		}
 	}
-	if (at - ah <= 2) return {};
+	if (at - ah < 3) return {};
 	return {ans.begin() + ah, ans.begin() + at};
 }
