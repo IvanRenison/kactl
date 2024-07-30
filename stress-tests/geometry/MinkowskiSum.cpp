@@ -5,10 +5,9 @@
 
 vector<P> slowMinkowskiSum(vector<P>& p, vector<P>& q) {
 	vector<P> pq;
-	for (P p0 : p) for (P p1 : q) {
-		pq.pb(p0 + p1);
+	for (P pp : p) for (P qq : q) {
+		pq.pb(pp + qq);
 	}
-
 	vector<P> ans = convexHull(pq);
 	return ans;
 }
