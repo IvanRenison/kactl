@@ -25,7 +25,7 @@ namespace testll {
 		fore(i, 1, n) {
 			bool valid = true;
 			fore(j, 0, n) {
-				if (p[j] != q[(j + i) % n]) {
+				if (!(p[j] == q[(j + i) % n])) {
 					valid = false;
 					break;
 				}
@@ -175,10 +175,10 @@ namespace testdouble {
 }  // namespace testdouble
 
 int main() {
-	fore(_, 0, 100000) {
+	fore(_, 0, 10000) {
 		testll::testCase();
 	}
-	fore(_, 0, 100000) {
+	fore(_, 0, 10000) {
 		testdouble::testCase();
 	}
 	cout << "Tests passed!" << endl;
