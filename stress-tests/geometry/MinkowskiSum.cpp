@@ -1,70 +1,185 @@
 #include "../utilities/template.h"
 
-#include "../../content/geometry/ConvexHull.h"
-#include "../../content/geometry/MinkowskiSum.h"
+#include "../../content/geometry/Point.h"
+#include "../../content/geometry/sideOf.h"
 
-vector<P> slowMinkowskiSum(vector<P>& p, vector<P>& q) {
-	vector<P> pq;
-	for (P pp : p) for (P qq : q) {
-		pq.pb(pp + qq);
+namespace testll {
+
+	#include "../../content/geometry/ConvexHull.h"
+	#include "../../content/geometry/MinkowskiSum.h"
+
+	vector<P> slowMinkowskiSum(vector<P>& p, vector<P>& q) {
+		vector<P> pq;
+		for (P pp : p) for (P qq : q) {
+			pq.pb(pp + qq);
+		}
+		vector<P> ans = convexHull(pq);
+		return ans;
 	}
-	vector<P> ans = convexHull(pq);
-	return ans;
-}
 
-// Test if the two polygons are equal
-bool areEq(vector<P>& p, vector<P>& q) {
-	ll n = SZ(p);
-	if (n != SZ(q)) return false;
-	if (p == q) return true;
-	fore(i, 1, n) {
-		bool valid = true;
-		fore(j, 0, n) {
-			if (p[j] != q[(j + i) % n]) {
-				valid = false;
-				break;
+	// Test if the two polygons are equal
+	bool areEq(vector<P>& p, vector<P>& q) {
+		ll n = SZ(p);
+		if (n != SZ(q)) return false;
+		if (p == q) return true;
+		fore(i, 1, n) {
+			bool valid = true;
+			fore(j, 0, n) {
+				if (p[j] != q[(j + i) % n]) {
+					valid = false;
+					break;
+				}
+			}
+			if (valid) return true;
+		}
+		return false;
+	}
+
+	bool isConvexCCW(vector<P>& p) {
+		ll n = SZ(p);
+		fore(i, 0, n) {
+			if (sideOf(p[i], p[(i + 1) % n], p[(i + 2) % n]) < 0) {
+				return false;
 			}
 		}
-		if (valid) return true;
+		return true;
 	}
-	return false;
-}
 
-bool isConvexCCW(vector<P>& p) {
-	ll n = SZ(p);
-	fore(i, 0, n) {
-		if (sideOf(p[i], p[(i + 1) % n], p[(i + 2) % n]) < 0) {
-			return false;
+	void testCase() {
+		ll n = rand() % 100 + 1, m = rand() % 100 + 1;
+
+		vector<P> p, q;
+		fore(_, 0, n) {
+			ll x = rand() % 1000 - 500, y = rand() % 1000 - 500;
+			p.pb(P(x, y));
 		}
-	}
-	return true;
-}
+		fore(_, 0, m) {
+			ll x = rand() % 1000 - 500, y = rand() % 1000 - 500;
+			q.pb(P(x, y));
+		}
 
-void testCasell() {
-	ll n = rand() % 100 + 1, m = rand() % 100 + 1;
+		p = convexHull(p);
+		q = convexHull(q);
 
-	vector<P> p, q;
-	fore(_, 0, n) {
-		ll x = rand() % 1000 - 500, y = rand() % 1000 - 500;
-		p.pb(P(x, y));
-	}
-	fore(_, 0, m) {
-		ll x = rand() % 1000 - 500, y = rand() % 1000 - 500;
-		q.pb(P(x, y));
+		vector<P> ans = minkowskiSum(p, q);
+		assert(isConvexCCW(ans));
+		vector<P> slow_ans = slowMinkowskiSum(p, q);
+		assert(areEq(ans, slow_ans));
 	}
 
-	p = convexHull(p);
-	q = convexHull(q);
+} // namespace testll
 
-	vector<P> ans = minkowskiSum(p, q);
-	assert(isConvexCCW(ans));
-	vector<P> slow_ans = slowMinkowskiSum(p, q);
-	assert(areEq(ans, slow_ans));
-}
+namespace testdouble {
+
+	const double eps = 1e-9;
+
+	typedef Point<double> P;
+
+	bool eq(P a, P b) {
+		return (a - b).dist() < eps;
+	}
+
+	vector<P> convexHull(vector<P> pts) {
+		if (SZ(pts) <= 1) return pts;
+		sort(ALL(pts));
+		vector<P> h(SZ(pts)+1);
+		ll s = 0, t = 0;
+		for (ll it = 2; it--; s = --t, reverse(ALL(pts)))
+			for (P p : pts) {
+				while (t >= s + 2 && h[t-2].cross(h[t-1], p) <= eps) t--;
+				h[t++] = p;
+			}
+		return {h.begin(), h.begin() + t - (t == 2 && eq(h[0], h[1]))};
+	}
+
+	void reorder(vector<P> &p){
+		if (sideOf(p[0], p[1], p[2], eps) < 0) reverse(ALL(p));
+		rotate(p.begin(), min_element(ALL(p)), p.end());
+	}
+	vector<P> minkowskiSum(vector<P> p, vector<P> q) {
+		if (min(SZ(p), SZ(q)) < 3) {
+			vector<P> v;
+			for (P pp : p) for (P qq : q) v.pb(pp + qq);
+			return convexHull(v);
+		}
+		reorder(p), reorder(q);
+		fore(i, 0, 2) p.pb(p[i]), q.pb(q[i]);
+		vector<P> r;
+		ll i = 0, j = 0;
+		while (i + 2 < SZ(p) || j + 2 < SZ(q)) {
+			r.pb(p[i] + q[j]);
+			double cross = (p[i + 1] - p[i]).cross(q[j + 1] - q[j]);
+			i += cross >= -eps, j += cross <= eps;
+		}
+		return r;
+	}
+
+	vector<P> slowMinkowskiSum(vector<P>& p, vector<P>& q) {
+		vector<P> pq;
+		for (P pp : p) for (P qq : q) {
+			pq.pb(pp + qq);
+		}
+		vector<P> ans = convexHull(pq);
+		return ans;
+	}
+
+	// Test if the two polygons are equal
+	bool areEq(vector<P>& p, vector<P>& q) {
+		ll n = SZ(p);
+		if (n != SZ(q)) return false;
+		if (p == q) return true;
+		fore(i, 1, n) {
+			bool valid = true;
+			fore(j, 0, n) {
+				if (!eq(p[j], q[(j + i) % n])) {
+					valid = false;
+					break;
+				}
+			}
+			if (valid) return true;
+		}
+		return false;
+	}
+
+	bool isConvexCCW(vector<P>& p) {
+		ll n = SZ(p);
+		fore(i, 0, n) {
+			if (sideOf(p[i], p[(i + 1) % n], p[(i + 2) % n], eps) < 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	void testCase() {
+		ll n = rand() % 100 + 1, m = rand() % 100 + 1;
+
+		vector<P> p, q;
+		fore(_, 0, n) {
+			double x = (double)(rand() % 1000 - 500) / 10.0, y = (double)(rand() % 1000 - 500) / 10.0;
+			p.pb(P(x, y));
+		}
+		fore(_, 0, m) {
+			double x = (double)(rand() % 1000 - 500) / 10.0, y = (double)(rand() % 1000 - 500) / 10.0;
+			q.pb(P(x, y));
+		}
+
+		p = convexHull(p);
+		q = convexHull(q);
+
+		vector<P> ans = minkowskiSum(p, q);
+		assert(isConvexCCW(ans));
+		vector<P> slow_ans = slowMinkowskiSum(p, q);
+		assert(areEq(ans, slow_ans));
+	}
+}  // namespace testdouble
 
 int main() {
 	fore(_, 0, 100000) {
-		testCasell();
+		testll::testCase();
+	}
+	fore(_, 0, 100000) {
+		testdouble::testCase();
 	}
 	cout << "Tests passed!" << endl;
 }
