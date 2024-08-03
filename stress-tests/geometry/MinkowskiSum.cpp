@@ -1,4 +1,5 @@
 #include "../utilities/template.h"
+#include "./utilities.h"
 
 #include "../../content/geometry/Point.h"
 #include "../../content/geometry/sideOf.h"
@@ -15,34 +16,6 @@ namespace testll {
 		}
 		vector<P> ans = convexHull(pq);
 		return ans;
-	}
-
-	// Test if the two polygons are equal
-	bool areEq(vector<P>& p, vector<P>& q) {
-		ll n = SZ(p);
-		if (n != SZ(q)) return false;
-		if (p == q) return true;
-		fore(i, 1, n) {
-			bool valid = true;
-			fore(j, 0, n) {
-				if (!(p[j] == q[(j + i) % n])) {
-					valid = false;
-					break;
-				}
-			}
-			if (valid) return true;
-		}
-		return false;
-	}
-
-	bool isConvexCCW(vector<P>& p) {
-		ll n = SZ(p);
-		fore(i, 0, n) {
-			if (sideOf(p[i], p[(i + 1) % n], p[(i + 2) % n]) < 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	void testCase() {
@@ -64,7 +37,7 @@ namespace testll {
 		vector<P> ans = minkowskiSum(p, q);
 		assert(isConvexCCW(ans));
 		vector<P> slow_ans = slowMinkowskiSum(p, q);
-		assert(areEq(ans, slow_ans));
+		assert(polygonEq(ans, slow_ans));
 	}
 
 } // namespace testll
@@ -123,34 +96,6 @@ namespace testdouble {
 		return ans;
 	}
 
-	// Test if the two polygons are equal
-	bool areEq(vector<P>& p, vector<P>& q) {
-		ll n = SZ(p);
-		if (n != SZ(q)) return false;
-		if (p == q) return true;
-		fore(i, 1, n) {
-			bool valid = true;
-			fore(j, 0, n) {
-				if (!eq(p[j], q[(j + i) % n])) {
-					valid = false;
-					break;
-				}
-			}
-			if (valid) return true;
-		}
-		return false;
-	}
-
-	bool isConvexCCW(vector<P>& p) {
-		ll n = SZ(p);
-		fore(i, 0, n) {
-			if (sideOf(p[i], p[(i + 1) % n], p[(i + 2) % n], eps) < 0) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	void testCase() {
 		ll n = rand() % 100 + 1, m = rand() % 100 + 1;
 
@@ -168,9 +113,9 @@ namespace testdouble {
 		q = convexHull(q);
 
 		vector<P> ans = minkowskiSum(p, q);
-		assert(isConvexCCW(ans));
+		assert(isConvexCCW(ans, eps));
 		vector<P> slow_ans = slowMinkowskiSum(p, q);
-		assert(areEq(ans, slow_ans));
+		assert(polygonEq(ans, slow_ans, eps));
 	}
 }  // namespace testdouble
 
