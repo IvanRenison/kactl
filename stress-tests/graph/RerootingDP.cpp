@@ -112,27 +112,27 @@ int main() {
 			return {a.x * ndata[p] % (ei < 0 ? MOD : abs(MOD - g[p][ei]) + 2)};
 			// return a;
 		};
-		auto v1 = [&acc](vd& exc, vd& a, Data& neut, ll node) {
+		auto v1 = [&acc](vd& exc, vd& a, Data& ne, ll v) {
 			ll d = SZ(a);
-			fill(begin(exc), begin(exc) + d, neut);
+			fill(begin(exc), begin(exc) + d, ne);
 			for (ll b = bit_width((unsigned)d) - 1; b >= 0; b--) {
 				for (ll i = d-1; i >= 0; i--)exc[i] = exc[i >> 1];
-				fore(i,0,d-(d&!b))acc(exc[(i>>b)^1],a[i],node,i);
+				fore(i,0,d-(d&!b))acc(exc[(i>>b)^1],a[i],v,i);
 			}
 		};
-		auto v2 = [&extend,&merge](vd&exc, vd a, Data& neut,ll v) {
+		auto v2 = [&extend,&merge](vd&exc, vd a, Data& ne,ll v) {
 			ll d = SZ(a);
-			vd p(d + 1, neut), s(d + 1, neut);
+			vd p(d + 1, ne), s(d + 1, ne);
 			fore(i,0,d)p[i+1]=merge(p[i],a[i]=extend(a[i],v,i),v);
 			for (ll i=d-1;i>=0;i--) s[i] = merge(a[i],s[i+1],v);
 			fore(i, 0, d) exc[i] = merge(p[i], s[i + 1], v);
 		};
-		auto v3 = [&acc, &unacc](vd& exc, vd& a, Data& neut, ll node) {
+		auto v3 = [&acc, &unacc](vd& exc, vd& a, Data& ne, ll v) {
 			ll d = SZ(a);
-			Data b = neut;
-			fore(i, 0, d) acc(b, a[i], node, i);
+			Data b = ne;
+			fore(i, 0, d) acc(b, a[i], v, i);
 			fill(begin(exc), begin(exc) + d, b);
-			fore(i, 0, d) unacc(exc[i], a[i], node, i);
+			fore(i, 0, d) unacc(exc[i], a[i], v, i);
 		};
 		auto [rootDP1, fdp1, bdp1] = reroot(g, neuts, v1, acc, finalize);
 		auto [rootDP2, fdp2, bdp2] = reroot(g, neuts, v2, acc, finalize);
