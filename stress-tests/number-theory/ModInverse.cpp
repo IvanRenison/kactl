@@ -13,7 +13,7 @@ bool isPrime(ll x) {
 	return true;
 }
 int main() {
-	rep(it,1,1000) {
+	fore(it,1,1000) {
 		ll mod = it, LIM=1000;
 		if (!isPrime(mod)) continue;
 		#include "../../content/number-theory/ModInverse.h"
@@ -23,4 +23,3 @@ int main() {
 	}
 	cout<<"Tests pass!"<<endl;
 }
-

@@ -27,10 +27,10 @@ ll divsum_naive(ll to, ll c, ll k, ll m) {
 }
 
 void compare() {
-	rep(to,0,30) {
-		rep(c,-30,30) {
-			rep(k,-30,30) {
-				rep(m,1,30) {
+	fore(to,0,30) {
+		fore(c,-30,30) {
+			fore(k,-30,30) {
+				fore(m,1,30) {
 					ll a = modsum(to, c, k, m);
 					ll b = modsum_naive(to, c, k, m);
 					if (a != b) {
@@ -44,10 +44,10 @@ void compare() {
 }
 
 void compare2() {
-	rep(to,0,30) {
-		rep(c,0,30) {
-			rep(k,0,30) {
-				rep(m,1,30) {
+	fore(to,0,30) {
+		fore(c,0,30) {
+			fore(k,0,30) {
+				fore(m,1,30) {
 					ll a = divsum(to, c, k, m);
 					ll b = divsum_naive(to, c, k, m);
 					if (a != b) {
@@ -63,7 +63,7 @@ void compare2() {
 int main() {
 	compare(); compare2();
 	assert(modsum((ll)1e18, 1, 2, 3) == (ll)1e18);
-	rep(i,0,50) {
+	fore(i,0,50) {
 		ll t = (ll)rand() << 3;
 		ll c = (ll)rand() << 2;
 		ll k = (ll)rand() << 2;
