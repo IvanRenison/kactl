@@ -16,10 +16,10 @@ ll modpow(ll a, ll e) {
 #include "../../content/numerical/BerlekampMassey.h"
 
 template<class F>
-void gen(vector<ll>& v, ll at, F f) {
-	if (at == sz(v)) f();
+void gen(vi& v, ll at, F f) {
+	if (at == SZ(v)) f();
 	else {
-		rep(i,0,mod) {
+		fore(i,0,mod) {
 			v[at] = i;
 			gen(v, at+1, f);
 		}
@@ -27,24 +27,24 @@ void gen(vector<ll>& v, ll at, F f) {
 }
 
 int main() {
-	rep(n,1,5) {
-		vector<ll> start(n);
-		vector<ll> coef(n), coef2;
-		vector<ll> full(2*n);
+	fore(n,1,5) {
+		vi start(n);
+		vi coef(n), coef2;
+		vi full(2*n);
 		gen(start, 0, [&]() {
 		gen(coef, 0, [&]() {
-			rep(i,0,n) full[i] = start[i];
-			rep(i,n,2*n) full[i] = 0;
-			rep(i,n,2*n) rep(j,0,n) full[i] = (full[i] + coef[j] * full[i-1 - j]) % mod;
+			fore(i,0,n) full[i] = start[i];
+			fore(i,n,2*n) full[i] = 0;
+			fore(i,n,2*n) fore(j,0,n) full[i] = (full[i] + coef[j] * full[i-1 - j]) % mod;
 			coef2 = berlekampMassey(full);
-// rep(i,0,2*n) cerr << full[i] << ' '; cerr << endl;
-// rep(i,0,n) cerr << coef[i] << ' '; cerr << endl;
-// rep(i,0,sz(coef2)) cerr << coef2[i] << ' '; cerr << endl;
-			if (sz(coef2) == n) assert(coef == coef2);
-// rep(i,0,n) cerr << full[i] << ' ';
-			rep(i,n,2*n) {
+// fore(i,0,2*n) cerr << full[i] << ' '; cerr << endl;
+// fore(i,0,n) cerr << coef[i] << ' '; cerr << endl;
+// fore(i,0,SZ(coef2)) cerr << coef2[i] << ' '; cerr << endl;
+			if (SZ(coef2) == n) assert(coef == coef2);
+// fore(i,0,n) cerr << full[i] << ' ';
+			fore(i,n,2*n) {
 				ll x = 0;
-				rep(j,0,sz(coef2)) x = (x + coef2[j] * full[i-1 - j]) % mod;
+				fore(j,0,SZ(coef2)) x = (x + coef2[j] * full[i-1 - j]) % mod;
 				// cerr << x << ' ';
 				assert(x == full[i]);
 			}
@@ -58,7 +58,7 @@ int main() {
 }
 
 ll main2() {
-	vector<ll> v{0, 1, 1, 3, 5, 11};
+	vi v{0, 1, 1, 3, 5, 11};
 	auto v2 = berlekampMassey(v);
 	for(auto &x: v2) cout << x << ' ';
 	cout << endl;

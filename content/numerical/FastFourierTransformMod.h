@@ -15,22 +15,21 @@
 
 #include "FastFourierTransform.h"
 
-typedef vector<ll> vl;
-template<ll M> vl convMod(const vl &a, const vl &b) {
+template<ll M> vi convMod(const vi &a, const vi &b) {
 	if (a.empty() || b.empty()) return {};
-	vl res(sz(a) + sz(b) - 1);
-	ll B=64-__builtin_clzll(sz(res)), n=1<<B, cut=ll(sqrt(M));
+	vi res(SZ(a) + SZ(b) - 1);
+	ll B=64-__builtin_clzll(SZ(res)), n=1<<B, cut=ll(sqrt(M));
 	vector<C> L(n), R(n), outs(n), outl(n);
-	rep(i,0,sz(a)) L[i] = C((ll)a[i] / cut, (ll)a[i] % cut);
-	rep(i,0,sz(b)) R[i] = C((ll)b[i] / cut, (ll)b[i] % cut);
+	fore(i,0,SZ(a)) L[i] = C((ll)a[i] / cut, (ll)a[i] % cut);
+	fore(i,0,SZ(b)) R[i] = C((ll)b[i] / cut, (ll)b[i] % cut);
 	fft(L), fft(R);
-	rep(i,0,n) {
+	fore(i,0,n) {
 		ll j = -i & (n - 1);
 		outl[j] = (L[i] + conj(L[j])) * R[i] / (2.0 * n);
 		outs[j] = (L[i] - conj(L[j])) * R[i] / (2.0 * n) / 1i;
 	}
 	fft(outl), fft(outs);
-	rep(i,0,sz(res)) {
+	fore(i,0,SZ(res)) {
 		ll av = ll(real(outl[i])+.5), cv = ll(imag(outs[i])+.5);
 		ll bv = ll(imag(outl[i])+.5) + ll(real(outs[i])+.5);
 		res[i] = ((av % M * cut + bv) % M * cut + cv) % M;
