@@ -17,9 +17,9 @@ vi cover(pair<T, T> G, vector<pair<T, T>> I) {
 	T cur = G.fst;
 	ll at = 0;
 	while (cur < G.snd) { // (A)
-		pair<T, ll> mx = make_pair(cur, -1);
+		pair<T, ll> mx = {cur, -1};
 		while (at < SZ(I) && I[S[at]].fst <= cur) {
-			mx = max(mx, make_pair(I[S[at]].snd, S[at]));
+			mx = max(mx, {I[S[at]].snd, S[at]});
 			at++;
 		}
 		if (mx.snd == -1) return {};
