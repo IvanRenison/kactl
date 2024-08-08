@@ -29,10 +29,10 @@ struct LPSolver {
 	vvd D;
 
 	LPSolver(const vvd& A, const vd& b, const vd& c) :
-		m(SZ(b)), n(SZ(c)), N(n+1), B(m), D(m+2, vd(n+2)) {
-			fore(i,0,m) fore(j,0,n) D[i][j] = A[i][j];
-			fore(i,0,m) {B[i]=n+i; D[i][n]=-1; D[i][n+1]=b[i];}
-			fore(j,0,n) { N[j] = j; D[m][j] = -c[j]; }
+			m(SZ(b)), n(SZ(c)), N(n+1), B(m), D(m+2, vd(n+2)) {
+		fore(i,0,m) fore(j,0,n) D[i][j] = A[i][j];
+		fore(i,0,m) {B[i]=n+i; D[i][n]=-1; D[i][n+1]=b[i];}
+		fore(j,0,n) { N[j] = j; D[m][j] = -c[j]; }
 			N[n] = -1; D[m+1][n] = 1;
 		}
 

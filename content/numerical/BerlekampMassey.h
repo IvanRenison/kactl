@@ -29,7 +29,7 @@ vi berlekampMassey(vi s) {
 		T = C; ll coef = d * modpow(b, mod-2) % mod;
 		fore(j,m,n) C[j] = (C[j] - coef * B[j - m]) % mod;
 		if (2 * L > i) continue;
-		L = i + 1 - L; B = T; b = d; m = 0;
+		L = i + 1 - L, B = T, b = d, m = 0;
 	}
 
 	C.resize(L + 1); C.erase(C.begin());
