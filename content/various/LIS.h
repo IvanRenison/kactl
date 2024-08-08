@@ -9,17 +9,17 @@
 
 template<class I> vi lis(const vector<I>& S) {
 	if (S.empty()) return {};
-	vi prev(sz(S));
+	vi prev(SZ(S));
 	typedef pair<I, ll> p;
 	vector<p> res;
-	rep(i,0,sz(S)) {
+	fore(i,0,SZ(S)) {
 		// change 0 -> i for longest non-decreasing subsequence
-		auto it = lower_bound(all(res), p{S[i], 0});
-		if (it == res.end()) res.emplace_back(), it = res.end()-1;
+		auto it = lower_bound(ALL(res), p{S[i], 0});
+		if (it == res.end()) res.pb({}), it = res.end()-1;
 		*it = {S[i], i};
-		prev[i] = it == res.begin() ? 0 : (it-1)->second;
+		prev[i] = it == res.begin() ? 0 : (it-1)->snd;
 	}
-	ll L = sz(res), cur = res.back().second;
+	ll L = SZ(res), cur = res.back().snd;
 	vi ans(L);
 	while (L--) ans[L] = cur, cur = prev[cur];
 	return ans;

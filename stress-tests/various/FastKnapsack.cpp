@@ -19,11 +19,11 @@ int main() {
 	const ll MAX_N = 10;
 	const ll MAX_W = 10;
 	const ll iters = 1000000;
-	rep(it,0,iters) {
+	fore(it,0,iters) {
 		ll n = rand() % MAX_N;
 		ll maxw = rand() % MAX_W + 1;
 		vi w(n);
-		rep(i,0,n)
+		fore(i,0,n)
 			w[i] = rand()%(maxw+1);
 		ll t = rand() % (MAX_N*maxw);
 		assert(naive(w,t) == knapsack(w,t));

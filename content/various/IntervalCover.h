@@ -11,20 +11,20 @@
 
 template<class T>
 vi cover(pair<T, T> G, vector<pair<T, T>> I) {
-	vi S(sz(I)), R;
-	iota(all(S), 0);
-	sort(all(S), [&](ll a, ll b) { return I[a] < I[b]; });
-	T cur = G.first;
+	vi S(SZ(I)), R;
+	iota(ALL(S), 0);
+	sort(ALL(S), [&](ll a, ll b) { return I[a] < I[b]; });
+	T cur = G.fst;
 	ll at = 0;
-	while (cur < G.second) { // (A)
+	while (cur < G.snd) { // (A)
 		pair<T, ll> mx = make_pair(cur, -1);
-		while (at < sz(I) && I[S[at]].first <= cur) {
-			mx = max(mx, make_pair(I[S[at]].second, S[at]));
+		while (at < SZ(I) && I[S[at]].fst <= cur) {
+			mx = max(mx, make_pair(I[S[at]].snd, S[at]));
 			at++;
 		}
-		if (mx.second == -1) return {};
-		cur = mx.first;
-		R.push_back(mx.second);
+		if (mx.snd == -1) return {};
+		cur = mx.fst;
+		R.pb(mx.snd);
 	}
 	return R;
 }
