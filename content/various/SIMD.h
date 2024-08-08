@@ -51,7 +51,7 @@ int example_filteredDotProduct(int n, short* a, short* b) {
 		acc = _mm256_add_epi64(_mm256_unpacklo_epi32(vp, zero),
 			_mm256_add_epi64(acc, _mm256_unpackhi_epi32(vp, zero)));
 	}
-	union {int v[4]; mi m;} u; u.m = acc; fore(i,0,4) r += u.v[i];
+	union {int v[4];mi m;} u; u.m=acc; fore(i,0,4) r += u.v[i];
 	for (;i<n;++i) if (a[i] < b[i]) r += a[i]*b[i]; // <- equiv
 	return r;
 }
