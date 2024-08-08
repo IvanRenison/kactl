@@ -34,7 +34,7 @@ int main() {
 			rep(bi,0,(1 << n)) {
 				ll si = (ll)bitset<32>(bi).count();
 				if (si <= sz(inds)) continue;
-				ll prev = INT_MIN;
+				ll prev = LLONG_MIN;
 				rep(i,0,n) if (bi & (1 << i)) {
 					if (!lt(prev, v[i])) goto next;
 					prev = v[i];
