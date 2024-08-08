@@ -9,9 +9,9 @@
 #pragma once
 
 array<vi, 2> manacher(const string& s) {
-	ll n = sz(s);
+	ll n = SZ(s);
 	array<vi,2> p = {vi(n+1), vi(n)};
-	rep(z,0,2) for (ll i=0,l=0,r=0; i < n; i++) {
+	fore(z,0,2) for (ll i=0,l=0,r=0; i < n; i++) {
 		ll t = r-i+!z;
 		if (i<r) p[z][i] = min(t, p[z][l+t]);
 		ll L = i-p[z][i], R = i+p[z][i]-!z;

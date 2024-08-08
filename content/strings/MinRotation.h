@@ -11,8 +11,8 @@
 #pragma once
 
 ll minRotation(string s) {
-	ll a=0, N=sz(s); s += s;
-	rep(b,0,N) rep(k,0,N) {
+	ll a=0, N=SZ(s); s += s;
+	fore(b,0,N) fore(k,0,N) {
 		if (a+k == b || s[a+k] < s[b+k]) {
 			b += max(0ll, k-1);
 			break;
