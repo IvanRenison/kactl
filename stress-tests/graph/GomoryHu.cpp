@@ -43,7 +43,7 @@ void test(ll N, ll mxFlow, ll iters) {
 					dfs(start, i[0], cur, min(mn, i[1]));
 			}
 		});
-		dfs(0, 0, -1, INT_MAX);
+		dfs(0, 0, -1, LLONG_MAX);
 
 		// Check that the lightest edge agrees with GlobalMinCut.
 		if (n >= 2) {

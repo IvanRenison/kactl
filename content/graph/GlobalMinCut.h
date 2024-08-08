@@ -10,7 +10,7 @@
 #pragma once
 
 pair<ll, vi> globalMinCut(vector<vi> mat) {
-	pair<ll, vi> best = {INT_MAX, {}};
+	pair<ll, vi> best = {LLONG_MAX, {}};
 	ll n = SZ(mat);
 	vector<vi> co(n);
 	fore(i,0,n) co[i] = {i};
@@ -18,7 +18,7 @@ pair<ll, vi> globalMinCut(vector<vi> mat) {
 		vi w = mat[0];
 		size_t s = 0, t = 0;
 		fore(it,0,n-ph) { // O(V^2) -> O(E log V) with prio. queue
-			w[t] = INT_MIN;
+			w[t] = LLONG_MIN;
 			s = t, t = max_element(ALL(w)) - w.begin();
 			fore(i,0,n) w[i] += mat[t][i];
 		}
@@ -26,7 +26,7 @@ pair<ll, vi> globalMinCut(vector<vi> mat) {
 		co[s].insert(co[s].end(), ALL(co[t]));
 		fore(i,0,n) mat[s][i] += mat[t][i];
 		fore(i,0,n) mat[i][s] = mat[s][i];
-		mat[0][t] = INT_MIN;
+		mat[0][t] = LLONG_MIN;
 	}
 	return best;
 }
