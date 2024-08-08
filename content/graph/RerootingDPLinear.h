@@ -3,18 +3,24 @@
  * Date: 2024-07-06
  * License: CC0
  * Description: Use two lambdas instead of one to make
- * rerooting linear. Usually only worth it for non- $\mathcal{O}(1)$ lambdas.
+ * rerooting linear. Usually only worth it for non-
+ * $\mathcal{O}(1)$ lambdas. Keep \texttt{finalize}.
  *
  * \texttt{merge} should, given accumulated$(p, S)$ and
  * accumulated$(p, T)$, with $S$ and $T$ disjoint, return
  * accumulated$(p, S \cup T)$.
  *
- * \texttt{extend} should, given the answer for \texttt{g[p][ei]}, return
- * \texttt{b} such that
- * \texttt{merge(neuts[p], b, p)} = accumulated$(p, \{\texttt{g[p][ei]}\})$.
+ * \texttt{extend} should, given the answer for
+ * \texttt{g[p][ei]}, return \texttt{b} such that
+ * \texttt{merge(neuts[p], b, p)} = accumulated$(p,
+ * \{\texttt{g[p][ei]}\})$.
  * Time: Slow O(n)
  */
-void solve() {
+#pragma once
+
+#include "RerootingDP.h"
+
+void usage2() {
 	auto merge = [](const Data& a, const Data& b, ll p)->Data {
 		return Data{};
 	};

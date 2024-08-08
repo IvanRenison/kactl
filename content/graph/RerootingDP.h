@@ -3,21 +3,26 @@
  * Date: 2024-07-06
  * License: CC0
  * Source: https://codeforces.com/blog/entry/124286
- * Description: \texttt{finalize} is applied before returning answer
- * for \texttt{node} if \texttt{g[node][p\_ei]} was its parent; usually
- * identity function.
  *
- * Let accumulated$(p, S) = a$ such that \texttt{finalize(a, ...)} is the
- * answer for $p$ if $S$ were its only children. \texttt{merge} should, given
- * accumulated$(p, S)$ and the answer for
- * \texttt{g[p][ei]}, compute accumulated$(p,S\cup\{\texttt{g[p][ei]}\})$ in \texttt{p\_ans}.
+ * Description: \texttt{finalize} is applied before returning
+ * answer for \texttt{node} if \texttt{g[node][p\_ei]} was its
+ * parent; usually identity function.
+ *
+ * Let accumulated$(p, S) = a$ such that \texttt{finalize(a,
+ * ...)} is the answer for $p$ if $S$ were its only children.
+ * \texttt{merge} should, given accumulated$(p, S)$ and the
+ * answer for \texttt{g[p][ei]}, compute
+ * accumulated$(p,S\cup\{\texttt{g[p][ei]}\})$ in
+ * \texttt{p\_ans}.
  *
  * \texttt{neuts[p]} should be accumulated$(p, \varnothing)$.
  *
- * Returns a tuple $(\texttt{rootDP}, \texttt{fdp}, \texttt{bdp})$ where
- * \texttt{rootDP[v]} is the answer for the whole tree with \texttt{v} as root,
- * \texttt{fdp[v]} is the answer for \texttt{g[v][ei]} if \texttt{v} is the root,
- * and \texttt{bdp[v]} is the answer for \texttt{v} if \texttt{g[v][ei]} is the root.
+ * Returns a tuple $(\texttt{rootDP}, \texttt{fdp},
+ * \texttt{bdp})$ where \texttt{rootDP[v]} is the answer for
+ * the whole tree with \texttt{v} as root, \texttt{fdp[v]} is
+ * the answer for \texttt{g[v][ei]} if \texttt{v} is the root,
+ * and \texttt{bdp[v]} is the answer for \texttt{v} if
+ * \texttt{g[v][ei]} is the root.
  * Time: Fast O(n \log n) assuming O(1) lambdas.
  * Status: stress-tested
  */
@@ -52,7 +57,7 @@ auto reroot(vector<vi>& g, vd& neuts, auto& exclusive,
 	return tuple(root_dp, fdp, bdp);
 }
 
-void solve() {
+void usage() {
 	auto finalize = [&](Data& a, ll node, ll p_ei) -> Data {
 		return a;
 	};

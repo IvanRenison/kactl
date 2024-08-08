@@ -3,15 +3,22 @@
  * Date: 2024-07-06
  * License: CC0
  * Description: Make rerooting linear by defining the inverse
- * of \texttt{acc}.
+ * of \texttt{acc}. Keep \texttt{finalize}.
  *
- * \texttt{unacc} should, given accumulated$(p, \texttt{g[p]})$ and the answer
- * for \texttt{g[p][ei]}, compute
- * accumulated$(p, \texttt{g[p]}\setminus\{\texttt{g[p][ei]}\})$ in \texttt{ans}.
+ * \texttt{unacc} should, given accumulated$(p, \texttt{g[p]})$
+ * and the answer for \texttt{g[p][ei]}, compute
+ * accumulated$(p,
+ * \texttt{g[p]}\setminus\{\texttt{g[p][ei]}\})$ in
+ * \texttt{ans}.
  * Time: Fast O(n)
  */
+#pragma once
 
-void solve() {
+#include "RerootingDP.h"
+
+void usage3() {
+	auto acc = [&](Data& p_ans, const Data& child_ans, ll p,
+				   ll ei) -> void { p_ans = Data{}; };
 	auto unacc = [&](Data& ans, const Data& child_ans, ll p,
 					 ll ei) -> void { ans = Data{}; };
 	auto exclusive=[&acc,&unacc](vd& exc,vd& a,Data& ne,ll v) {
