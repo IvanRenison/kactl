@@ -12,12 +12,12 @@ ll randExp() {
 }
 
 int main(int argc, char** argv) {
-	rep(it,0,10000000) {
+	fore(it,0,10000000) {
 		ll a = randExp() * (rand() % 2 ? 1 : -1);
 		ll b = randExp() * (rand() % 2 ? 1 : -1);
 		ll m = randExp() + 1;
 		ll n = randExp() + 1;
-		ll g = __gcd(m, n);
+		ll g = gcd(m, n);
 		if (n * (__int128_t)m > LLONG_MAX) continue;
 		if (n * (__int128_t)m > (1LL << 62) && (abs(a) > m || abs(b) > n)) continue;
 		if ((a - b) % g == 0) {

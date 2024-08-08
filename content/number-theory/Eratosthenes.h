@@ -17,6 +17,6 @@ vi eratosthenesSieve(ll lim) {
 	for (ll i = 3; i*i < lim; i += 2) if (isprime[i])
 		for (ll j = i*i; j < lim; j += i*2) isprime[j] = 0;
 	vi pr;
-	rep(i,2,lim) if (isprime[i]) pr.push_back(i);
+	fore(i,2,lim) if (isprime[i]) pr.pb(i);
 	return pr;
 }

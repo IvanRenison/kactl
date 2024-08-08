@@ -6,7 +6,7 @@ vi eratosthenes(ll LIM) {
 	vi pr({2}), sieve(S + 1); pr.reserve(LIM / (ll)log(LIM));
 	vector<array<ll, 2>> cp;
 	for (ll i = 3; i <= S; i += 2) if (!sieve[i]) {
-		cp.push_back({i, i * i / 2});
+		cp.pb({i, i * i / 2});
 		for (ll j = i * i; j <= S; j += 2 * i) sieve[j] = 1;
 	}
 	for (ll L = 1; L <= R; L += S) {
@@ -14,8 +14,8 @@ vi eratosthenes(ll LIM) {
 		// array<bool, S> block{};
 		for (auto &[p, idx] : cp)
 			for (ll i=idx; i < S+L; idx = (i+=p)) block[i-L] = 1;
-		rep(i,0,min(S, R - L))
-			if (!block[i]) pr.push_back((L + i) * 2 + 1);
+		fore(i,0,min(S, R - L))
+			if (!block[i]) pr.pb((L + i) * 2 + 1);
 	}
 	return pr;
 }

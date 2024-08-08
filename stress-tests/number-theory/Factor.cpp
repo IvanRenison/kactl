@@ -21,18 +21,18 @@ int main() {
 	assert(factor(1).empty());
 	assert(factor(2) == vector<ull>{2});
 	assert((factor(2299) == vector<ull>{11, 19, 11}));
-	rep(n,2,1e5) {
+	fore(n,2,1e5) {
 		auto res = factor(n);
 		assertValid(n, res);
 		res = factor(n*ll(n));
 		assertValid(n*ll(n), res);
 	}
-	rep(i,2,1e5) {
+	fore(i,2,1e5) {
 		ull n = 1 + (uni()%(3ul<<61));
 		auto res = factor(n);
 		assertValid(n, res);
 	}
-	rep(i,0,1e5) {
+	fore(i,0,1e5) {
 		// max number that modmul can handle
 		ull n = 7268172458553106874 - i;
 		auto res = factor(n);
