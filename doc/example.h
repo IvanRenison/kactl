@@ -20,7 +20,7 @@
 
 struct ExampleStructure {
 	ll alpha;
-	pii nodes;
+	ii nodes;
 	vi edges;
 };
 
@@ -28,7 +28,7 @@ ll exampleFunction1(vi mice, ll* cats, ll catsCount) {
 	/// This is a stupid comment that will be removed.
 	ll sum = 0;
 
-	rep(i, 1, catsCount) {
+	fore(i, 1, catsCount) {
 		// This comment will be kept!
 		for (auto it : mice) {
 			/// This will be removed.
