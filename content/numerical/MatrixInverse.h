@@ -11,38 +11,38 @@
 #pragma once
 
 ll matInv(vector<vector<double>>& A) {
-	ll n = sz(A); vi col(n);
+	ll n = SZ(A); vi col(n);
 	vector<vector<double>> tmp(n, vector<double>(n));
-	rep(i,0,n) tmp[i][i] = 1, col[i] = i;
+	fore(i,0,n) tmp[i][i] = 1, col[i] = i;
 
-	rep(i,0,n) {
+	fore(i,0,n) {
 		ll r = i, c = i;
-		rep(j,i,n) rep(k,i,n)
+		fore(j,i,n) fore(k,i,n)
 			if (fabs(A[j][k]) > fabs(A[r][c]))
 				r = j, c = k;
 		if (fabs(A[r][c]) < 1e-12) return i;
 		A[i].swap(A[r]); tmp[i].swap(tmp[r]);
-		rep(j,0,n)
+		fore(j,0,n)
 			swap(A[j][i], A[j][c]), swap(tmp[j][i], tmp[j][c]);
 		swap(col[i], col[c]);
 		double v = A[i][i];
-		rep(j,i+1,n) {
+		fore(j,i+1,n) {
 			double f = A[j][i] / v;
 			A[j][i] = 0;
-			rep(k,i+1,n) A[j][k] -= f*A[i][k];
-			rep(k,0,n) tmp[j][k] -= f*tmp[i][k];
+			fore(k,i+1,n) A[j][k] -= f*A[i][k];
+			fore(k,0,n) tmp[j][k] -= f*tmp[i][k];
 		}
-		rep(j,i+1,n) A[i][j] /= v;
-		rep(j,0,n) tmp[i][j] /= v;
+		fore(j,i+1,n) A[i][j] /= v;
+		fore(j,0,n) tmp[i][j] /= v;
 		A[i][i] = 1;
 	}
 
 	/// forget A at this point, just eliminate tmp backward
-	for (ll i = n-1; i > 0; --i) rep(j,0,i) {
+	for (ll i = n-1; i > 0; --i) fore(j,0,i) {
 		double v = A[j][i];
-		rep(k,0,n) tmp[j][k] -= v*tmp[i][k];
+		fore(k,0,n) tmp[j][k] -= v*tmp[i][k];
 	}
 
-	rep(i,0,n) rep(j,0,n) A[col[i]][col[j]] = tmp[i][j];
+	fore(i,0,n) fore(j,0,n) A[col[i]][col[j]] = tmp[i][j];
 	return n;
 }

@@ -4,11 +4,11 @@ const ll mod = 1000000007;
 
 #include "../../content/numerical/FastFourierTransformMod.h"
 
-vl simpleConv(vl a, vl b) {
+vi simpleConv(vi a, vi b) {
 	if (a.empty() || b.empty()) return {};
-	ll s = sz(a) + sz(b) - 1;
-	vl c(s);
-	rep(i,0,sz(a)) rep(j,0,sz(b))
+	ll s = SZ(a) + SZ(b) - 1;
+	vi c(s);
+	fore(i,0,SZ(a)) fore(j,0,SZ(b))
 		c[i+j] = (c[i+j] + (ll)a[i] * b[j]) % mod;
 	for(auto &x: c) if (x < 0) x += mod;
 	return c;
@@ -23,8 +23,8 @@ ll ra() {
 }
 
 int main() {
-	vl a, b;
-	rep(it,0,6000) {
+	vi a, b;
+	fore(it,0,6000) {
 		a.resize(ra() % 100);
 		b.resize(ra() % 100);
 		for(auto &x: a) x = ra() % mod;
