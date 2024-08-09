@@ -11,6 +11,7 @@ auto reroot(vector<vi>& g, vd& neuts, auto& exclusive,
 	ll n = SZ(g), pei;
 	vd root_dp(n), exc(n), dp = neuts;
 	vector<vd> fdp(n), bdp(n);
+	if(n==1) return tuple(vd{finalize(neuts[0],0,-1)},fdp,bdp);
 	vi o, p(n);
 	o.reserve(n), o.pb(0);
 	fore(i, 0, n) for (ll v : g[o[i]]) if (v != p[o[i]])
@@ -91,7 +92,7 @@ ll TIMES = 100,
 int main() {
 	srand(2);
 	fore(_, 0, TIMES) {
-		ll n = rand() % (MAXN - 1) + 2;
+		ll n = rand() % MAXN + 1;
 		auto [g, edata, ndata, neuts, MOD] = genCase(n);
 		auto extend = [&](const Data &a, ll p, ll ei) -> Data {
 			return {(a.x ^ edata[minmax(p, g[p][ei])]) + neuts[p].x};

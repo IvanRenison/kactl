@@ -19,9 +19,9 @@
  *
  * Returns a tuple $(\texttt{rootDP}, \texttt{fdp},
  * \texttt{bdp})$ where \texttt{rootDP[v]} is the answer for
- * the whole tree with \texttt{v} as root, \texttt{fdp[v]} is
+ * the whole tree with \texttt{v} as root, \texttt{fdp[v][ei]} is
  * the answer for \texttt{g[v][ei]} if \texttt{v} is the root,
- * and \texttt{bdp[v]} is the answer for \texttt{v} if
+ * and \texttt{bdp[v][ei]} is the answer for \texttt{v} if
  * \texttt{g[v][ei]} is the root.
  * Time: Fast O(n \log n) assuming O(1) lambdas.
  * Status: stress-tested
@@ -44,6 +44,7 @@ auto reroot(vector<vi>& g, vd& neuts, auto& exclusive,
 	ll n = SZ(g), pei;
 	vd root_dp(n), exc(n), dp = neuts;
 	vector<vd> fdp(n), bdp(n);
+	if(n==1) return tuple(vd{finalize(neuts[0],0,-1)},fdp,bdp);
 	vi o, p(n);
 	o.reserve(n), o.pb(0);
 	fore(i, 0, n) for (ll v : g[o[i]]) if (v != p[o[i]])
