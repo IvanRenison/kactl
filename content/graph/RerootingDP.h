@@ -28,6 +28,15 @@
  */
 #pragma once
 
+// Equivalent to the following code, but for all roots:
+// Data dfs(ll u, ll p) {
+// 	Data res = neuts[u];
+// 	fore(ei, 0, SZ(g[u])) if (g[u][ei] != p)
+// 		acc(res, dfs(g[u][ei], u), u, ei);
+// 	ll pid = find(ALL(g[u]), p) - begin(g[u]);
+// 	return dp[u] = finalize(res, u, pid);
+// }
+
 struct Data {};
 typedef vector<Data> vd;
 auto reroot(vector<vi>& g, vd& neuts, auto& exclusive,
