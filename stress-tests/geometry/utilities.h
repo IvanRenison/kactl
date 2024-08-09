@@ -45,8 +45,8 @@ template<class P>
 bool polygonEq(vector<P>& p, vector<P>& q, double eps) {
 	ll n = SZ(p);
 	if (n != SZ(q)) return false;
-	if (p == q) return true;
-	fore(i, 1, n) {
+	if (n == 0) return true;
+	fore(i, 0, n) {
 		bool valid = true;
 		fore(j, 0, n) {
 			if (abs(p[j].x - q[(j + i) % n].x) > eps || abs(p[j].y - q[(j + i) % n].y) > eps) {

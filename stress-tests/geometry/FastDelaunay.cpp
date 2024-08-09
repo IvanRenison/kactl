@@ -9,6 +9,8 @@
 #include "../../content/geometry/circumcircle.h"
 #undef P
 
+typedef Point<ll> P;
+
 P2 top(P x) { return P2((double)x.x, (double)x.y); }
 
 struct Bumpalloc {
