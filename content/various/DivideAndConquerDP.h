@@ -13,17 +13,17 @@ struct DP { // Modify at will:
 	ll lo(ll ind) { return 0; }
 	ll hi(ll ind) { return ind; }
 	ll f(ll ind, ll k) { return dp[ind][k]; }
-	void store(ll ind, ll k, ll v) { res[ind] = pii(k, v); }
+	void store(ll ind, ll k, ll v) { res[ind] = {k, v}; }
 
 	void rec(ll L, ll R, ll LO, ll HI) {
 		if (L >= R) return;
 		ll mid = (L + R) >> 1;
-		pair<ll, ll> best(LLONG_MAX, LO);
-		rep(k, max(LO,lo(mid)), min(HI,hi(mid)))
+		ii best(LLONG_MAX, LO);
+		for(ll k = max(LO, lo(mid)); k < min(HI, hi(mid)); k++)
 			best = min(best, make_pair(f(mid, k), k));
-		store(mid, best.second, best.first);
-		rec(L, mid, LO, best.second+1);
-		rec(mid+1, R, best.second, HI);
+		store(mid, best.snd, best.fst);
+		rec(L, mid, LO, best.snd+1);
+		rec(mid+1, R, best.snd, HI);
 	}
 	void solve(ll L, ll R) { rec(L, R, LLONG_MIN, LLONG_MAX); }
 };
