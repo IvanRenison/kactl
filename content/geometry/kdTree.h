@@ -49,13 +49,13 @@ struct KDTree {
 	KDTree(const vector<P>& vp) : root(new Node({ALL(vp)})) {}
 
 	pair<T, P> search(Node *node, const P& p) {
-		if (!node->first) {
+		if (!node->fst) {
 			// uncomment if we should not find the point itself:
 			// if (p == node->pt) return {INF, P()};
 			return make_pair((p - node->pt).dist2(), node->pt);
 		}
 
-		Node *f = node->first, *s = node->second;
+		Node *f = node->fst, *s = node->snd;
 		T bfirst = f->distance(p), bsec = s->distance(p);
 		if (bfirst > bsec) swap(bsec, bfirst), swap(f, s);
 

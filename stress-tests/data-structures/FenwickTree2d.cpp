@@ -8,7 +8,7 @@ int main() {
 		vector<tuple<ll, ll, ll>> upd;
 		ll c = rand() % 20;
 		fore(i,0,c) {
-			upd.emplace_back(rand() % 12, rand() % 12, rand() % 10 - 5);
+			upd.pb({rand() % 12, rand() % 12, rand() % 10 - 5});
 		}
 
 		vector<vi> grid(12, vi(12)), sumto(13, vi(13));

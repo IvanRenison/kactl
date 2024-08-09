@@ -19,7 +19,7 @@ struct FT2 {
 		for (; x < SZ(ys); x |= x + 1) ys[x].pb(y);
 	}
 	void init() {
-		for (vi& v : ys) sort(ALL(v)), ft.emplace_back(SZ(v));
+		for (vi& v : ys) sort(ALL(v)), ft.pb(SZ(v));
 	}
 	ll ind(ll x, ll y) {
 		return (ll)(lower_bound(ALL(ys[x]), y) - ys[x].begin()); }

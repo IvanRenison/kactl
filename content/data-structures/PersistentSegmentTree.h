@@ -21,7 +21,7 @@ struct Tree {
 	T f(T a, T b) { return max(a, b); } // (any associative fn)
 
 	vector<T> st;
-	vector<ll> L, R;
+	vi L, R;
 	ll n, rt;
 	Tree(ll n) : st(1, neut), L(1), R(1), n(n), rt(0) {}
 	ll new_node(T v, ll l, ll r) {
