@@ -33,8 +33,8 @@ struct LPSolver {
 		fore(i,0,m) fore(j,0,n) D[i][j] = A[i][j];
 		fore(i,0,m) {B[i]=n+i; D[i][n]=-1; D[i][n+1]=b[i];}
 		fore(j,0,n) { N[j] = j; D[m][j] = -c[j]; }
-			N[n] = -1; D[m+1][n] = 1;
-		}
+		N[n] = -1, D[m+1][n] = 1;
+	}
 
 	void pivot(ll r, ll s) {
 		T *a = D[r].data(), inv = 1 / a[s];
