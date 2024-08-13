@@ -21,11 +21,11 @@ pair<ll, vi> hungarian(const vector<vi> &a) {
 	fore(i,1,n) {
 		p[0] = i;
 		ll j0 = 0; // add "dummy" worker 0
-		vi dist(m, INT_MAX), pre(m, -1);
+		vi dist(m, LLONG_MAX), pre(m, -1);
 		vector<bool> done(m + 1);
 		do { // dijkstra
 			done[j0] = true;
-			ll i0 = p[j0], j1, delta = INT_MAX;
+			ll i0 = p[j0], j1, delta = LLONG_MAX;
 			fore(j,1,m) if (!done[j]) {
 				auto cur = a[i0 - 1][j - 1] - u[i0] - v[j];
 				if (cur < dist[j]) dist[j] = cur, pre[j] = j0;

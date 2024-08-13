@@ -3,10 +3,10 @@
 #include "../../content/numerical/LinearRecurrence.h"
 
 template<class F>
-void gen(vector<ll>& v, ll at, F f) {
-	if (at == sz(v)) f();
+void gen(vi& v, ll at, F f) {
+	if (at == SZ(v)) f();
 	else {
-		rep(i,0,mod) {
+		fore(i,0,mod) {
 			v[at] = i;
 			gen(v, at+1, f);
 		}
@@ -14,21 +14,21 @@ void gen(vector<ll>& v, ll at, F f) {
 }
 
 int main() {
-	rep(n,1,5) {
-		vector<ll> start(n);
-		vector<ll> coef(n);
+	fore(n,1,5) {
+		vi start(n);
+		vi coef(n);
 		ll size = 10*n + 3;
-		vector<ll> full(size);
+		vi full(size);
 		gen(start,0,[&]() {
 			gen(coef,0,[&]() {
 				for(auto &x:full) x = 0;
-				rep(i,0,n) full[i] = start[i];
-				rep(i,n,size) rep(j,0,n) full[i] = (full[i] + coef[j] * full[i-1 - j]) % mod;
-	// rep(i,0,size) cerr << full[i] << ' '; cerr << endl;
-	// rep(i,0,n) cerr << coef[i] << ' '; cerr << endl;
+				fore(i,0,n) full[i] = start[i];
+				fore(i,n,size) fore(j,0,n) full[i] = (full[i] + coef[j] * full[i-1 - j]) % mod;
+	// fore(i,0,size) cerr << full[i] << ' '; cerr << endl;
+	// fore(i,0,n) cerr << coef[i] << ' '; cerr << endl;
 	// LinearRec lr(start, coef);
-	// rep(i,0,size) { cerr << lr.Get(i) << ' '; } cerr << endl;
-				rep(i,0,size) {
+	// fore(i,0,size) { cerr << lr.Get(i) << ' '; } cerr << endl;
+				fore(i,0,size) {
 					auto v = linearRec(start, coef, i);
 	// cerr << v << ' ';
 					assert(v == full[i]);

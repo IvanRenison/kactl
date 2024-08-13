@@ -23,7 +23,7 @@ bool oldIsPrime(ull p) {
 	if (p == 1 || p % 2 == 0) return false;
 	ull s = p - 1;
 	while (s % 2 == 0) s /= 2;
-	rep(i,0,15) {
+	fore(i,0,15) {
 		ull a = rand() % (p - 1) + 1, tmp = s;
 		ull mod = int128_mod_pow(a, tmp, p);
 		while (tmp != p - 1 && mod != 1 && mod != p - 1) {
@@ -56,7 +56,7 @@ int main() {
 	for (auto i: prs) isprime[i] = true;
 	for(auto &a: A) rec(1, a, 0, 0);
 
-	rep(n,0,MAXPR) {
+	fore(n,0,MAXPR) {
 		if (isPrime(n) != isprime[n]) {
 			cout << "fails for " << n << endl;
 			return 1;
@@ -64,7 +64,7 @@ int main() {
 	}
 
 	ull n = 1;
-	rep(i,0,1000000) {
+	fore(i,0,1000000) {
 		n ^= (ull)rand();
 		n *= 1237618231ULL;
 		if (n < MR_LIM && oldIsPrime(n) != isPrime(n)) {

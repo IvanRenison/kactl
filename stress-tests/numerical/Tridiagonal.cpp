@@ -21,8 +21,8 @@ T& operator/=(T& a, T b) { return a = a / b; }
 
 vector<T> tridiagonal(vector<T> diag, const vector<T>& super,
 		const vector<T>& sub, vector<T> b) {
-	ll n = sz(b); vi tr(n);
-	rep(i,0,n-1) {
+	ll n = SZ(b); vi tr(n);
+	fore(i,0,n-1) {
 		if (diag[i].x == 0) {
 			if (super[i].x == 0) return {};
 			if (sub[i].x == 0) return {};
@@ -57,29 +57,29 @@ ll modinv(ll x) {
 typedef vector<ll> vd;
 
 ll solveLinear(vector<vd>& A, vd& b, vd& x) {
-	ll n = sz(A), m = sz(x), rank = 0, br, bc;
-	if (n) assert(sz(A[0]) == m);
-	vi col(m); iota(all(col), 0);
+	ll n = SZ(A), m = SZ(x), rank = 0, br, bc;
+	if (n) assert(SZ(A[0]) == m);
+	vi col(m); iota(ALL(col), 0);
 
-	rep(i,0,n) {
+	fore(i,0,n) {
 		ll v, bv = -1;
-		rep(r,i,n) rep(c,i,m)
+		fore(r,i,n) fore(c,i,m)
 			if ((v = A[r][c])) {
 				br = r, bc = c, bv = v;
 				goto found;
 			}
-		rep(j,i,n) if (b[j]) return -1;
+		fore(j,i,n) if (b[j]) return -1;
 		break;
 found:
 		swap(A[i], A[br]);
 		swap(b[i], b[br]);
 		swap(col[i], col[bc]);
-		rep(j,0,n) swap(A[j][i], A[j][bc]);
+		fore(j,0,n) swap(A[j][i], A[j][bc]);
 		bv = modinv(A[i][i]);
-		rep(j,i+1,n) {
+		fore(j,i+1,n) {
 			ll fac = A[j][i] * bv % mod;
 			b[j] = (b[j] - fac * b[i]) % mod;
-			rep(k,i+1,m) A[j][k] = (A[j][k] - fac*A[i][k]) % mod;
+			fore(k,i+1,m) A[j][k] = (A[j][k] - fac*A[i][k]) % mod;
 		}
 		rank++;
 	}
@@ -88,7 +88,7 @@ found:
 	for (ll i = rank; i--;) {
 		b[i] = ((b[i] * modinv(A[i][i]) % mod) + mod) % mod;
 		x[col[i]] = b[i];
-		rep(j,0,i)
+		fore(j,0,i)
 			b[j] = (b[j] - A[j][i] * b[i]);
 	}
 	return rank;
@@ -96,7 +96,7 @@ found:
 
 template<class F>
 void rec(T& b, ll& a, F f) {
-	rep(i,0,mod) a = i, b = T(i), f();
+	fore(i,0,mod) a = i, b = T(i), f();
 }
 
 int main() {
@@ -119,7 +119,7 @@ int main() {
 	rec(b2[1], b[1], [&]() {
 	rec(b2[2], b[2], [&]() {
 #else
-	rep(it,0,1000000) {
+	fore(it,0,1000000) {
 	const ll n = 1 + rand() % 10;
 	vector<vi> mat(n, vi(n)), mat2;
 	vi b(n), b3, x(n);
@@ -127,11 +127,11 @@ int main() {
 	vector<T> diag(n);
 	vector<T> super(n-1);
 	vector<T> sub(n-1);
-	rep(i,0,n) {
+	fore(i,0,n) {
 		diag[i] = T(mat[i][i] = rand() % mod);
 		b2[i] = T(b[i] = rand() % mod);
 	}
-	rep(i,0,n-1) {
+	fore(i,0,n-1) {
 		super[i] = T(mat[i][i+1] = rand() % mod);
 		sub[i] = T(mat[i+1][i] = rand() % mod);
 	}
@@ -143,13 +143,13 @@ int main() {
 		if (r != n) {
 			assert(x2.empty());
 		} else {
-			rep(i,0,n) if (x2[i].x != (x[i] + mod) % mod) {
+			fore(i,0,n) if (x2[i].x != (x[i] + mod) % mod) {
 				goto fail;
 			}
 			if (false) {
 fail:;
-				rep(i,0,n) {
-					rep(j,0,n) cout << mat[i][j] << ' ';
+				fore(i,0,n) {
+					fore(j,0,n) cout << mat[i][j] << ' ';
 					cout << "x = " << b[i];
 
 					cout << "  " << x[i] << "  " << x2[i].x << endl;
@@ -181,8 +181,8 @@ namespace real {
 typedef double T;
 vector<T> tridiagonal(vector<T> diag, const vector<T>& super,
 		const vector<T>& sub, vector<T> b) {
-	ll n = sz(b); vi tr(n);
-	rep(i,0,n-1) {
+	ll n = SZ(b); vi tr(n);
+	fore(i,0,n-1) {
 		if (abs(diag[i]) < 1e-9 * abs(super[i])) { // diag[i] == 0
 			throw false; // assert that this doesn't happen; we're testing stability
 			b[i+1] -= b[i] * diag[i+1] / super[i];
@@ -210,29 +210,29 @@ typedef double T;
 typedef vector<double> vd;
 
 ll solveLinear(vector<vd>& A, vd& b, vd& x) {
-	ll n = sz(A), m = sz(x), rank = 0, br, bc;
-	if (n) assert(sz(A[0]) == m);
-	vi col(m); iota(all(col), 0);
+	ll n = SZ(A), m = SZ(x), rank = 0, br, bc;
+	if (n) assert(SZ(A[0]) == m);
+	vi col(m); iota(ALL(col), 0);
 
-	rep(i,0,n) {
+	fore(i,0,n) {
 		double v, bv = -1;
-		rep(r,i,n) rep(c,i,m)
+		fore(r,i,n) fore(c,i,m)
 			if ((v = A[r][c])) {
 				br = r, bc = c, bv = v;
 				goto found;
 			}
-		rep(j,i,n) if (b[j]) return -1;
+		fore(j,i,n) if (b[j]) return -1;
 		break;
 found:
 		swap(A[i], A[br]);
 		swap(b[i], b[br]);
 		swap(col[i], col[bc]);
-		rep(j,0,n) swap(A[j][i], A[j][bc]);
+		fore(j,0,n) swap(A[j][i], A[j][bc]);
 		bv = 1/A[i][i];
-		rep(j,i+1,n) {
+		fore(j,i+1,n) {
 			double fac = A[j][i] * bv;
 			b[j] -= fac * b[i];
-			rep(k,i+1,m) A[j][k] -= fac*A[i][k];
+			fore(k,i+1,m) A[j][k] -= fac*A[i][k];
 		}
 		rank++;
 	}
@@ -241,24 +241,24 @@ found:
 	for (ll i = rank; i--;) {
 		b[i] /= A[i][i];
 		x[col[i]] = b[i];
-		rep(j,0,i)
+		fore(j,0,i)
 			b[j] = (b[j] - A[j][i] * b[i]);
 	}
 	return rank;
 }
 
 ll positiveDefinite(vector<vd>& A) {
-	ll n = sz(A), m = n;
-	if (n) assert(sz(A[0]) == m);
-	vi col(m); iota(all(col), 0);
+	ll n = SZ(A), m = n;
+	if (n) assert(SZ(A[0]) == m);
+	vi col(m); iota(ALL(col), 0);
 
-	rep(i,0,n) {
+	fore(i,0,n) {
 		double v = A[i][i];
 		if (v < 1e-9) return false;
 		double bv = 1/A[i][i];
-		rep(j,i+1,n) {
+		fore(j,i+1,n) {
 			double fac = A[j][i] * bv;
-			rep(k,i+1,m) A[j][k] -= fac*A[i][k];
+			fore(k,i+1,m) A[j][k] -= fac*A[i][k];
 		}
 	}
 	return true;
@@ -271,11 +271,11 @@ double nice_double() {
 }
 
 bool validMat(const vector<vd>& mat) {
-	const ll n = sz(mat);
+	const ll n = SZ(mat);
 	bool faila = false, failb = false, sym = true;
-	rep(i,0,n) {
+	fore(i,0,n) {
 		double suma = 0, sumb = 0;
-		rep(j,0,n) {
+		fore(j,0,n) {
 			if (mat[i][j] != mat[j][i]) sym = false;
 			suma += abs(mat[i][j]);
 			sumb += abs(mat[j][i]);
@@ -320,7 +320,7 @@ int main() {
 	rec(b2[1], b[1], [&]() {
 	rec(b2[2], b[2], [&]() {
 #else
-	rep(it,0,10000000) {
+	fore(it,0,10000000) {
 	const ll n = 1 + rand() % 10;
 	vector<vd> mat(n, vd(n)), mat2;
 	vd b(n), b3, x(n), x2(n);
@@ -328,12 +328,12 @@ int main() {
 	vector<T> diag(n);
 	vector<T> super(n-1);
 	vector<T> sub(n-1);
-	rep(i,0,n) {
+	fore(i,0,n) {
 		diag[i] = mat[i][i] = nice_double();
 		b2[i] = b[i] = nice_double();
 	}
 	bool sym = rand() % 3 == 0;
-	rep(i,0,n-1) {
+	fore(i,0,n-1) {
 		double x = nice_double();
 		super[i] = mat[i][i+1] = x;
 		double y = sym ? x : nice_double();
@@ -351,12 +351,12 @@ int main() {
 			x2 = tridiagonal(diag, super, sub, b2);
 			assert(r == n);
 			done = true;
-			rep(i,0,n) if (abs(x2[i] - x[i]) > 1e-6) {
+			fore(i,0,n) if (abs(x2[i] - x[i]) > 1e-6) {
 				throw false;
 			}
 		} catch (bool) {
-			rep(i,0,n) {
-				rep(j,0,n) cout << mat[i][j] << ' ';
+			fore(i,0,n) {
+				fore(j,0,n) cout << mat[i][j] << ' ';
 				cout << "x = " << b[i];
 
 				cout << "  " << x[i] << "  ";

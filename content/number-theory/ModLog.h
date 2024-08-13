@@ -38,8 +38,8 @@ ll modLog(ll a, ll b, ll m) {
 	while (j <= n && (e = f = e * a % m) != b % m)
 		A[e * b % m] = j++;
 	if (e == b % m) return j;
-	if (__gcd(m, e) == __gcd(m, b)) 
-		rep(i,2,n+2) if (A.count(e = e * f % m))
+	if (gcd(m, e) == gcd(m, b))
+		fore(i,2,n+2) if (A.count(e = e * f % m))
 			return n * i - A[e];
 	return -1;
 }

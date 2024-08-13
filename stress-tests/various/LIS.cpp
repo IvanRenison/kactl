@@ -4,42 +4,42 @@
 
 template<class I> vi lisWeak(const vector<I>& S) {
 	if (S.empty()) return {};
-	vi prev(sz(S));
+	vi prev(SZ(S));
 	typedef pair<I, ll> p;
 	vector<p> res;
-	rep(i,0,sz(S)) {
+	fore(i,0,SZ(S)) {
 		// 0 -> i for longest non-decreasing subsequence
-		auto it = lower_bound(all(res), p{S[i], i});
-		if (it == res.end()) res.emplace_back(), it = res.end()-1;
+		auto it = lower_bound(ALL(res), p{S[i], i});
+		if (it == res.end()) res.pb({}), it = res.end()-1;
 		*it = {S[i], i};
-		prev[i] = it == res.begin() ? 0 : (it-1)->second;
+		prev[i] = it == res.begin() ? 0 : (it-1)->snd;
 	}
-	ll L = sz(res), cur = res.back().second;
+	ll L = SZ(res), cur = res.back().snd;
 	vi ans(L);
 	while (L--) ans[L] = cur, cur = prev[cur];
 	return ans;
 }
 
 int main() {
-	rep(weak,0,2) {
+	fore(weak,0,2) {
 		auto lt = [weak](ll a, ll b) { return weak ? a <= b : a < b; };
-		rep(it,0,1000000) {
+		fore(it,0,1000000) {
 			ll n = rand() % 7;
 			vi v(n);
 			for(auto &x: v) x = rand() % 4;
 			vi inds = weak ? lisWeak(v) : lis(v);
-			rep(i,0,sz(inds)-1) {
+			fore(i,0,SZ(inds)-1) {
 				assert(lt(v[inds[i]], v[inds[i+1]]));
 			}
-			rep(bi,0,(1 << n)) {
+			fore(bi,0,(1 << n)) {
 				ll si = (ll)bitset<32>(bi).count();
-				if (si <= sz(inds)) continue;
-				ll prev = INT_MIN;
-				rep(i,0,n) if (bi & (1 << i)) {
+				if (si <= SZ(inds)) continue;
+				ll prev = LLONG_MIN;
+				fore(i,0,n) if (bi & (1 << i)) {
 					if (!lt(prev, v[i])) goto next;
 					prev = v[i];
 				}
-				cout << "exists lis of size " << si << " but found only " << sz(inds) << endl;
+				cout << "exists lis of size " << si << " but found only " << SZ(inds) << endl;
 				for(auto &x: v) cout << x << ' ';
 				cout << endl;
 				abort();

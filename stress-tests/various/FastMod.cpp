@@ -109,14 +109,14 @@ ull rand_u64() {
 // Correctness
 int main1() {
 	const ll bflim = 3000;
-	rep(a,0,bflim) rep(b,2,bflim) {
+	fore(a,0,bflim) fore(b,2,bflim) {
 		FastMod bar(b);
 		ull ret = bar.reduce(a);
 		assert((ret == 0) == (a == 0));
 		if (ret >= (ull)b) ret -= b;
 		assert(ret == (ull)(a % b));
 	}
-	rep(it,0,10'000'000) {
+	fore(it,0,10'000'000) {
 		ull a = rand_u64();
 		ull b = rand_u64();
 		if (b == 0) continue;
