@@ -20,6 +20,9 @@
 			Similarly one can catch SIGABRT (assertion failures) and SIGFPE (zero divisions).
 			\verb@_GLIBCXX_DEBUG@ failures generate SIGABRT (or SIGSEGV on gcc 5.4.0 apparently).
 		\item \verb@feenableexcept(29);@ kills the program on NaNs (\texttt 1), 0-divs (\texttt 4), infinities (\texttt 8) and denormals (\texttt{16}).
+		\item \verb@-fsanitize=address -g@ in compilation to detect some memory access errors at run time.
+		\item Several runtime checks: \\ \verb@#define _GLIBCXX_DEBUG 1@ \\ \verb@#define _GLIBCXX_DEBUG_PEDANTIC 1@
+			\\ \verb@#define _GLIBCXX_CONCEPT_CHECKS 1@ \\ \verb@#define _GLIBCXX_SANITIZE_VECTOR 1@
 	\end{itemize}
 
 \section{Optimization tricks}
