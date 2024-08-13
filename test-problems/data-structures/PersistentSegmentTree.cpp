@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/893/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/893/submission/259528355
+// Submission: https://codeforces.com/contest/893/submission/275162431
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -24,7 +24,7 @@ struct Tree {
 	/// END diff
 
 	vector<T> st;
-	vector<ll> L, R;
+	vi L, R;
 	ll n, rt;
 	Tree(ll n) : st(1, neut), L(1), R(1), n(n), rt(0) {}
 	ll new_node(T v, ll l, ll r) {
@@ -70,7 +70,7 @@ vector<ii> dfsOrder(ll r, const vector<vi>& adj) {
 
 	ll i = 0;
 	function<void(ll, ll)> dfs = [&](ll u, ll p) {
-		ord[u].first = i;
+		ord[u].fst = i;
 		i++;
 
 		for (ll v : adj[u]) {
@@ -79,7 +79,7 @@ vector<ii> dfsOrder(ll r, const vector<vi>& adj) {
 			}
 		}
 
-		ord[u].second = i;
+		ord[u].snd = i;
 	};
 
 	dfs(r, -1);
@@ -92,7 +92,7 @@ vi solve(ll r, const vector<ii>& edges, const vi& as, const vector<ii>& queries)
 
 	vector<vi> adj(n);
 	for (const auto& [u, v] : edges) {
-		adj[u].push_back(v), adj[v].push_back(u);
+		adj[u].pb(v), adj[v].pb(u);
 	}
 
 	vector<vi> levels = {{r}};
@@ -103,13 +103,13 @@ vi solve(ll r, const vector<ii>& edges, const vi& as, const vector<ii>& queries)
 
 	while (!levels.back().empty()) {
 		ll d = SZ(levels);
-		levels.push_back({});
+		levels.pb({});
 
 		for (ll u : levels[d - 1]) {
 			for (ll v : adj[u]) {
 				if (dep[v] == -1) {
 					dep[v] = d;
-					levels.back().push_back(v);
+					levels.back().pb(v);
 				}
 			}
 		}
@@ -126,7 +126,7 @@ vi solve(ll r, const vector<ii>& edges, const vi& as, const vector<ii>& queries)
 	fore(l, 0, SZ(levels)) {
 		ll v = -1;
 		for (ll u : levels[l]) {
-			v = st.upd(ord[u].first, as[u]);
+			v = st.upd(ord[u].fst, as[u]);
 		}
 		assert(v != -1);
 
@@ -142,7 +142,7 @@ vi solve(ll r, const vector<ii>& edges, const vi& as, const vector<ii>& queries)
 
 		ll v = versions[min(SZ(levels) - 1, dep[x] + k)];
 
-		last = st.query(v, ord[x].first, ord[x].second);
+		last = st.query(v, ord[x].fst, ord[x].snd);
 
 		ans[i] = last;
 	}
