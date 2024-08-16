@@ -1,5 +1,12 @@
 #include "../utilities/template.h"
 
+ll mod, LIM = 1000;
+array<ll, LIM> inv;
+void initInv() {
+    inv[1] = 1;
+    fore(i,2,LIM) inv[i] = mod - (mod / i) * inv[mod % i] % mod;
+}
+
 ll modpow(ll a, ll e, ll mod) {
 	if (e == 0) return 1;
 	ll x = modpow(a * a % mod, e >> 1, mod);
@@ -14,9 +21,9 @@ bool isPrime(ll x) {
 }
 int main() {
 	fore(it,1,1000) {
-		ll mod = it, LIM=1000;
+		mod = it;
 		if (!isPrime(mod)) continue;
-		#include "../../content/number-theory/ModInverse.h"
+		initInv();
 		for (ll i=1; i<it; i++){
 			assert(inv[i] == modpow(i, mod-2, mod));
 		}
