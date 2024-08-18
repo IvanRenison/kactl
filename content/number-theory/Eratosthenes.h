@@ -4,7 +4,7 @@
  * License: CC0
  * Source: http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
  * Description: s[i] = smallest prime factor of i (except for i = 0, 1).
- * \texttt{sieve} returns sorted primes.
+ * \texttt{sieve} returns sorted primes
  * less than $L$. \texttt{fact} returns sorted {prime,
  * exponent} pairs of the factorization of $n$.
  * Status: Stress-tested
