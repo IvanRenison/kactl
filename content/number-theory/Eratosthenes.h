@@ -3,8 +3,8 @@
  * Date: 2009-08-26
  * License: CC0
  * Source: http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
- * Description: \texttt{s[i]=0} if $i$ is 0, 1, else smallest
- * prime factor of $i$. \texttt{sieve} returns sorted primes
+ * Description: s[i] = smallest prime factor of i (except for i = 0, 1).
+ * \texttt{sieve} returns sorted primes.
  * less than $L$. \texttt{fact} returns sorted {prime,
  * exponent} pairs of the factorization of $n$.
  * Status: Stress-tested
