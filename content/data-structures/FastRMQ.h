@@ -5,39 +5,46 @@
  * Source: notebook el vasito
  * Description: Like RMQ but with construction O(|V|).
  * Time: $O(|V| + Q)$
- * Status:
+ * Status: stress-tested
  */
 #pragma once
 
-typedef uint64_t ull;
-
 template<class T>
 struct RMQ {
-	ll n; T inf=1e9;	//change sign of inf for maximum
-	vector<ull> mk; vector<T> bk,v;
-	T op(T a, T b){return min(a,b);}	//change for maximum
-	ll f(ll x){return x>>5;}
-	RMQ(vector<T> &V):n(SZ(V)),mk(n),bk(n,inf),v(V){
-		ull lst=0;
-		for(ll i=0;i<SZ(v);i++,lst<<=1){
-			bk[f(i)]=op(bk[f(i)],v[i]);
-			while(lst&&v[i-__builtin_ctzll(lst)]>v[i]) lst^=lst&-lst;		//MIN
-			//while(lst&&v[i-__builtin_ctzll(lst)]<v[i]) lst^=lst&-lst;	//MAX
-			mk[i]=++lst;
+	ll n;
+	const T inf = 1e9; // change sign of inf for maximum
+	vector<ll> mk;
+	vector<T> bk, v;
+	ll f(ll x) { return x >> 5; }
+	RMQ(vector<T>& V) : n(SZ(V)), mk(n), bk(n, inf), v(V) {
+		ll lst = 0;
+		fore(i, 0, n) {
+			bk[f(i)] = min(bk[f(i)], v[i]);
+			while (lst && v[i-__builtin_ctzll(lst)]>v[i])// < for max
+				lst ^= lst & -lst;
+			mk[i] = ++lst, lst *= 2;
 		}
-		for(ll k=1,top=f(n);(1<<k)<=top;k++)fore(i,0,top)if(i+(1<<k)<=top)
-			bk[top*k+i]=op(bk[top*(k-1)+i], bk[top*(k-1)+i+(1<<k-1)]);
+		ll top = f(n);
+		fore(k, 1, 64 - __builtin_clzll(top + 1)) {
+			fore(i, 0, top - (1 << k) + 1)
+				bk[top*k + i] =
+					min(bk[top*(k-1) + i], bk[top*(k-1) + i + (1<<k-1)]);
+		}
 	}
 	T get(ll st, ll en){
-		return v[en-63+__builtin_clzll(mk[en]&((1ll<<en-st+1)-1))];
+		return v[en-64+__builtin_clzll(mk[en-1]&((1ll<<en-st)-1))];
 	}
-	T query(ll s, ll e){	//[s,e]
-		ll b1=f(s),b2=f(e),top=f(n);
-		if(b1==b2) return get(s,e);
-		T ans=op(get(s,(b1+1)*32-1), get(b2*32,e)); s=(b1+1)*32; e=b2*32-1;
-		if(s<=e){
-			ll k=63-__builtin_clzll(f(e-s+1));
-			ans=op(ans,op(bk[top*k+f(s)],bk[top*k+f(e)-(1<<k)+1]));
+	T query(ll s, ll e){	// [s, e)
+		ll b1 = f(s), b2 = f(e - 1);
+		if (b1 == b2) return get(s, e);
+		T ans = min(get(s, (b1 + 1)*32), get(b2*32, e));
+		s = (b1 + 1)*32;
+		e = b2*32;
+		if (s < e) {
+			ll k = 63 - __builtin_clzll(f(e - s));
+			ll top = f(n) * k;
+			ans = min(ans,
+				min(bk[top + f(s)], bk[top + f(e - 1) - (1<<k) + 1]));
 		}
 		return ans;
 	}

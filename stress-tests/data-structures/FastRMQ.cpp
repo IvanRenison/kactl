@@ -15,11 +15,11 @@ void testCase() {
 	RMQ<ll> rmq(V);
 	nlog::RMQ<ll> rmq_nlog(V);
 
-	fore(_, 0, 100) {
+	fore(_, 0, 1000) {
 		ll b = rand() % n + 1;
 		ll a = rand() % b;
 		ll res = rmq_nlog.query(a, b);
-		ll res1 = rmq.query(a, b - 1);
+		ll res1 = rmq.query(a, b);
 		assert(res == res1);
 	}
 }
@@ -49,7 +49,7 @@ void bench() {
 }
 
 int main() {
-	fore(_, 0, 100) {
+	fore(_, 0, 1000) {
 		testCase();
 	}
 
