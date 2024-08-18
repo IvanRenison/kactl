@@ -3,8 +3,8 @@
  * Date: 2024-08-18
  * License: CC0
  * Source: folklore
- * Description: Fast and secure integer random numbers.
- * For floating point numbers use uniform_real_distribution.
+ * Description: Fast and secure integer uniform random numbers.
+ * For floating point numbers use uniform\_real\_distribution.
  * If a and b are always the same make dis static.
  * Time: O(1)
  * Status: used
