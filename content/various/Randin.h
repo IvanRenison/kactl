@@ -1,0 +1,20 @@
+/**
+ * Author: Iván Renison
+ * Date: 2024-08-18
+ * License: CC0
+ * Source: folklore
+ * Description: Fast and secure integer random numbers.
+ * For floating point numbers use uniform_real_distribution.
+ * If a and b are always the same make dis static.
+ * Time: O(1)
+ * Status: used
+ */
+#pragma once
+
+template <typename T>
+T randin(T a, T b) { // Random number in [a, b)
+	static random_device rd;
+	static mt19937_64 gen(rd());
+	uniform_int_distribution<T> dis(a, b - 1);
+	return dis(gen);
+}
