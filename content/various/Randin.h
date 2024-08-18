@@ -6,7 +6,6 @@
  * Description: Fast and secure integer uniform random numbers.
  * For floating point numbers use uniform\_real\_distribution.
  * If a and b are always the same make dis static.
- * Time: O(1)
  * Status: used
  */
 #pragma once
