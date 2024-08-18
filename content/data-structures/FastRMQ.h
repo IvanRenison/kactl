@@ -3,7 +3,7 @@
  * Date: 2024-08-18
  * License: CC0
  * Source: notebook el vasito
- * Description: Like RMQ but with construction O(|V|).
+ * Description: Like RMQ but with construction $O(|V|)$.
  * Time: $O(|V| + Q)$
  * Status: stress-tested
  */
