@@ -1,38 +1,55 @@
 #include "../utilities/template.h"
 
-namespace dynamic {
-vi eratosthenes(ll LIM) {
-	const ll S = (ll)round(sqrt(LIM)), R = LIM / 2;
-	vi pr({2}), sieve(S + 1); pr.reserve(LIM / (ll)log(LIM));
-	vector<array<ll, 2>> cp;
-	for (ll i = 3; i <= S; i += 2) if (!sieve[i]) {
-		cp.pb({i, i * i / 2});
-		for (ll j = i * i; j <= S; j += 2 * i) sieve[j] = 1;
-	}
-	for (ll L = 1; L <= R; L += S) {
-		vector<bool> block(S);
-		// array<bool, S> block{};
-		for (auto &[p, idx] : cp)
-			for (ll i=idx; i < S+L; idx = (i+=p)) block[i-L] = 1;
-		fore(i,0,min(S, R - L))
-			if (!block[i]) pr.pb((L + i) * 2 + 1);
-	}
-	return pr;
+ll smallestDivisor(ll n) {
+	for (ll i = 2; i * i <= n; i++) if (n % i == 0) return i;
+	return n;
 }
-}
+
 #include "../../content/number-theory/FastEratosthenes.h"
 #include "../../content/number-theory/Eratosthenes.h"
 
 
 int main() {
-	vi pr1 = eratosthenesSieve(LIM);
+	// sieve
+	assert(L == LIM);
+	vi pr1 = sieve();
 	vi pr2 = eratosthenes();
 	assert(pr1 == pr2);
+	set<ll> pr(ALL(pr1));
 
-	for (ll lim=121; lim<1000; lim++) {
-		vi pr = eratosthenesSieve(lim);
-		vi r = dynamic::eratosthenes(lim);
-		assert(pr == r);
+	assert(s[0] == 0);
+	assert(s[1] == 0);
+	fore(i, 2, LIM) {
+		ll d = smallestDivisor(i);
+		assert(s[i] == d);
+		assert((d == i) == isPrime[i]);
+		assert((d == i) == pr.count(i));
 	}
+	assert(*pr.rbegin() < LIM);
+
+	// fact
+	assert(fact(1).empty());
+	fore(n, 2, LIM) {
+		auto res = fact(n);
+		ll cur = 1, last = 0;
+		for (auto [p, e] : res) {
+			// assert(isPrime[p]);
+			if (!isPrime[p]) {
+				cout << n << ' ' << p << endl;
+				assert(isPrime[p]);
+			}
+			assert(e > 0);
+			assert(last < p);
+			last = p;
+			fore(_, 0, e) cur *= p;
+		}
+		assert(cur == n);
+		if (!is_sorted(ALL(res))) {
+			cout << n << endl;
+			for (auto [p, e] : res) cout << p << ' ' << e << endl;
+			assert(0);
+		}
+	}
+
 	cout<<"Tests passed!"<<endl;
 }
