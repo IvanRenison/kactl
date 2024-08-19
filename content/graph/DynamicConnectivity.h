@@ -7,6 +7,7 @@
  * Uses UnionFindRollbackStore so it also supports queries of global value of RSUF.
  * First use add, remove and query to make operations and then call process to get
  * the answers of the queries in the variable ans.
+ * Does not support multiple edges.
  * Time: O(Q \log^2 N)
  * Status: stress tested a bit and tested in codeforces
  */
