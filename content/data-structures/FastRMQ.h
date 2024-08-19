@@ -12,7 +12,7 @@
 template<class T>
 struct RMQ {
 	ll n;
-	static constexpr T inf = 1e9; // change sign of inf for maximum
+	static constexpr T inf = 1e9; // change sign of inf for max
 	vector<ll> mk;
 	vector<T> bk, v;
 	ll f(ll x) { return x >> 5; }
