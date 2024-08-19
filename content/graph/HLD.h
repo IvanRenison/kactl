@@ -42,7 +42,7 @@ template <bool VALS_ED> struct HLD {
 			dfsHld(u);
 		}
 	}
-	template <class B> void process(ll u, ll v, B op) {
+	void process(ll u, ll v, auto op) {
 		for (; rt[u] != rt[v]; v = par[rt[v]]) {
 			if (pos[rt[u]] > pos[rt[v]]) swap(u, v);
 			op(pos[rt[v]], pos[v] + 1);

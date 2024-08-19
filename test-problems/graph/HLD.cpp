@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/vertex_add_path_sum
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/225254
+// Submission: https://judge.yosupo.jp/submission/229585
 // Testing usage of normal segment tree (not lazy) for HLD
 #include <bits/stdc++.h>
 using namespace std;
@@ -65,7 +65,7 @@ template <bool VALS_ED> struct HLD {
 			dfsHld(u);
 		}
 	}
-	template <class B> void process(ll u, ll v, B op) {
+	void process(ll u, ll v, auto op) {
 		for (; rt[u] != rt[v]; v = par[rt[v]]) {
 			if (pos[rt[u]] > pos[rt[v]]) swap(u, v);
 			op(pos[rt[v]], pos[v] + 1);
