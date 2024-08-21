@@ -1,6 +1,7 @@
 #include "../utilities/template.h"
 
-ll mod, LIM = 1000;
+ll mod;
+constexpr ll LIM = 2e5;
 array<ll, LIM> inv;
 void initInv() {
 	inv[1] = 1;
