@@ -7,6 +7,7 @@
  * edges such that the path from any leaf to the root contains at most log(n)
  * light edges. Code does additive modifications and sum queries, but can
  * support commutative segtree modifications/queries on paths and subtrees.
+ * For a non-commutative operation see LinkCutTree.
  * Takes as input the full adjacency list. VALS\_ED being true means that
  * values are stored in the edges, as opposed to the nodes. All values
  * initialized to the segtree default. Root must be 0.
