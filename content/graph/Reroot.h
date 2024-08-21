@@ -29,14 +29,19 @@
  *
  * Equivalent to the following code, but for all roots:
  *
- * \texttt{Data dfs(ll u, ll p) \{ \\
- * \;	Data res = neuts[u]; \\
- * \;	fore(ei, 0, SZ(g[u])) if (g[u][ei] != p) \\
- * \; \; acc(res, dfs(g[u][ei], u), u, ei); \\
- * \;	ll pid = find(ALL(g[u]), p) - begin(g[u]); \\
- * \; 	return dp[u] = finalize(res, u, pid); \\
- * \}
- * }
+ * \texttt{Data dfs(ll u, ll p) \{}
+ *
+ * \ \ \texttt{Data res = neuts[u];}
+ *
+ * \ \ \texttt{fore(ei, 0, SZ(g[u])) if (g[u][ei] != p)}
+ *
+ * \ \ \ \ \texttt{acc(res, dfs(g[u][ei], u), u, ei);}
+ *
+ * \ \ \texttt{ll pid = find(ALL(g[u]), p) - begin(g[u]);}
+ *
+ * \ \ \texttt{return dp[u] = finalize(res, u, pid);}
+ *
+ * \texttt{\}}
  * Time: Fast O(n \log n) assuming O(1) operations.
  * Status: stress-tested
  */
