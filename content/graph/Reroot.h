@@ -26,21 +26,22 @@
  * answer for \texttt{g[v][ei]} if \texttt{v} is the root, and
  * \texttt{bdp[v][ei]}, the answer for \texttt{v} if
  * \texttt{g[v][ei]} is the root.
+ *
+ * Equivalent to the following code, but for all roots:
+ *
+ * \texttt{Data dfs(ll u, ll p) \{ \\
+ * \;	Data res = neuts[u]; \\
+ * \;	fore(ei, 0, SZ(g[u])) if (g[u][ei] != p) \\
+ * \; \; acc(res, dfs(g[u][ei], u), u, ei); \\
+ * \;	ll pid = find(ALL(g[u]), p) - begin(g[u]); \\
+ * \; 	return dp[u] = finalize(res, u, pid); \\
+ * \}
+ * }
  * Time: Fast O(n \log n) assuming O(1) operations.
  * Status: stress-tested
  */
 
 #pragma once
-#include "../../stress-tests/utilities/template.h"
-
-// Equivalent to the following code, but for all roots:
-// Data dfs(ll u, ll p) {
-// 	Data res = neuts[u];
-// 	fore(ei, 0, SZ(g[u])) if (g[u][ei] != p)
-// 		acc(res, dfs(g[u][ei], u), u, ei);
-// 	ll pid = find(ALL(g[u]), p) - begin(g[u]);
-// 	return dp[u] = finalize(res, u, pid);
-// }
 
 struct Data {};
 typedef vector<Data> vd;
