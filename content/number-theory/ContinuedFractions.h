@@ -27,7 +27,7 @@ ii approximate(ld x, ll N) {
 			// better approximation; if b = a/2, we *may* have one.
 			// Return {P, Q} here for a more canonical approximation.
 			return (abs(x - (ld)NP/(ld)NQ) < abs(x - (ld)P/(ld)Q)) ?
-				make_pair(NP, NQ) : make_pair(P, Q);
+				ii{NP, NQ} : ii{P, Q};
 		}
 		if (abs(y = 1/(y - (ld)a)) > 3*N) {
 			return {NP, NQ};
