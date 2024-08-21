@@ -31,6 +31,7 @@
  */
 
 #pragma once
+#include "../../stress-tests/utilities/template.h"
 
 // Equivalent to the following code, but for all roots:
 // Data dfs(ll u, ll p) {
@@ -48,24 +49,24 @@ struct Reroot {
 	ll n;
 	vector<vi>& g;
 	vd& neuts;
+
 	Data finalize(const Data& a, ll p, ll ei) { return a; }
 	void acc(Data& p_ans, const Data& child_ans, ll p, ll ei) {
 		p_ans = Data{};
 	}
+
 	vd root_dp;
 	vector<vd> fdp, bdp;
-	Reroot(vector<vi>& g, vd& neuts) : n(SZ(g)), g(g),
-			neuts(neuts), root_dp(n), fdp(n), bdp(n) {}
+	Reroot(vector<vi>&g,vd&neuts)
+		: n(SZ(g)), g(g), neuts(neuts), root_dp(n), fdp(n),bdp(n){}
 	void reroot() {
-		if(n==1){root_dp[0]=finalize(neuts[0], 0, -1);return;}
-		vd dp = neuts, e(n);
-		vi o, p(n);
-		o.reserve(n), o.pb(0);
-		fore(i,0,n) for (ll v : g[o[i]]) if (v != p[o[i]])
+		if (n==1) { root_dp[0]=finalize(neuts[0], 0, -1); return; }
+		vd dp = neuts, e(n); vi o, p(n); o.reserve(n), o.pb(0);
+		fore(i, 0, n) for (ll v : g[o[i]]) if (v != p[o[i]])
 			p[v] = o[i], o.pb(v);
 		for (ll u : views::reverse(o)) {
 			ll pei = -1;
-			fore(ei, 0, SZ(g[u])) if (g[u][ei] == p[u]) pei=ei;
+			fore(ei, 0, SZ(g[u])) if (g[u][ei] == p[u]) pei = ei;
 			else acc(dp[u], dp[g[u][ei]], u, ei);
 			dp[u] = finalize(dp[u], u, pei);
 		}
@@ -74,15 +75,14 @@ struct Reroot {
 			fdp[u].reserve(SZ(g[u])), bdp[u].reserve(SZ(g[u]));
 			for (ll v : g[u]) fdp[u].pb(dp[v]);
 			ex(e, fdp[u], neuts[u], u);
-			fore(i,0,SZ(fdp[u]))bdp[u].pb(finalize(e[i],u,i));
+			fore(i, 0, SZ(fdp[u])) bdp[u].pb(finalize(e[i], u, i));
 			acc(e[0], fdp[u][0], u, 0);
-			root_dp[u]=finalize(n > 1 ? e[0] : neuts[u], u,-1);
+			root_dp[u] = finalize(n > 1 ? e[0] : neuts[u], u, -1);
 			fore(i, 0, SZ(g[u])) dp[g[u][i]] = bdp[u][i];
 		}
 	}
 	void ex(vd& e, vd& a, Data& ne, ll v) {
-		ll d = SZ(a);
-		fill(begin(e), begin(e) + d, ne);
+		ll d = SZ(a); fill(begin(e), begin(e) + d, ne);
 		for (ll b = bit_width((unsigned)d) - 1; b >= 0; b--) {
 			for (ll i = d - 1; i >= 0; i--)
 				e[i] = e[i >> 1];
