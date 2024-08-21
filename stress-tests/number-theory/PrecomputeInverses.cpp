@@ -3,8 +3,8 @@
 ll mod, LIM = 1000;
 array<ll, LIM> inv;
 void initInv() {
-    inv[1] = 1;
-    fore(i,2,LIM) inv[i] = mod - (mod / i) * inv[mod % i] % mod;
+	inv[1] = 1;
+	fore(i,2,LIM) inv[i] = mod - (mod / i) * inv[mod % i] % mod;
 }
 
 ll modpow(ll a, ll e, ll mod) {

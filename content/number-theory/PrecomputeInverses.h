@@ -12,6 +12,6 @@
 const ll mod = 1e9+7, LIM = 2e5;
 array<ll, LIM> inv;
 void initInv() {
-    inv[1] = 1;
-    fore(i,2,LIM) inv[i] = mod - (mod/i) * inv[mod % i] % mod;
+	inv[1] = 1;
+	fore(i,2,LIM) inv[i] = mod - (mod/i) * inv[mod % i] % mod;
 }
