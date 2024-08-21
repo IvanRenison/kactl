@@ -54,8 +54,8 @@ struct Reroot {
 	}
 	vd root_dp;
 	vector<vd> fdp, bdp;
-	Reroot(vector<vi>&g,vd&neuts):n(SZ(g)),g(g),neuts(neuts),
-									root_dp(n),fdp(n),bdp(n) {}
+	Reroot(vector<vi>& g, vd& neuts) : n(SZ(g)), g(g),
+			neuts(neuts), root_dp(n), fdp(n), bdp(n) {}
 	void reroot() {
 		if(n==1){root_dp[0]=finalize(neuts[0], 0, -1);return;}
 		vd dp = neuts, e(n);
