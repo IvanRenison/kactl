@@ -14,7 +14,8 @@
  * Status: stress-tested for n <= 300
  */
 
-typedef double ld; // for N ~ 1e7; long double for N ~ 1e9
+// double is safe for N ~ 1e7, use long double for N ~ 1e9
+typedef long double ld;
 ii approximate(ld x, ll N) {
 	ll LP = 0, LQ = 1, P = 1, Q = 0, inf = LLONG_MAX; ld y = x;
 	for (;;) {
