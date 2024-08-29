@@ -14,6 +14,6 @@
 
 template<class P>
 ll sideOf(P a, P b, P c, P p) {
-  ll x = (b-a).cross(c-a).dot(p-a);
-  return (x > 0) - (x < 0);
+	ll x = (b-a).cross(c-a).dot(p-a);
+	return (x > 0) - (x < 0);
 }

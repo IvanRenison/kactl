@@ -14,6 +14,6 @@
 
 template<class P>
 double planeDist(P a, P b, P c, P p) {
-  P n = (b-a).cross(c-a);
-  return (double)n.dot(p-a) / n.dist();
+	P n = (b-a).cross(c-a);
+	return (double)n.dot(p-a) / n.dist();
 }

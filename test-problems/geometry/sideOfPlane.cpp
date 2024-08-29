@@ -52,43 +52,43 @@ template<class T> struct Point3D {
 /// content/geometry/sideOfPlane.h
 template<class P>
 ll sideOf(P a, P b, P c, P p) {
-  ll x = (b-a).cross(c-a).dot(p-a);
-  return (x > 0) - (x < 0);
+	ll x = (b-a).cross(c-a).dot(p-a);
+	return (x > 0) - (x < 0);
 }
 /// END content
 
 bool solve(Point3D<ll> cus, Point3D<ll> sun,const vector<Point3D<ll>>& poly) {
-  ll N = poly.size();
+	ll N = poly.size();
 
-  fore(i, 0, N) {
-    Point3D<ll> p = poly[i], q = poly[(i + 1) % N];
-    if (sideOf(p, q, cus, sun) == 1) {
-      return true;
-    }
-  }
+	fore(i, 0, N) {
+		Point3D<ll> p = poly[i], q = poly[(i + 1) % N];
+		if (sideOf(p, q, cus, sun) == 1) {
+			return true;
+		}
+	}
 
-  return false;
+	return false;
 }
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 
-  ll N;
-  cin >> N;
+	ll N;
+	cin >> N;
 
-  Point3D<ll> cus, sun;
+	Point3D<ll> cus, sun;
 	cin >> cus.x >> cus.y >> cus.z >> sun.x >> sun.y >> sun.z;
 
-  vector<Point3D<ll>> poly(N);
-  for (auto& [X, Y, Z] : poly) {
-    cin >> X >> Y;
-  }
+	vector<Point3D<ll>> poly(N);
+	for (auto& [X, Y, Z] : poly) {
+		cin >> X >> Y;
+	}
 
-  bool ans = solve(cus, sun, poly);
+	bool ans = solve(cus, sun, poly);
 
-  if (ans) {
-    cout << "S\n";
-  } else {
-    cout << "N\n";
-  }
+	if (ans) {
+		cout << "S\n";
+	} else {
+		cout << "N\n";
+	}
 }
