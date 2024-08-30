@@ -69,8 +69,6 @@ ii solve(vector<ii>& birthdays) {
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 
-	cout << dateToInt(1, 1, 1) << endl;
-
 	ll n;
 	cin >> n;
 	vector<ii> birthdays(n);

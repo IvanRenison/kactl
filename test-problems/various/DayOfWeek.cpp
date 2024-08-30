@@ -56,8 +56,8 @@ void solve(ll d0, ll m0, ll y0, ll d1, ll m1, ll y1) {
 		cout << "l:" << m0 - m1 << ' ';
 	}
 
-	ll col = DayOfWeek(d1, m1, y1);
-	ll col1 = DayOfWeek(1, m1, y1);
+	ll col = DayOfWeek(y1, m1, d1);
+	ll col1 = DayOfWeek(y1, m1, 1);
 
 	ll row = (d1 + col1 - 1) / 7;
 
