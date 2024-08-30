@@ -23,19 +23,19 @@ ll DayOfWeek(ll d, ll m, ll y ){ // starting on Sunday from 0
 /// END content
 
 const vi days_per_month = {
-  31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+	31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
 bool isLeap(ll y) {
-  return y % 400 == 0 || (y % 100 != 0 && y % 4 == 0);
+	return y % 400 == 0 || (y % 100 != 0 && y % 4 == 0);
 }
 
 bool validDate(ll d, ll m, ll y) {
-  if (isLeap(y) && m == 2) {
-    return d <= 29;
-  } else {
-    return d <= days_per_month[m - 1];
-  }
+	if (isLeap(y) && m == 2) {
+		return d <= 29;
+	} else {
+		return d <= days_per_month[m - 1];
+	}
 }
 
 void solve(ll d0, ll m0, ll y0, ll d1, ll m1, ll y1) {
