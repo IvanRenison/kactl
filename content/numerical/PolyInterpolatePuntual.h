@@ -10,7 +10,7 @@
  */
 #pragma once
 
-#include "ModularArithmetic.h"
+#include "../number-theory/ModularArithmetic.h"
 
 Mod interpolate(vector<Mod>& y, Mod x) {
 	ll n = SZ(y);
