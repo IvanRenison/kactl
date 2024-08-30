@@ -15,7 +15,7 @@ typedef pair<ll, ll> ii;
 typedef vector<ll> vi;
 
 /// content/various/DayOfWeek.h
-ll DayOfWeek(ll d, ll m, ll y ){ // starting on Sunday from 0
+ll DayOfWeek(ll y, ll m, ll d) {
 	vi ttt = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
 	y -= m < 3;
 	return (y + y/4 - y/100 + y/400 + ttt[m-1] + d) % 7;
