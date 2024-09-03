@@ -3,10 +3,10 @@
  * Date: 2024-08-30
  * License: CC0
  * Source: me
- * Description: Given for $i \in \{0, 1, ..., n-1\} $ points $(i, y[i])$ computes de value
+ * Description: Given for $i \in \{0, 1, ..., n-1\} $ points $(i, y[i])$ computes the value
  * of the n-1-degree polynomial that passes through them at point $x$.
  * Time: O(n \log mod)
- * status: problem tested
+ * Status: problem tested
  */
 #pragma once
 
