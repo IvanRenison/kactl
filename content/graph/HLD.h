@@ -65,6 +65,6 @@ template <bool VALS_ED> struct HLD {
 		return t.query(pos[v] + VALS_ED, pos[v] + siz[v]);
 	}
 	// void updPoint(ll v, T val) { // For normal segment tree
-	// 	t.upd(pos[v] + VALS_ED, val); // queryPoint is similar
+	// 	t.upd(pos[v], val); // queryPoint is similar
 	// }
 };
