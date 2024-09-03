@@ -9,9 +9,9 @@
  * support commutative segtree modifications/queries on paths and subtrees.
  * For a non-commutative operation see LinkCutTree.
  * Takes as input the full adjacency list. VALS\_ED being true means that
- * values are stored in the edges, as opposed to the nodes. All values
- * initialized to the segtree default. Root must be 0.
- * If you only have point updates you can use normal segment tree instead of lazy.
+ * values are stored in the edges, as opposed to the nodes, and updates
+ * have to be done on child nodes. All values initialized to the segtree default.
+ * Root must be 0. If you only have point updates you can use normal segment tree instead of lazy.
  * Time: O((\log N)^2)
  * Status: stress-tested a bit
  */
