@@ -93,13 +93,13 @@ Mod solveDem(ll n, ll k) {
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 
-  ll n, k;
-  cin >> n >> k;
+	ll n, k;
+	cin >> n >> k;
 
 	Mod num = solveNum(n, k);
 	Mod dem = solveDem(n, k);
 
 	Mod ans = num / dem;
 
-  cout << ans.x << '\n';
+	cout << ans.x << '\n';
 }
