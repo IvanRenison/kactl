@@ -1,14 +1,15 @@
 /**
- * Author: chilli and Iván Renison
- * Date: 2019-05-05
+ * Author: Iván Renison
+ * Date: 2024-09-04
  * License: CC0
- * Source: https://github.com/zimpha/algorithmic-library/blob/master/computational-geometry/polygon.cc
- * Description: Computes the intersection of a set of half-planes. Input is given as a set of planes, facing left.
- * The intersection must form a convex polygon or be empty. Output is the convex polygon representing the intersection.
- * The points may have duplicates and be collinear. Will not fail catastrophically if `eps > sqrt(2)(line intersection error)`.
- * Likely to work for more ranges if 3 half planes are guaranteed to never intersect at the same point.
+ * Source: notebook el vasito
+ * Description: Computes the intersection of a set of half-planes.
+ * Input is given as a set of planes, facing left.
+ * The intersection must form a convex polygon or be empty.
+ * Output is the convex polygon representing the intersection in CCW order.
+ * The points may have duplicates and be collinear.
  * Time: O(n \log n)
- * Status: stress-tested
+ * Status: stress-tested ans problem tested
  */
 #pragma once
 
@@ -17,33 +18,36 @@
 #include "lineIntersection.h"
 
 typedef Point<double> P;
-typedef pair<P, P> Line;
-#define L(a) a.fst, a.snd
+struct Line {
+	P p, q;
+	double a;
+	Line() {}
+	Line(P p, P q) : p(p), q(q), a((q - p).angle()) {}
+	bool operator<(Line o) const { return a < o.a; }
+};
+#define L(a) a.p, a.q
+#define PQ(a) (a.q - a.p)
 
-ll angDiff(Line a, Line b) {
-	return sgn((a.snd-a.fst).angle() - (b.snd-b.fst).angle());
-}
 vector<P> halfPlaneIntersection(vector<Line> v) {
-	const double eps = sqrt(2) * 1e-8;
-	sort(ALL(v), [&](Line a, Line b) {
-		ll s = angDiff(a, b);
-		return (s ? s : sideOf(L(a), b.fst)) < 0;
-	});
-	ll ah = 0, at = 0, n = SZ(v);
-	vector<Line> deq(n + 1);
-	vector<P> ans(n);
-	deq[0] = v[0];
-	fore(i, 1, n + 1) {
-		if (i == n) v.pb(deq[ah]);
-		if (angDiff(v[i], v[i - 1])) {
-			while (ah < at && sideOf(L(v[i]), ans[at-1], eps) < 0)
-				at--;
-			while (i < n && ah < at && sideOf(L(v[i]),ans[ah],eps)<0)
-				ah++;
-			auto [r, p] = lineInter(L(v[i]), L(deq[at]));
-			if (r == 1) ans[at++] = p, deq[at] = v[i];
+	sort(ALL(v));
+	ll n = SZ(v), q = 1, h = 0;
+	const double eps = 1e-9;
+	vector<Line> c(n+2);
+	#define I(j, k) lineInter(L(c[j]), L(c[k])).snd
+	fore(i, 0, n) {
+		while (q < h && sideOf(L(v[i]), I(h, h-1), eps) < 0) h--;
+		while (q < h && sideOf(L(v[i]), I(q, q+1), eps) < 0) q++;
+		c[++h] = v[i];
+		if (q < h && abs(PQ(c[h]).cross(PQ(c[h-1]))) < eps) {
+			if (PQ(c[h]).dot(PQ(c[h-1])) <= 0) return {};
+			if (sideOf(L(v[i]), c[--h].p, eps) < 0) c[h] = v[i];
 		}
 	}
-	if (at - ah < 3) return {};
-	return {ans.begin() + ah, ans.begin() + at};
+	while (q < h - 1 && sideOf(L(c[q]), I(h, h-1), eps) < 0) h--;
+	while (q < h - 1 && sideOf(L(c[h]), I(q, q+1), eps) < 0) q++;
+	if (h - q <= 1) return {};
+	c[++h] = c[q];
+	vector<P> s;
+	fore(i, q, h) s.pb(I(i, i+1));
+	return s;
 }

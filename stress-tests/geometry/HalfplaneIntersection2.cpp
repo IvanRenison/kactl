@@ -55,7 +55,7 @@ void test(const vector<Line>& t) {
 	ans = convexHull(ans); // Remove colinear
 	vector<pair<Pf,Pf>> t2(SZ(t));
 	fore(i, 0, SZ(t)) {
-		auto [p, q] = t[i];
+		auto [p, q, _] = t[i];
 		auto [px, py] = p;
 		auto [qx, qy] = q;
 		t2[i] = {Pf(px, py), Pf(qx, qy)};
@@ -102,7 +102,9 @@ int main() {
 		{{P(0, 0), P(5, 0)}},
 		{{P(0, 0), P(5, 0)}, {P(5, 0), P(0, 0)}}, // Line
 		{{P(0, 0), P(5, 0)}, {P(5, 0), P(0, 0)}, {P(0, 0), P(0, 5)}, {P(0, 5), P(0, 0)}}, // Point
-		{{P(0, 0), P(5, 0)}, {P(5, 0), P(0, 0)}, {P(0, 0), P(0, 5)}, {P(0, 5), P(0, 0)}, {P(0, 2), P(5, 2)}} // Empty
+		{{P(0, 0), P(5, 0)}, {P(5, 0), P(0, 0)}, {P(0, 0), P(0, 5)}, {P(0, 5), P(0, 0)}, {P(0, 2), P(5, 2)}}, // Empty
+		{{P(0, 0), P(5, 0)}, {P(5, 0), P(5, 5)}, {P(5, 5), P(0, 5)}, {P(0, 5), P(0, 0)}, {P(1, 5), P(1, 0)}}, // Parallel lines
+		{{P(0, 0), P(5, 0)}, {P(5, 0), P(5, 5)}, {P(5, 5), P(0, 5)}, {P(1, 5), P(1, 0)}, {P(0, 5), P(0, 0)}} // Parallel lines
 	};
 
 	for (auto& t : handmade) {

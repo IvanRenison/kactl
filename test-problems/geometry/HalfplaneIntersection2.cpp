@@ -1,4 +1,4 @@
-// Problem: https://codeforces.com/gym/104736/problem/H
+// Problem: https://codeforces.com/gym/101309/problem/J
 // Status: Accepted
 #include <bits/stdc++.h>
 using namespace std;
@@ -105,85 +105,59 @@ vector<P> halfPlaneIntersection(vector<Line> v) {
 }
 /// END content
 
-const ll inf = 1ll << 60;
-const double dinf = 1e15;
-const double eps = 1e-9;
-
-double max_dist2(vector<P>& points) {
-	double ans = 0;
-	for (P p : points) {
-		ans = max(ans, p.dist2());
-	}
-	return ans;
+/// content/geometry/PolygonArea.h
+template<class T>
+T polygonArea2(vector<Point<T>>& v) {
+	T a = v.back().cross(v[0]);
+	fore(i,0,SZ(v)-1) a += v[i].cross(v[i+1]);
+	return a;
 }
+/// END content
 
-ll solve(double D, vector<Line>& lines) {
-	ll N = SZ(lines);
+const double eps = 1e-11;
 
-	for (auto& l : lines) {
-		auto [p0, p1, _] = l;
-		if (sideOf(p0, p1, P(0, 0), eps) == -1) {
-			l = {p1, p0};
+ll solve(vector<P>& points) {
+	ll n = SZ(points);
+
+	ll l = 0, r = n - 2;
+	while (l + 1 < r) {
+		ll m = (l + r) / 2;
+
+		vector<Line> lines(n);
+		fore(i, 0, n) {
+			lines[i] = {points[(i + m + 1) % n], points[i]};
 		}
-	}
-
-	vector<Line> big_box = {
-		{P(dinf, dinf), P(-dinf, dinf)},
-		{P(-dinf, dinf), P(-dinf, -dinf)},
-		{P(-dinf, -dinf), P(dinf, -dinf)},
-		{P(dinf, -dinf), P(dinf, dinf)},
-	};
-
-	double D2 = D * D;
-
-
-	{ // Test total
-		lines.insert(lines.end(), ALL(big_box));
 
 		vector<P> poly = halfPlaneIntersection(lines);
-		double poly_dist2 = max_dist2(poly);
-		if (poly_dist2 > D2) {
-			return inf;
-		}
-	}
 
-	ll l = 1, u = N;
-	while (l + 1 < u) {
-		ll m = (l + u) / 2;
+		double area = poly.size() <= 2 ? 0 : polygonArea2(poly);
 
-		vector<Line> this_lines(lines.begin(), lines.begin() + m);
-		this_lines.insert(this_lines.end(), ALL(big_box));
-
-		vector<P> poly = halfPlaneIntersection(this_lines);
-		double poly_dist2 = max_dist2(poly);
-		if (poly_dist2 < D2) {
-			u = m;
+		if (area <= eps) {
+			r = m;
 		} else {
 			l = m;
 		}
 	}
 
-	return u;
+	return r;
 }
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
+#ifdef ONLINE_JUDGE
+	freopen("jungle.in","r",stdin);
+	freopen("jungle.out","w",stdout);
+#endif
 
-	ll N;
-	double D;
-	cin >> N >> D;
-	vector<Line> lines(N);
-	for (auto& l : lines) {
-		ll X0, Y0, X1, Y1;
-		cin >> X0 >> Y0 >> X1 >> Y1;
-		l = {P(X0, Y0), P(X1, Y1)};
+	ll n;
+	cin >> n;
+	vector<P> points(n);
+	for (auto& [x, y] : points) {
+		ll X, Y;
+		cin >> X >> Y;
+		x = X, y = Y;
 	}
 
-	ll ans = solve(D, lines);
-	if (ans == inf) {
-		cout << '*';
-	} else {
-		cout << ans;
-	}
-	cout << '\n';
+	auto ans = solve(points);
+	cout << ans << '\n';
 }
