@@ -259,9 +259,12 @@ void testCase() {
 }
 
 namespace nonCommutative { // test a non commutative operation
+	/// content/graph/LinkCutTree.h
+	/// START diff
 	typedef string T;
 	const T neut = "";
 	T f(T a, T b) { return a + b; } // associative
+	/// END diff
 	struct SplayTree {
 		struct Node {
 			array<ll, 2> c = {0, 0};
@@ -332,7 +335,9 @@ namespace nonCommutative { // test a non commutative operation
 				spa(u);
 				ll& ov = nods[u].c[1];
 				nods[u].vir = f(nods[u].vir, nods[ov].sub);
+				/// START diff
 				// nods[u].vir = neg(nods[u].vir, nods[v].sub); // SUBTREE
+				/// END diff
 				ov = v; pushUp(u);
 			}
 			return spa(x), v;
@@ -355,10 +360,12 @@ namespace nonCommutative { // test a non commutative operation
 		T query(ll u) { // query single element
 			return nods[u].self;
 		}
+		/// START diff
 		/* T querySub(ll u) { // query SUBTREE of u
 			access(u);
 			return f(nods[u].vir, nods[u].self);
 		} */
+		/// END diff
 		void upd(ll u, T val) { // update value of u
 			access(u);
 			nods[u].self = val;
@@ -381,6 +388,7 @@ namespace nonCommutative { // test a non commutative operation
 			return nods[v].path[1];
 		}
 	};
+	/// END content
 
 	struct Slow { // indexed from 0
 		ll n;

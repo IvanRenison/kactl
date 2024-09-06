@@ -40,6 +40,7 @@ build:
 
 test:
 	./doc/scripts/run-all.sh .
+	bash ./doc/scripts/checkInlineContents-stress-test.sh
 
 test-compiles:
 	./doc/scripts/compile-all.sh .

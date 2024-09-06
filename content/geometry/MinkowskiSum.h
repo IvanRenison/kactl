@@ -17,7 +17,7 @@
 
 typedef Point<ll> P;
 
-void reorder(vector<P> &p){
+void reorder(vector<P> &p) {
 	if (sideOf(p[0], p[1], p[2]) < 0) reverse(ALL(p));
 	rotate(p.begin(), min_element(ALL(p)), p.end());
 }

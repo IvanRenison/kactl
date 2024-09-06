@@ -52,6 +52,9 @@ namespace testdouble {
 		return (a - b).dist() < eps;
 	}
 
+	/// content/geometry/ConvexHull.h
+	/// START diff
+	/// END diff
 	vector<P> convexHull(vector<P> pts) {
 		if (SZ(pts) <= 1) return pts;
 		sort(ALL(pts));
@@ -59,14 +62,24 @@ namespace testdouble {
 		ll s = 0, t = 0;
 		for (ll it = 2; it--; s = --t, reverse(ALL(pts)))
 			for (P p : pts) {
+				/// START diff
 				while (t >= s + 2 && h[t-2].cross(h[t-1], p) <= eps) t--;
+				/// END diff
 				h[t++] = p;
 			}
+		/// START diff
 		return {h.begin(), h.begin() + t - (t == 2 && eq(h[0], h[1]))};
+		/// END diff
 	}
+	/// END content
 
-	void reorder(vector<P> &p){
+	/// content/geometry/MinkowskiSum.h
+	/// START diff
+	/// END diff
+	void reorder(vector<P> &p) {
+		/// START diff
 		if (sideOf(p[0], p[1], p[2], eps) < 0) reverse(ALL(p));
+		/// END diff
 		rotate(p.begin(), min_element(ALL(p)), p.end());
 	}
 	vector<P> minkowskiSum(vector<P> p, vector<P> q) {
@@ -81,11 +94,14 @@ namespace testdouble {
 		ll i = 0, j = 0;
 		while (i + 2 < SZ(p) || j + 2 < SZ(q)) {
 			r.pb(p[i] + q[j]);
+			/// START diff
 			double cross = (p[i + 1] - p[i]).cross(q[j + 1] - q[j]);
 			i += cross >= -eps, j += cross <= eps;
+			/// END diff
 		}
 		return r;
 	}
+	/// END content
 
 	vector<P> slowMinkowskiSum(vector<P>& p, vector<P>& q) {
 		vector<P> pq;
