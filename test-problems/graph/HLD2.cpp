@@ -1,7 +1,7 @@
-// Problem: https://judge.yosupo.jp/problem/vertex_add_path_sum
-// Status: AC
-// Submission: https://judge.yosupo.jp/submission/232928
-// Testing usage of normal segment tree (not lazy) for HLD
+// Problem: https://codeforces.com/contest/2007/problem/E
+// Status: Accepted
+// Submission: https://codeforces.com/contest/2007/submission/279727345
+// Testing usage of normal segment tree (not lazy) for HLD with values in edges
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -18,9 +18,9 @@ typedef vector<ll> vi;
 
 /// content/data-structures/SegmentTree.h
 /// START diff
-typedef ll T;
-static constexpr T neut = 0;
-T f(T a, T b) { return a + b; } // (any associative fn)
+typedef pair<bool, ll> T;
+static constexpr T neut = {true, 0};
+T f(T a, T b) { return {a.fst && b.fst, a.snd + b.snd}; } // (any associative fn)
 struct Tree {
 	/// END diff
 	vector<T> s; ll n;
@@ -94,50 +94,83 @@ template <bool VALS_ED> struct HLD {
 	void updPoint(ll v, T val) {
 		t.upd(pos[v], val);
 	}
-	T queryPoint(ll v) {
-		return t.query(pos[v], pos[v] + 1);
-	}
 	/// END diff
 };
 /// END content
 
+void solve() {
+	ll n, w;
+	cin >> n >> w;
+	vector<vi> adj(n);
+	fore(i, 1, n) {
+		ll p;
+		cin >> p;
+		p--;
+		adj[p].pb(i), adj[i].pb(p);
+	}
+
+	vi sub_tree_maxs(n);
+	function<ll(ll, ll)> dfs = [&](ll u, ll p) {
+		ll ans = u;
+		for (ll v : adj[u]) if (v != p) {
+			ans = max(ans, dfs(v, u));
+		}
+		sub_tree_maxs[u] = ans;
+		return  ans;
+	};
+	dfs(0, -1);
+
+
+	HLD<true> hld(adj);
+	fore(u, 1, n) {
+		hld.updPoint(u, {false, 0});
+	}
+
+	ll free = n; // amount of paths that are not fully defined
+	ll defined_ans = 0; // sum of defined parts of paths
+	fore(_, 0, n - 1) {
+		ll u, y;
+		cin >> u >> y;
+		u--;
+
+		hld.updPoint(u, {true, y});
+		w -= y;
+		defined_ans += 2 * y;
+
+		ll v = sub_tree_maxs[u];
+		assert(u <= v);
+
+		{ // define path u-1 u
+			assert(u > 0);
+			ll u_ = u - 1;
+			auto [defined, val] = hld.queryPath(u_, u);
+
+			if (defined) {
+				free--;
+			}
+		}
+		{ // define path v v+1
+			ll v_ = (v + 1) % n;
+			auto [defined, val] = hld.queryPath(v, v_);
+
+			if (defined) {
+				free--;
+			}
+		}
+
+		ll ans = defined_ans + free * w;
+		cout << ans << ' ';
+	}
+
+	cout << '\n';
+}
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 
-	ll N, Q;
-	cin >> N >> Q;
-	vi as(N);
-	for (ll& a : as) {
-		cin >> a;
-	}
-	vector<vi> adj(N);
-	fore(i, 1, N) {
-		ll u, v;
-		cin >> u >> v;
-		adj[u].pb(v), adj[v].pb(u);
-	}
-
-	HLD<false> hld(adj);
-
-	fore(i, 0, N) {
-		hld.updPoint(i, as[i]);
-	}
-
-	while (Q--) {
-		ll t;
-		cin >> t;
-		if (t == 0) {
-			ll p, x;
-			cin >> p >> x;
-			ll val = hld.queryPoint(p);
-			val += x;
-			hld.updPoint(p, val);
-		} else {
-			ll u, v;
-			cin >> u >> v;
-			ll val = hld.queryPath(u, v);
-			cout << val << '\n';
-		}
+	ll t;
+	cin >> t;
+	while (t--) {
+		solve();
 	}
 }
