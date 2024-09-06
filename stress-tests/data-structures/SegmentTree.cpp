@@ -29,7 +29,7 @@ const ll lut[6][6] = {
 struct Tree {
 	typedef ll T;
 	/// START diff
-	const T neut = 0;
+	static constexpr T neut = 0;
 	T f(T a, T b) { return lut[a][b]; }
 	/// END diff
 	vector<T> s; ll n;
