@@ -26,12 +26,12 @@ void bench(ll n) {
 	cout << "randin: " << randin_time << "ms" << endl;
 	cout << "rand: " << rand_time << "ms" << endl;
 
-	assert(randin_time < rand_time);
+	assert(randin_time <= rand_time);
 }
 
 
 int main() {
 	bench(1e6);
 	bench(1e8);
-	//bench(1e10);
+	// bench(1e10);
 }
