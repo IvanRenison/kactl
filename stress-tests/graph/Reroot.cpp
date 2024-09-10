@@ -1,27 +1,37 @@
 #include "../utilities/template.h"
 #include "../utilities/genTree.h"
 
+/// content/graph/Reroot.h
+/// START diff
 struct Data {
 	ll x;
 	bool operator==(const Data &o) const { return x == o.x; }
 };
+/// END diff
 typedef vector<Data> vd;
 
 struct Reroot {
 	ll n;
 	vector<vi> &g;
 	vd &neuts;
+	/// START diff
 	vi &ndata;
 	map<ii, ll> &edata;
 	ll MOD;
+	/// END diff
 	Data finalize(const Data &a, ll p, ll ei) {
+		/// START diff
 		return {a.x * ndata[p] % (ei < 0 ? MOD : abs(MOD - g[p][ei]) + 2)};
+		/// END diff
 	}
 	void acc(Data &p_ans, const Data &child_ans, ll p, ll ei) {
+		/// START diff
 		p_ans = {p_ans.x + (child_ans.x ^ edata.at(minmax(p, g[p][ei])))};
+		/// END diff
 	}
 	vd root_dp;
 	vector<vd> fdp, bdp;
+	/// START diff
 	Reroot(vector<vi> &g, vd &neuts, vi &ndata, map<ii, ll> &edata, ll MOD)
 		: n(SZ(g)),
 		  g(g),
@@ -32,6 +42,7 @@ struct Reroot {
 		  root_dp(n),
 		  fdp(n),
 		  bdp(n) {}
+	/// END diff
 	void reroot() {
 		if (n == 1) {
 			root_dp[0] = finalize(neuts[0], 0, -1);
@@ -68,14 +79,22 @@ struct Reroot {
 		}
 	}
 };
+/// END content
 
+/// content/graph/RerootLinear.h
 struct RerootLinear : Reroot {
+	/// START diff
 	using Reroot::Reroot;
+	/// END diff
 	Data merge(const Data &a, const Data &b, ll p) {
+		/// START diff
 		return {a.x + b.x - neuts[p].x};
+		/// END diff
 	}
 	Data extend(const Data &a, ll p, ll ei) {
+		/// START diff
 		return {(a.x ^ edata[minmax(p, g[p][ei])]) + neuts[p].x};
+		/// END diff
 	}
 	void acc(Data &p_ans, const Data &child_ans, ll p, ll ei) {
 		p_ans = merge(p_ans, extend(child_ans, p, ei), p);
@@ -88,11 +107,17 @@ struct RerootLinear : Reroot {
 		fore(i, 0, d) e[i] = merge(p[i], s[i + 1], v);
 	}
 };
+/// END content
 
+/// content/graph/RerootInv.h
 struct RerootInv : Reroot {
+	/// START diff
 	using Reroot::Reroot;
+	/// END diff
 	void unacc(Data &ans, const Data &child_ans, ll p, ll ei) {
+		/// START diff
 		ans = {ans.x - (child_ans.x ^ edata.at(minmax(p, g[p][ei])))};
+		/// END diff
 	}
 	void ex(vd &e, vd &a, Data &ne, ll v) {
 		ll d = SZ(a);
@@ -102,6 +127,7 @@ struct RerootInv : Reroot {
 		fore(i, 0, d) unacc(e[i], a[i], v, i);
 	}
 };
+/// END content
 
 vd treeDP(const vector<vi> &g, const vd &neuts, auto &acc, auto &finalize,
 		  ll root) {

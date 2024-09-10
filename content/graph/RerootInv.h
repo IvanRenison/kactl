@@ -5,7 +5,7 @@
  * Description: Make rerooting linear by defining the inverse
  * of \texttt{acc}. Add \texttt{unacc} to the struct, keep
  * \texttt{acc} and \texttt{finalize}, and change \texttt{ex}.
- * No need to use inheritance.
+ * Don't use inheritance.
  *
  * \texttt{unacc} should, given accumulated$(p, \texttt{g[p]})$
  * and the answer for \texttt{g[p][ei]}, compute

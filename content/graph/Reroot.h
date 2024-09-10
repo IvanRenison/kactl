@@ -56,7 +56,9 @@ struct Reroot {
 	vector<vi>& g;
 	vd& neuts;
 
-	Data finalize(const Data& a, ll p, ll ei) { return a; }
+	Data finalize(const Data& a, ll p, ll ei) {
+		return a;
+	}
 	void acc(Data& p_ans, const Data& child_ans, ll p, ll ei) {
 		p_ans = Data{};
 	}

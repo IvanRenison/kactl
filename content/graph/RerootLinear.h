@@ -6,7 +6,7 @@
  * rerooting linear. Usually only worth it for non-
  * $\mathcal{O}(1)$ operations. Add \texttt{merge} and
  * \texttt{extend}, and change \texttt{acc} and
- * \texttt{exclusive}. No need to use inheritance.
+ * \texttt{exclusive}. Don't use inheritance.
  *
  * \texttt{merge} should, given accumulated$(p, S)$ and
  * accumulated$(p, T)$, with $S$ and $T$ disjoint, return
