@@ -32,7 +32,9 @@ struct Point<double> {
 		return P(x*cos(a)-y*sin(a),x*sin(a)+y*cos(a)); }
 };
 
+
 #include "../../content/geometry/ConvexHull.h"
+typedef Point<ll> P;
 #include "../../content/geometry/LineHullIntersection.h"
 
 ll segmentIntersection(const P& s1, const P& e1,
