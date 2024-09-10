@@ -1,7 +1,7 @@
 # KACTL
 
 This repo is a fork of [KACTL](https://github.com/kth-competitive-programming/kactl), [KTH](https://en.wikipedia.org/wiki/KTH_Royal_Institute_of_Technology)'s ICPC team reference document.
-It consists of 25 pages of copy-pasteable C++ code, for use in ICPC-style programming competitions.
+It consists of a pdf of copy-pasteable C++ code, for use in ICPC-style programming competitions.
 
 See [kactl.pdf](./kactl.pdf) for the final, browsable version, and [content/](./content/) for raw source code.
 
@@ -55,7 +55,6 @@ Each algorithm contains a header with the author of the code, the date it
 was added, a description of the algorithm, its testing status, and preferably also
 source, license and time complexity.
 
-kactl.pdf is to be kept to 25 pages + cover page.
 Occasionally the generated kactl.pdf is committed to the repo for convenience, but not too often because it makes git operations slower.
 
 ## Testing
@@ -63,7 +62,8 @@ Occasionally the generated kactl.pdf is committed to the repo for convenience, b
 KACTL aims for a high level of confidence in algorithm correctness.
 Testing is done both on online judges and (for newer algorithms) with stress tests
 that compare output to a more naive algorithm for a large amount of randomly generated cases.
-These tests live in the `stress-tests` directory, and are run with CI on every commit. The CI also verifies that all headers compile (except for an exclude list in `docs/scripts/skip_headers`) and that the latex compiles.
+Some test with online judges are in the `test-problems` directory.
+The stress tests live in the `stress-tests` directory, and are run with CI on every commit. The CI also verifies that all headers compile (except for an exclude list in `docs/scripts/skip_headers`) and that the latex compiles.
 
 `old-unit-tests` contains a couple of broken unit tests, last touched about ten years ago.
 
@@ -75,4 +75,4 @@ Many source files are marked with license (we try to go with
 Presumably good will is to be assumed from other authors, though, and in many cases permission should not be needed since the code is not distributed.
 To help trace things back, sources and authors are noted in source files.
 
-Everything in `stress-tests` is implicitly CC0, except reference implementations taken from around the Internet.
+Everything in `stress-tests` ans `test-problems` is implicitly CC0, except reference implementations taken from around the Internet.

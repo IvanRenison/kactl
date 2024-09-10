@@ -4,18 +4,18 @@
 
 int main() {
 	fore(n,1,300) {
-		vector<pair<double, ii>> v;
+		vector<pair<ld, ii>> v;
 		fore(i,0,n+1) fore(j,1,n+1) if (gcd(i,j) == 1) {
-			double r = (double)i / j;
+			ld r = (ld)i / j;
 			v.pb({r, {i,j}});
 		}
 		v.pb({1e9, {0,0}});
 		sort(ALL(v));
-		map<double, ii> actual(ALL(v));
+		map<ld, ii> actual(ALL(v));
 
 		fore(iter,0,100000) {
-			double x = rand() / (RAND_MAX + 1.0) * 3;
-			if (rand() % 2 == 0) x = (rand() % (3*n)) / (double)(rand() % (3*n) + 1);
+			ld x = rand() / (RAND_MAX + 1.0) * 3;
+			if (rand() % 2 == 0) x = (rand() % (3*n)) / (ld)(rand() % (3*n) + 1);
 			auto pa = approximate(x, n);
 			auto it = actual.lower_bound(x), it2 = it;
 			if (it2 != actual.begin()) --it2;
