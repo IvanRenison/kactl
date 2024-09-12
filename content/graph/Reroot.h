@@ -10,7 +10,8 @@
  *
  * \texttt{finalize} is applied before returning
  * answer for \texttt{p} if \texttt{g[p][ei]} was its
- * parent; usually identity function.
+ * parent; usually identity function. When \texttt{p} is the
+ * root, \texttt{ei} is -1.
  *
  * Let accumulated$(p, S) = a$ such that \texttt{finalize(a,
  * ...)} is the answer for $p$ if $S$ were its only children.
@@ -37,7 +38,7 @@
  *
  * \ \ \ \ \texttt{acc(res, dfs(g[u][ei], u), u, ei);}
  *
- * \ \ \texttt{ll pid = find(ALL(g[u]), p) - begin(g[u]);}
+ * \ \ \texttt{ll pid = p == -1 ? -1 : find(ALL(g[u]), p) - begin(g[u]);}
  *
  * \ \ \texttt{return dp[u] = finalize(res, u, pid);}
  *
