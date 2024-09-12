@@ -88,35 +88,48 @@ void testCase() {
 }
 
 namespace Extras { // Test commented code
+	/// content/data-structures/Treap.h
+	/// START diff
+	/// END diff
 	struct Node {
 		Node *l = 0, *r = 0;
+		/// START diff
 		Node *p = 0; // PARENT
+		/// END diff
 		T val, acc; L lazy = lneut;
 		ll y, c = 1;
+		/// START diff
 		bool rev = false; // REVERSE
+		/// END diff
 		Node(T val = tneut) : val(val), acc(val), y(rand()) {}
 		void recalc() {
 			c = 1, acc = tneut;
 			if (l) l->push(), acc = f(acc, l->acc), c += l->c;
 			acc = f(acc, val);
 			if (r) r->push(), acc = f(acc, r->acc), c += r->c;
+			/// START diff
 			if (l) l->p = this; // PARENT
 			if (r) r->p = this;
+			/// END diff
 		}
 		void push() {
+			/// START diff
 			if (rev) { // REVERSE
 				swap(l, r), rev = false;
 				if (l) l->rev ^= 1; if (r) r->rev ^= 1;
 			}
+			/// END diff
 			val = apply(val, lazy, 1), acc = apply(acc, lazy, c);
 			if (l) l->lazy = comb(l->lazy, lazy);
 			if (r) r->lazy = comb(r->lazy, lazy);
 			lazy = lneut;
 		}
+		/// START diff
 		void pullAll() { // PARENT
 			if (p) p->pullAll();
 			push();
 		}
+		/// END diff
 
 		Node* split(ll k) {
 			assert(k > 0);
@@ -153,6 +166,7 @@ namespace Extras { // Test commented code
 			}
 			recalc();
 		}
+		/// START diff
 		ll pos() { // In which position I am // PARENT
 			pullAll();
 			ll ans = l ? l->c : 0;
@@ -160,13 +174,17 @@ namespace Extras { // Test commented code
 			if (p->r == this) return ans + p->pos() + 1;
 			else return p->pos() + 1 - (r ? r->c : 0);
 		}
+		/// END diff
 		T query() { // Query full range
 			push();
 			return acc;
 		}
 		void upd(L v) { lazy = comb(lazy, v); } // Update full range
+		/// START diff
 		void reverse() { rev = !rev; } // REVERSE
+		/// END diff
 	};
+	/// END content
 
 	struct SlowNode {
 		T val;

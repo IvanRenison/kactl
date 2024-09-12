@@ -2,58 +2,59 @@
 
 const ll mod = 7; // 4
 
-typedef vector<vi> vvi;
-ll det(vvi& a) { // integer determinant
+/// content/numerical/IntDeterminant.h
+/// START diff
+/// END diff
+ll det(vector<vi>& a) {
 	ll n = SZ(a); ll ans = 1;
 	fore(i,0,n) {
 		fore(j,i+1,n) {
 			while (a[j][i] != 0) { // gcd step
 				ll t = a[i][i] / a[j][i];
-				fore(k,i,n)
+				if (t) fore(k,i,n)
 					a[i][k] = (a[i][k] - a[j][k] * t) % mod;
 				swap(a[i], a[j]);
 				ans *= -1;
 			}
 		}
-		if (!a[i][i]) return 0;
 		ans = ans * a[i][i] % mod;
+		if (!ans) return 0;
 	}
-	if (ans < 0) ans += mod;
-	return ans;
+	return (ans + mod) % mod;
 }
+/// END content
 
-ll idet(vvi& a) { // integer determinant
+typedef vector<vi> vvi;
+
+/// content/numerical/IntDeterminant.h
+/// START diff
+ll idet(vector<vi>& a) { // integer determinant
+/// END diff
 	ll n = SZ(a); ll ans = 1;
 	fore(i,0,n) {
 		fore(j,i+1,n) {
 			while (a[j][i] != 0) { // gcd step
-				ll t = a[i][i] / a[j][i]; // can take mod-inv if mod p
-				fore(k,i,n) a[i][k] -= a[j][k] * t;
+				ll t = a[i][i] / a[j][i];
+				if (t) fore(k,i,n)
+				/// START diff
+					a[i][k] = (a[i][k] - a[j][k] * t);
+				/// END diff
 				swap(a[i], a[j]);
 				ans *= -1;
 			}
 		}
-		if (!a[i][i]) return 0;
-		ans *= a[i][i];
+		/// START diff
+		ans = ans * a[i][i];
+		/// END diff
+		if (!ans) return 0;
 	}
-	return ans;
+	/// START diff
+	return (ans + mod);
+	/// END diff
 }
+/// END content
 
-double det(vector<vector<double>>& a) {
-	ll n = SZ(a); double res = 1;
-	fore(i,0,n) {
-		ll b = i;
-		fore(j,i+1,n) if (fabs(a[j][i]) > fabs(a[b][i])) b = j;
-		if (i != b) swap(a[i], a[b]), res *= -1;
-		res *= a[i][i];
-		if (res == 0) return 0;
-		fore(j,i+1,n) {
-			double v = a[j][i] / a[i][i];
-			if (v != 0) fore(k,i+1,n) a[j][k] -= v * a[i][k];
-		}
-	}
-	return res;
-}
+#include "../../content/numerical/Determinant.h"
 
 template<class F>
 void rec(ll i, ll j, vvi& A, F f) {

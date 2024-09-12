@@ -39,6 +39,7 @@ build:
 	mkdir -p build/
 
 test:
+	bash ./doc/scripts/checkInlineContents-stress-test.sh
 	./doc/scripts/run-all.sh .
 
 test-compiles:
