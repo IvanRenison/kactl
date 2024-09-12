@@ -2,20 +2,7 @@
 
 #include "../../content/numerical/Polynomial.h"
 
-Poly mul(const Poly& p, const Poly& q) {
-	if (p.empty() || q.empty()) return {};
-	Poly res(SZ(p) + SZ(q) - 1);
-	fore(i,0,SZ(p)) fore(j,0,SZ(q))
-		res[i+j] += p[i] * q[j];
-	return res;
-}
-Poly add(const Poly& p, const Poly& q) {
-	Poly res(max(SZ(p), SZ(q)));
-	fore(i,0,SZ(p)) res[i] += p[i];
-	fore(i,0,SZ(q)) res[i] += q[i];
-	while (!res.empty() && abs(res.back()) < eps) res.pop_back();
-	return res;
-}
+
 
 Poly randomPoly() {
 	ll n = rand() % 20;
@@ -52,22 +39,33 @@ void testDiv2() {
 	assert(rem.size() < q.size());
 }
 
-void testDivroot() {
+void testDivSmall() {
 	Poly p = randomNonZeroPoly();
 	double x0 = rand() % 10 - 5;
 	Poly q = {-x0, 1};
 	Poly pq = mul(p, q);
-	auto [res, rem] = divroot(pq, x0);
+	auto [res, rem] = divSmall(pq, x0);
 	assert(PolyEq(res, p));
 	assert(abs(rem) < eps);
 }
+
+void testDivSmall2() {
+	Poly p = randomNonZeroPoly();
+	double x0 = rand() % 10 - 5;
+	Poly q = {-x0, 1};
+	auto [res, rem] = divSmall(p, x0);
+	Poly pp = add(mul(res, q), Poly{rem});
+	assert(PolyEq(pp, p));
+}
+
 
 int main() {
 
 	fore(i, 0, 1000) {
 		testDiv();
 		testDiv2();
-		testDivroot();
+		testDivSmall();
+		testDivSmall2();
 	}
 
 	cout << "Tests passed!" << endl;
