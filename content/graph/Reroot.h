@@ -94,10 +94,8 @@ struct Reroot {
 	void ex(vd& e, vd& a, Data& ne, ll v) {
 		ll d = SZ(a); fill(begin(e), begin(e) + d, ne);
 		for (ll b = bit_width((unsigned)d); b--;) {
-			for (ll i = d; i--;)
-				e[i] = e[i >> 1];
-			fore(i, 0, d - (d & !b))
-				acc(e[(i >> b) ^ 1], a[i], v, i);
+			for (ll i = d; i--;) e[i] = e[i >> 1];
+			fore(i, 0, d - (d & !b)) acc(e[(i >> b)^1], a[i], v, i);
 		}
 	}
 };

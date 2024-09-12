@@ -46,13 +46,14 @@ struct Reroot {
 	/// END diff
 	void reroot() {
 		if (n==1) { root_dp[0]=finalize(neuts[0], 0, -1); return; }
-		vd dp = neuts, e(n); vi o, p(n); o.reserve(n), o.pb(0);
+		vd dp = neuts, e(n); vi o = {0}, p(n); o.reserve(n);
 		fore(i, 0, n) for (ll v : g[o[i]]) if (v != p[o[i]])
 			p[v] = o[i], o.pb(v);
 		for (ll u : views::reverse(o)) {
 			ll pei = -1;
-			fore(ei, 0, SZ(g[u])) if (g[u][ei] == p[u]) pei = ei;
-			else acc(dp[u], dp[g[u][ei]], u, ei);
+			fore(ei, 0, SZ(g[u]))
+				if (g[u][ei] == p[u]) pei = ei;
+				else acc(dp[u], dp[g[u][ei]], u, ei);
 			dp[u] = finalize(dp[u], u, pei);
 		}
 		for (ll u : o) {
@@ -68,11 +69,9 @@ struct Reroot {
 	}
 	void ex(vd& e, vd& a, Data& ne, ll v) {
 		ll d = SZ(a); fill(begin(e), begin(e) + d, ne);
-		for (ll b = bit_width((unsigned)d) - 1; b >= 0; b--) {
-			for (ll i = d - 1; i >= 0; i--)
-				e[i] = e[i >> 1];
-			fore(i, 0, d - (d & !b))
-				acc(e[(i >> b) ^ 1], a[i], v, i);
+		for (ll b = bit_width((unsigned)d); b--;) {
+			for (ll i = d; i--;) e[i] = e[i >> 1];
+			fore(i, 0, d - (d & !b)) acc(e[(i >> b)^1], a[i], v, i);
 		}
 	}
 };
@@ -100,7 +99,7 @@ struct RerootLinear : Reroot {
 		ll d = SZ(a);
 		vd p(d + 1, ne), s(d + 1, ne);
 		fore(i,0,d) p[i+1] = merge(p[i], a[i]=extend(a[i],v,i), v);
-		for(ll i=d-1;i>=0;i--) s[i] = merge(a[i], s[i + 1], v);
+		for(ll i = d; i--;) s[i] = merge(a[i], s[i + 1], v);
 		fore(i, 0, d) e[i] = merge(p[i], s[i + 1], v);
 	}
 };
