@@ -35,7 +35,7 @@ struct RerootLinear : Reroot {
 		ll d = SZ(a);
 		vd p(d + 1, ne), s(d + 1, ne);
 		fore(i,0,d) p[i+1] = merge(p[i], a[i]=extend(a[i],v,i), v);
-		for(ll i=d-1;i>=0;i--) s[i] = merge(a[i], s[i + 1], v);
+		for(ll i = d; i--;) s[i] = merge(a[i], s[i + 1], v);
 		fore(i, 0, d) e[i] = merge(p[i], s[i + 1], v);
 	}
 };

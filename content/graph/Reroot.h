@@ -3,8 +3,8 @@
  * Date: 2024-07-06
  * License: CC0
  * Source: https://codeforces.com/blog/entry/124286
- * Description: Usage: define \texttt{Data}, \texttt{finalize},
- * \texttt{acc} according to the definitions below, adding any
+ * Description: define \texttt{Data}, \texttt{finalize},
+ * \texttt{acc} (as explained below), adding any
  * necessary fields to \texttt{Reroot}. Then instantiate, add
  * the data, and call \texttt{reroot()}.
  *
@@ -21,10 +21,10 @@
  *
  * \texttt{neuts[p]} should be accumulated$(p, \varnothing)$.
  *
- * The answers are \texttt{root\_dp[v]}, the answer for the
- * whole tree with \texttt{v} as root, \texttt{fdp[v][ei]}, the
- * answer for \texttt{g[v][ei]} if \texttt{v} is the root, and
- * \texttt{bdp[v][ei]}, the answer for \texttt{v} if
+ * \texttt{root\_dp[v]} is the answer for the whole tree with
+ * \texttt{v} as root, \texttt{fdp[v][ei]} is the answer for
+ * \texttt{g[v][ei]} if \texttt{v} is the root and
+ * \texttt{bdp[v][ei]} is the answer for \texttt{v} if
  * \texttt{g[v][ei]} is the root.
  *
  * Equivalent to the following code, but for all roots:
@@ -65,17 +65,18 @@ struct Reroot {
 
 	vd root_dp;
 	vector<vd> fdp, bdp;
-	Reroot(vector<vi>&g,vd&neuts)
-		: n(SZ(g)), g(g), neuts(neuts), root_dp(n), fdp(n),bdp(n){}
+	Reroot(vector<vi>& g, vd& neuts) : n(SZ(g)), g(g),
+			neuts(neuts), root_dp(n), fdp(n), bdp(n) {}
 	void reroot() {
 		if (n==1) { root_dp[0]=finalize(neuts[0], 0, -1); return; }
-		vd dp = neuts, e(n); vi o, p(n); o.reserve(n), o.pb(0);
+		vd dp = neuts, e(n); vi o = {0}, p(n); o.reserve(n);
 		fore(i, 0, n) for (ll v : g[o[i]]) if (v != p[o[i]])
 			p[v] = o[i], o.pb(v);
 		for (ll u : views::reverse(o)) {
 			ll pei = -1;
-			fore(ei, 0, SZ(g[u])) if (g[u][ei] == p[u]) pei = ei;
-			else acc(dp[u], dp[g[u][ei]], u, ei);
+			fore(ei, 0, SZ(g[u]))
+				if (g[u][ei] == p[u]) pei = ei;
+				else acc(dp[u], dp[g[u][ei]], u, ei);
 			dp[u] = finalize(dp[u], u, pei);
 		}
 		for (ll u : o) {
@@ -91,8 +92,8 @@ struct Reroot {
 	}
 	void ex(vd& e, vd& a, Data& ne, ll v) {
 		ll d = SZ(a); fill(begin(e), begin(e) + d, ne);
-		for (ll b = bit_width((unsigned)d) - 1; b >= 0; b--) {
-			for (ll i = d - 1; i >= 0; i--)
+		for (ll b = bit_width((unsigned)d); b--;) {
+			for (ll i = d; i--;)
 				e[i] = e[i >> 1];
 			fore(i, 0, d - (d & !b))
 				acc(e[(i >> b) ^ 1], a[i], v, i);
