@@ -54,7 +54,9 @@ void testNormal() {
 
 namespace Modification {
 
+/// content/data-structures/SegmentTree2d.h
 struct Tree2 {
+	/// START diff
 	typedef set<ll> T;
 	const T neut = {};
 	T f(T a, const T& b) {
@@ -63,6 +65,7 @@ struct Tree2 {
 		}
 		return a;
 	} // associative & commutative
+	/// END diff
 
 	ll n, m;
 	vector<vector<T>> a, st;
@@ -101,6 +104,7 @@ struct Tree2 {
 		return r;
 	}
 };
+/// END content
 
 struct Slow {
 	typedef set<ll> T;

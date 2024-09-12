@@ -25,15 +25,18 @@ const ll lut[6][6] = {
 	{5, 2, 3, 1, 0, 4}
 };
 
+/// content/data-structures/SegmentTree.h
 struct Tree {
 	typedef ll T;
-	const T neut = 0;
+	/// START diff
+	static constexpr T neut = 0;
 	T f(T a, T b) { return lut[a][b]; }
+	/// END diff
 	vector<T> s; ll n;
-	Tree(ll n = 0, T def = 0) : s(2*n, def), n(n) {}
+	Tree(ll n = 0, T def = neut) : s(2*n, def), n(n) {}
 	void upd(ll pos, T val) {
-		for (s[pos += n] = val; pos > 1; pos /= 2)
-			s[pos / 2] = f(s[pos & ~1], s[pos | 1]);
+		for (s[pos += n] = val; pos /= 2;)
+			s[pos] = f(s[pos * 2], s[pos * 2 + 1]);
 	}
 	T query(ll b, ll e) { // query [b, e)
 		T ra = neut, rb = neut;
@@ -44,6 +47,7 @@ struct Tree {
 		return f(ra, rb);
 	}
 };
+/// END content
 
 }
 

@@ -1,20 +1,7 @@
 #include "../utilities/template.h"
 
 #include "../../content/graph/EulerWalk.h"
-
-struct UF {
-	vi v;
-	UF(ll n) : v(n, -1) {}
-	ll find(ll x) { return v[x] < 0 ? x : v[x] = find(v[x]); }
-	void join(ll a, ll b) {
-		a = find(a);
-		b = find(b);
-		if (a == b) return;
-		if (-v[a] < -v[b]) swap(a, b);
-		v[a] += v[b];
-		v[b] = a;
-	}
-};
+#include "../../content/data-structures/UnionFind.h"
 
 bool hasEulerWalk(vector<vector<ii>>& ed, ll start, bool undir, bool cycle) {
 	ll n = SZ(ed);
@@ -51,10 +38,15 @@ bool hasEulerWalk(vector<vector<ii>>& ed, ll start, bool undir, bool cycle) {
 	return comp <= 1;
 }
 
+/// content/graph/EulerWalk.h
+/// START diff
 vi eulerCycle(vector<vector<ii>>& gr, ll nedges, ll src=0) {
+/// END diff
 	ll n = SZ(gr);
 	vi D(n), its(n), eu(nedges), ret, s = {src};
+	/// START diff
 	// D[src]++; // to allow Euler paths, not just cycles
+	/// END diff
 	while (!s.empty()) {
 		ll x = s.back(), y, e, &it = its[x], end = SZ(gr[x]);
 		if (it == end){ ret.pb(x); s.pop_back(); continue; }
@@ -63,9 +55,10 @@ vi eulerCycle(vector<vector<ii>>& gr, ll nedges, ll src=0) {
 			D[x]--, D[y]++;
 			eu[e] = 1; s.pb(y);
 		}}
-	for(auto &x: D) if (x < 0 || SZ(ret) != nedges+1) return {};
+	for (ll x : D) if (x < 0 || SZ(ret) != nedges+1) return {};
 	return {ret.rbegin(), ret.rend()};
 }
+/// END content
 
 int main() {
 	fore(cycle,0,2) fore(undir,0,2) {
