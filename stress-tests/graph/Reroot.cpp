@@ -12,27 +12,28 @@ typedef vector<Data> vd;
 
 struct Reroot {
 	ll n;
-	vector<vi> &g;
-	vd &neuts;
+	vector<vi>& g;
+	vd& neuts;
 	/// START diff
 	vi &ndata;
 	map<ii, ll> &edata;
 	ll MOD;
 	/// END diff
-	Data finalize(const Data &a, ll p, ll ei) {
+	Data finalize(const Data& a, ll p, ll ei) {
 		/// START diff
 		return {a.x * ndata[p] % (ei < 0 ? MOD : abs(MOD - g[p][ei]) + 2)};
 		/// END diff
 	}
-	void acc(Data &p_ans, const Data &child_ans, ll p, ll ei) {
+	void acc(Data& p_ans, const Data& child_ans, ll p, ll ei) {
 		/// START diff
 		p_ans = {p_ans.x + (child_ans.x ^ edata.at(minmax(p, g[p][ei])))};
 		/// END diff
 	}
+
 	vd root_dp;
 	vector<vd> fdp, bdp;
 	/// START diff
-	Reroot(vector<vi> &g, vd &neuts, vi &ndata, map<ii, ll> &edata, ll MOD)
+	Reroot(vector<vi>& g, vd& neuts, vi& ndata, map<ii, ll>& edata, ll MOD)
 		: n(SZ(g)),
 		  g(g),
 		  neuts(neuts),
@@ -44,15 +45,10 @@ struct Reroot {
 		  bdp(n) {}
 	/// END diff
 	void reroot() {
-		if (n == 1) {
-			root_dp[0] = finalize(neuts[0], 0, -1);
-			return;
-		}
-		vd dp = neuts, e(n);
-		vi o, p(n);
-		o.reserve(n), o.pb(0);
-		fore(i, 0, n) for (ll v : g[o[i]]) if (v != p[o[i]]) p[v] = o[i],
-															 o.pb(v);
+		if (n==1) { root_dp[0]=finalize(neuts[0], 0, -1); return; }
+		vd dp = neuts, e(n); vi o, p(n); o.reserve(n), o.pb(0);
+		fore(i, 0, n) for (ll v : g[o[i]]) if (v != p[o[i]])
+			p[v] = o[i], o.pb(v);
 		for (ll u : views::reverse(o)) {
 			ll pei = -1;
 			fore(ei, 0, SZ(g[u])) if (g[u][ei] == p[u]) pei = ei;
@@ -70,12 +66,13 @@ struct Reroot {
 			fore(i, 0, SZ(g[u])) dp[g[u][i]] = bdp[u][i];
 		}
 	}
-	void ex(vd &e, vd &a, Data &ne, ll v) {
-		ll d = SZ(a);
-		fill(begin(e), begin(e) + d, ne);
+	void ex(vd& e, vd& a, Data& ne, ll v) {
+		ll d = SZ(a); fill(begin(e), begin(e) + d, ne);
 		for (ll b = bit_width((unsigned)d) - 1; b >= 0; b--) {
-			for (ll i = d - 1; i >= 0; i--) e[i] = e[i >> 1];
-			fore(i, 0, d - (d & !b)) acc(e[(i >> b) ^ 1], a[i], v, i);
+			for (ll i = d - 1; i >= 0; i--)
+				e[i] = e[i >> 1];
+			fore(i, 0, d - (d & !b))
+				acc(e[(i >> b) ^ 1], a[i], v, i);
 		}
 	}
 };
@@ -86,24 +83,24 @@ struct RerootLinear : Reroot {
 	/// START diff
 	using Reroot::Reroot;
 	/// END diff
-	Data merge(const Data &a, const Data &b, ll p) {
+	Data merge(const Data& a, const Data& b, ll p) {
 		/// START diff
 		return {a.x + b.x - neuts[p].x};
 		/// END diff
 	}
-	Data extend(const Data &a, ll p, ll ei) {
+	Data extend(const Data& a, ll p, ll ei) {
 		/// START diff
 		return {(a.x ^ edata[minmax(p, g[p][ei])]) + neuts[p].x};
 		/// END diff
 	}
-	void acc(Data &p_ans, const Data &child_ans, ll p, ll ei) {
+	void acc(Data& p_ans, const Data& child_ans, ll p, ll ei) {
 		p_ans = merge(p_ans, extend(child_ans, p, ei), p);
 	}
-	void ex(vd &e, vd &a, Data &ne, ll v) {
+	void ex(vd& e, vd& a, Data& ne, ll v) {
 		ll d = SZ(a);
 		vd p(d + 1, ne), s(d + 1, ne);
-		fore(i, 0, d) p[i + 1] = merge(p[i], a[i] = extend(a[i], v, i), v);
-		for (ll i = d - 1; i >= 0; i--) s[i] = merge(a[i], s[i + 1], v);
+		fore(i,0,d) p[i+1] = merge(p[i], a[i]=extend(a[i],v,i), v);
+		for(ll i=d-1;i>=0;i--) s[i] = merge(a[i], s[i + 1], v);
 		fore(i, 0, d) e[i] = merge(p[i], s[i + 1], v);
 	}
 };
@@ -114,12 +111,12 @@ struct RerootInv : Reroot {
 	/// START diff
 	using Reroot::Reroot;
 	/// END diff
-	void unacc(Data &ans, const Data &child_ans, ll p, ll ei) {
+	void unacc(Data& ans, const Data& child_ans, ll p, ll ei) {
 		/// START diff
 		ans = {ans.x - (child_ans.x ^ edata.at(minmax(p, g[p][ei])))};
 		/// END diff
 	}
-	void ex(vd &e, vd &a, Data &ne, ll v) {
+	void ex(vd& e, vd& a, Data& ne, ll v) {
 		ll d = SZ(a);
 		Data b = ne;
 		fore(i, 0, d) acc(b, a[i], v, i);
