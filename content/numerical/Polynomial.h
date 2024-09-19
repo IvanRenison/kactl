@@ -21,6 +21,11 @@ Poly derivate(const Poly& p) { // O(n)
 	fore(i, 1, SZ(p)) res[i-1] = i*p[i];
 	return res;
 }
+Poly integrate(const Poly& p) { // O(n)
+	Poly ans(SZ(p) + 1);
+	fore(i, 0, SZ(p)) ans[i+1] = p[i]/(i+1);
+	return ans;
+}
 Poly add(const Poly& p, const Poly& q) { // O(n)
 	Poly res(max(SZ(p), SZ(q)));
 	fore(i,0,SZ(p)) res[i] += p[i];
@@ -45,7 +50,7 @@ pair<Poly, double> divSmall(const Poly& p, double x0) { // O(n)
 	return {res, p[0] + x0 * res[0]};
 }
 pair<Poly, Poly> div(Poly p, const Poly& q) { // O(n^2)
-	if (SZ(p) < SZ(q)) return {{}, p};
+	if (SZ(p) < SZ(q)) return {{}, p};  // returns {res, rem}
 	ll n = SZ(p) - SZ(q) + 1;
 	Poly res(n);
 	for (ll i = n; i--;) {
