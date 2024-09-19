@@ -48,13 +48,11 @@ vi eulerCycle(vector<vector<ii>>& gr, ll nedges, ll src=0) {
 	// D[src]++; // to allow Euler paths, not just cycles
 	/// END diff
 	while (!s.empty()) {
-		ll x = s.back(), y, e, &it = its[x], end = SZ(gr[x]);
-		if (it == end){ ret.pb(x); s.pop_back(); continue; }
-		tie(y, e) = gr[x][it++];
-		if (!eu[e]) {
-			D[x]--, D[y]++;
-			eu[e] = 1; s.pb(y);
-		}}
+		ll x = s.back(), &it = its[x], end = SZ(gr[x]);
+		if (it == end) { ret.pb(x), s.pop_back(); continue; }
+		auto [y, e] = gr[x][it++];
+		if (!eu[e]) D[x]--, D[y]++, eu[e] = 1, s.pb(y);
+	}
 	for (ll x : D) if (x < 0 || SZ(ret) != nedges+1) return {};
 	return {ret.rbegin(), ret.rend()};
 }
