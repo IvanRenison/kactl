@@ -12,11 +12,11 @@ ll inv(ll a);
 /// content/number-theory/ModPow.h
 /// START diff
 /// END diff
-ll modpow(ll a, ll e) {
-	if (e == 0)
-		return 1;
-	ll x = modpow(a * a % mod, e >> 1);
-	return e & 1 ? x * a % mod : x;
+ll modpow(ll b, ll e) {
+	ll ans = 1;
+	for (; e; b = b * b % mod, e /= 2)
+		if (e & 1) ans = ans * b % mod;
+	return ans;
 }
 /// END content
 /// content/number-theory/FastInverse.h
