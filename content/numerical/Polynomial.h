@@ -21,11 +21,6 @@ Poly derivate(const Poly& p) { // O(n)
 	fore(i, 1, SZ(p)) res[i-1] = i*p[i];
 	return res;
 }
-Poly integrate(const Poly& p) { // O(n)
-	Poly ans(SZ(p) + 1);
-	fore(i, 0, SZ(p)) ans[i+1] = p[i]/(i+1);
-	return ans;
-}
 Poly add(const Poly& p, const Poly& q) { // O(n)
 	Poly res(max(SZ(p), SZ(q)));
 	fore(i,0,SZ(p)) res[i] += p[i];

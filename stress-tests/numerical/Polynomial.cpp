@@ -3,7 +3,6 @@
 #include "../../content/numerical/Polynomial.h"
 
 
-
 Poly randomPoly() {
 	ll n = rand() % 20;
 	Poly p(n);
@@ -23,7 +22,7 @@ bool PolyEq(const Poly& a, const Poly& b) {
 	return true;
 }
 
-void testDiv() {
+void testDivExact() {
 	Poly p = randomPoly(), q = randomNonZeroPoly();
 	Poly pq = mul(p, q);
 	auto [res, rem] = div(pq, q);
@@ -31,7 +30,7 @@ void testDiv() {
 	assert(rem.empty());
 }
 
-void testDiv2() {
+void testDiv() {
 	Poly p = randomPoly(), q = randomNonZeroPoly();
 	auto [res, rem] = div(p, q);
 	Poly pp = add(mul(res, q), rem);
@@ -39,7 +38,7 @@ void testDiv2() {
 	assert(rem.size() < q.size());
 }
 
-void testDivSmall() {
+void testDivSmallExact() {
 	Poly p = randomNonZeroPoly();
 	double x0 = rand() % 10 - 5;
 	Poly q = {-x0, 1};
@@ -49,7 +48,7 @@ void testDivSmall() {
 	assert(abs(rem) < eps);
 }
 
-void testDivSmall2() {
+void testDivSmall() {
 	Poly p = randomNonZeroPoly();
 	double x0 = rand() % 10 - 5;
 	Poly q = {-x0, 1};
@@ -62,10 +61,10 @@ void testDivSmall2() {
 int main() {
 
 	fore(i, 0, 1000) {
+		testDivExact();
 		testDiv();
-		testDiv2();
+		testDivSmallExact();
 		testDivSmall();
-		testDivSmall2();
 	}
 
 	cout << "Tests passed!" << endl;
