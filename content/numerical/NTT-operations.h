@@ -6,6 +6,7 @@
  * Description: Some operations on polynomials made fast with NTT.
  * The may also work with doubles and FFT, but it's numerically unstable.
  * \texttt{inv}, \texttt{log} ans \texttt{exp} return truncated infinite series.
+ * \texttt{Poly} elements should not have trailing zeros. The zero polynomial is \texttt{\{\}}.
  * Status: division stress-tested
  */
 #pragma once
@@ -13,7 +14,7 @@
 #include "NumberTheoreticTransform.h"
 #include "../number-theory/FastInverse.h"
 
-typedef vector<ll> Poly;
+typedef vi Poly;
 
 Poly add(const Poly& p, const Poly& q) { // O(n)
 	Poly res(max(SZ(p), SZ(q)));
@@ -24,13 +25,13 @@ Poly add(const Poly& p, const Poly& q) { // O(n)
 	return res;
 }
 Poly derivate(const Poly& p) { // O(n)
-	Poly res(SZ(p)-1);
-	fore(i, 1, SZ(p)) res[i-1] = i*p[i];
+	Poly res(max(0ll, SZ(p)-1));
+	fore(i, 1, SZ(p)) res[i-1] = (i * p[i]) % mod;
 	return res;
 }
 Poly integrate(const Poly& p) { // O(n)
 	Poly ans(SZ(p) + 1);
-	fore(i, 0, SZ(p)) ans[i+1] = p[i] * inv(i+1);
+	fore(i, 0, SZ(p)) ans[i+1] = (p[i] * inv(i+1)) % mod;
 	return ans;
 }
 
@@ -58,9 +59,10 @@ Poly inv(const Poly& p, ll d) { // O(n log(n))
 Poly log(const Poly& p, ll d){ // O(n log(n))
 	Poly cur = takeMod(p, d);    // first d terms of log(p)
 	Poly a = inv(cur, d), b = derivate(cur);
-	auto res = conv(a,b);
+	Poly res = conv(a,b);
 	res = takeMod(res, d-1);
 	res = integrate(res);
+	res.resize(d);
 	return res;
 }
 Poly exp(const Poly& p, ll d) { // O(n log(n)^2)
