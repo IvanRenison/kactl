@@ -7,7 +7,7 @@
  * The may also work with doubles and FFT, but it's numerically unstable.
  * \texttt{inv}, \texttt{log} ans \texttt{exp} return truncated infinite series.
  * \texttt{Poly} elements should not have trailing zeros. The zero polynomial is \texttt{\{\}}.
- * Status: division stress-tested
+ * Status: division stress-tested, everything else tested with library checker
  */
 #pragma once
 
@@ -97,35 +97,32 @@ pair<Poly,Poly> div(const Poly& a, const Poly& b){
 	return {q, r};
 }
 
-void filltree(vi& x, vector<Poly>& tree) {
+vector<Poly> filltree(vi& x) {
 	ll k = SZ(x);
-	tree.resize(2*k);
-	fore(i, k, 2*k) tree[i] = {(mod - x[i - k]) % mod, 1};
-	for(ll i = k; i--;) tree[i] = conv(tree[2*i], tree[2*i+1]);
+	vector<Poly> tr(2*k);
+	fore(i, k, 2*k) tr[i] = {(mod - x[i - k]) % mod, 1};
+	for (ll i = k; i--;) tr[i] = conv(tr[2*i], tr[2*i+1]);
+	return tr;
 }
 vi evaluate(Poly& a, vi& x) { // O(n log(n)^2)
-	vector<Poly> tree;          // Evaluate a in all points of x
-	filltree(x, tree);
-	ll k = SZ(x);
+	ll k = SZ(x);               // Evaluate a in all points of x
+	if (!SZ(a)) return vi(k);
+	vector<Poly> tr = filltree(x);
 	vector<Poly> ans(2*k);
-	ans[1] = div(a, tree[1]).snd;
-	fore(i,2,2*k) ans[i] = div(ans[i>>1], tree[i]).snd;
-	vi r;
-	fore(i,0,k) r.pb(ans[i+k][0]);
+	ans[1] = div(a, tr[1]).snd;
+	fore(i, 2, 2*k) ans[i] = div(ans[i/2], tr[i]).snd;
+	vi r(k);
+	fore(i, 0, k) if (SZ(ans[i+k])) r[i] = ans[i+k][0];
 	return r;
 }
 Poly interpolate(vi& x, vi& y) { // O(n log(n)^2)
-	vector<Poly> tree;
-	filltree(x, tree);
-	Poly p = derivate(tree[1]);
+	vector<Poly> tr = filltree(x);
+	Poly p = derivate(tr[1]);
 	ll k = SZ(y);
-	vi d = evaluate(p, x);
-	vector<Poly> intree(2*k);
-	fore(i, k, 2*k) intree[i] = {y[i-k] * inv(d[i-k])};
-	for(ll i = k-1; i; i--) {
-		Poly p1 = conv(tree[2*i], intree[2*i+1]);
-		Poly p2 = conv(tree[2*i+1], intree[2*i]);
-		intree[i] = add(p1, p2);
-	}
-	return intree[1];
+	vi d = evaluate(p, x); // pass tr here for a speed up
+	vector<Poly> intr(2*k);
+	fore(i, k, 2*k) intr[i] = {(y[i-k] * inv(d[i-k])) % mod};
+	for (ll i = k; i--;) intr[i] = add(
+		conv(tr[2*i], intr[2*i+1]), conv(tr[2*i+1], intr[2*i]));
+	return intr[1];
 }
