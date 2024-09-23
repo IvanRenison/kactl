@@ -117,7 +117,7 @@ def checkContents(filePath: str, mandatory: bool = False) -> int:
 
 def main() -> int:
     try:
-        filePath: str = "./test-problems/numerical/NTT-operations-inv.cpp"#sys.argv[1]
+        filePath: str = sys.argv[1]
         return checkContents(filePath)
     except (ValueError, IOError) as err:
         print(str(err), file=sys.stderr)
