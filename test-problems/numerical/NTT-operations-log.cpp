@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/log_of_formal_power_series
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/237106
+// Submission: https://judge.yosupo.jp/submission/237476
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -99,7 +99,7 @@ Poly integrate(const Poly& p) { // O(n)
 
 Poly takeMod(Poly p, ll n) { // O(n)
 	p.resize(min(SZ(p), n));   // p % (x^n)
-	while(!p.empty() && !p.back()) p.pop_back();
+	while (!p.empty() && !p.back()) p.pop_back();
 	return p;
 }
 
@@ -112,18 +112,15 @@ Poly inv(const Poly& p, ll d) { // O(n log(n))
 		Poly cur = conv(res, pre);
 		fore(i, 0, SZ(cur)) if (cur[i]) cur[i] = mod - cur[i];
 		cur[0] = cur[0] + 2;
-		res = conv(res, cur);
-		res = takeMod(res, sz);
+		res = takeMod(conv(res, cur), sz);
 	}
 	res.resize(d);
 	return res;
 }
 Poly log(const Poly& p, ll d){ // O(n log(n))
 	Poly cur = takeMod(p, d);    // first d terms of log(p)
-	Poly a = inv(cur, d), b = derivate(cur);
-	Poly res = conv(a,b);
-	res = takeMod(res, d-1);
-	res = integrate(res);
+	Poly res = integrate(
+		takeMod(conv(inv(cur, d), derivate(cur)), d - 1));
 	res.resize(d);
 	return res;
 }

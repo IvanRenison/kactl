@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/inv_of_formal_power_series
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/237100
+// Submission: https://judge.yosupo.jp/submission/237475
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -88,7 +88,7 @@ typedef vi Poly;
 /// END diff
 Poly takeMod(Poly p, ll n) { // O(n)
 	p.resize(min(SZ(p), n));   // p % (x^n)
-	while(!p.empty() && !p.back()) p.pop_back();
+	while (!p.empty() && !p.back()) p.pop_back();
 	return p;
 }
 
@@ -101,8 +101,7 @@ Poly inv(const Poly& p, ll d) { // O(n log(n))
 		Poly cur = conv(res, pre);
 		fore(i, 0, SZ(cur)) if (cur[i]) cur[i] = mod - cur[i];
 		cur[0] = cur[0] + 2;
-		res = conv(res, cur);
-		res = takeMod(res, sz);
+		res = takeMod(conv(res, cur), sz);
 	}
 	res.resize(d);
 	return res;
