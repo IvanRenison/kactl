@@ -32,8 +32,7 @@ struct TwoSat {
 	}
 
 	void either(ll f, ll j) {
-		f = max(2*f, -1-2*f);
-		j = max(2*j, -1-2*j);
+		f = max(2*f, -1-2*f), j = max(2*j, -1-2*j);
 		gr[f].pb(j^1), gr[j].pb(f^1);
 	}
 	void setValue(ll x) { either(x, x); }
@@ -41,7 +40,7 @@ struct TwoSat {
 	void atMostOne(const vi& li) { // (optional)
 		if (SZ(li) <= 1) return;
 		ll cur = ~li[0];
-		fore(i,2,SZ(li)) {
+		fore(i, 2, SZ(li)) {
 			ll next = addVar();
 			either(cur, ~li[i]);
 			either(cur, next);
@@ -54,22 +53,19 @@ struct TwoSat {
 	vi val, comp, z; ll time = 0;
 	ll dfs(ll i) {
 		ll low = val[i] = ++time, x; z.pb(i);
-		for(ll e : gr[i]) if (!comp[e])
+		for (ll e : gr[i]) if (!comp[e])
 			low = min(low, val[e] ?: dfs(e));
 		if (low == val[i]) do {
-			x = z.back(); z.pop_back();
-			comp[x] = low;
-			if (values[x>>1] == -1)
-				values[x>>1] = x&1;
+			comp[x = z.back()] = low, z.pop_back();
+			if (values[x>>1] == -1) values[x>>1] = x&1;
 		} while (x != i);
 		return val[i] = low;
 	}
 
 	bool solve() {
-		values.assign(N, -1);
-		val.assign(2*N, 0); comp = val;
-		fore(i,0,2*N) if (!comp[i]) dfs(i);
-		fore(i,0,N) if (comp[2*i] == comp[2*i+1]) return 0;
+		values.assign(N, -1), val.assign(2*N, 0), comp = val;
+		fore(i, 0, 2*N) if (!comp[i]) dfs(i);
+		fore(i, 0, N) if (comp[2*i] == comp[2*i+1]) return 0;
 		return 1;
 	}
 };
