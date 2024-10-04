@@ -6,7 +6,7 @@
  * Description: Finds strongly connected components in a
  * directed graph. If vertices $u, v$ belong to the same component,
  * we can reach $u$ from $v$ and vice versa.
- * Usage: scc(adj) returns the number of components and the component of each vertex.
+ * Returns the number of components and the component of each vertex.
  * Natural order of components is reverse topological order (a component only has edges
  * to components with lower index).
  * Time: O(E + V)
