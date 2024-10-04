@@ -35,54 +35,31 @@ template<class G> vi scc(G &g) {
 }
 }
 
+void test(vector<vi>& g) {
+	auto [ncomps, comp] = scc(g);
+	vi comp2 = old::scc(g);
+	assert(comp == comp2);
+}
+
 int main() {
-	unsigned r = 1;
-	for (ll N = 0; N <= 4; N++) {
-		// cout << "N = " << N << endl;
-		vector<vi> mat(N, vi(N)), adj(N);
-		vi compsize(N), seen(N);
-		ll count = 0;
-		fore(bits,0,(1 << (N*N))) {
-			// if (bits % 10000 == 0) cerr << "." << flush;
+	fore(N, 0, 5) {
+		fore(bits, 0 , 1 << (N*N)) {
+			vector<vi> mat(N, vi(N)), adj(N);
 			fore(i,0,N) fore(j,0,N)
 				mat[i][j] = bits & 1 << (i*N+j);
 
-			fore(i,0,N) {
-				adj[i].clear();
-				fore(j,0,N) if (bits & 1 << (i*N+j)) {
-					adj[i].pb(j);
-					r *= 12387123; r += 1231;
-					if ((r >> 6 & 31) == 3)
-						adj[i].pb(j);
-				}
-			}
-			vi comp2 = old::scc(adj);
-			scc(adj, [&](vi& v) {
-				compsize[ncomps] = SZ(v);
-			});
-			if (comp != comp2) {
-				for(auto &x: comp) cout << x << ' ';
-				cout << endl;
-				for(auto &x: comp2) cout << x << ' ';
-				cout << endl;
-			}
-			fore(i,0,N) assert(comp[i] >= 0 && comp[i] < ncomps);
-			fore(i,0,N) for(auto &j: adj[i]) assert(comp[j] <= comp[i]);
-			fore(i,0,N) {
-				seen.assign(N, 0); seen[i] = 1;
-				fore(it,0,N) {
-					fore(j,0,N) if (seen[j]) for(auto &k: adj[j]) seen[k] = 1;
-				}
-				fore(j,0,N) {
-					if (seen[j]) assert(comp[j] <= comp[i]);
-					else assert(comp[j] != comp[i]);
-				}
-			}
+			fore(i,0,N) fore(j,0,N) if (mat[i][j]) adj[i].pb(j);
 
-			count++;
+			test(adj);
 		}
-		// cout << "tested " << count << endl;
 	}
-	cout<<"Tests passed!"<<endl;
-	return 0;
+
+	fore(_, 0, 1000) {
+		ll N = rand() % 10 + 5;
+		vector<vi> adj(N);
+		fore(i,0,N) fore(j,0,N) if (i != j && rand() % 2) adj[i].pb(j);
+		test(adj);
+	}
+
+	cout << "Tests passed!" << endl;
 }
