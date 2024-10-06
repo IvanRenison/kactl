@@ -15,71 +15,56 @@
  */
 #pragma once
 
-typedef double T; // long double, Rational, double + mod<P>...
-typedef vector<T> vd;
-typedef vector<vd> vvd;
-
-const T eps = 1e-8, inf = 1/.0;
-#define MP make_pair
-#define ltj(X) if(s == -1 || MP(X[j],N[j]) < MP(X[s],N[s])) s=j
+const double eps = 1e-8, inf = 1/.0;
+typedef vector<double> vd;
 
 struct LPSolver {
-	ll m, n;
-	vi N, B;
-	vvd D;
-
-	LPSolver(const vvd& A, const vd& b, const vd& c) :
-			m(SZ(b)), n(SZ(c)), N(n+1), B(m), D(m+2, vd(n+2)) {
-		fore(i,0,m) fore(j,0,n) D[i][j] = A[i][j];
-		fore(i,0,m) {B[i]=n+i; D[i][n]=-1; D[i][n+1]=b[i];}
-		fore(j,0,n) { N[j] = j; D[m][j] = -c[j]; }
-		N[n] = -1, D[m+1][n] = 1;
-	}
-
-	void pivot(ll r, ll s) {
-		T *a = D[r].data(), inv = 1 / a[s];
-		fore(i,0,m+2) if (i != r && abs(D[i][s]) > eps) {
-			T *b = D[i].data(), inv2 = b[s] * inv;
-			fore(j,0,n+2) b[j] -= a[j] * inv2;
-			b[s] = a[s] * inv2;
+	vi X,Y;
+	vector<vd> A;
+	vd b,c;
+	double z;
+	ll n,m;
+	LPSolver(vector<vd> A, vd b, vd c) : // maximize c^T x s.t. Ax<=b, x>=0
+			A(A), b(b), c(c), n(b.size()), m(c.size()), z(0) {}
+	void pivot(ll x,ll y){
+		swap(X[y],Y[x]);
+		b[x]/=A[x][y];
+		fore(i,0,m)if(i!=y)A[x][i]/=A[x][y];
+		A[x][y]=1/A[x][y];
+		fore(i,0,n)if(i!=x&&abs(A[i][y])>eps){
+			b[i]-=A[i][y]*b[x];
+			fore(j,0,m)if(j!=y)A[i][j]-=A[i][y]*A[x][j];
+			A[i][y]=-A[i][y]*A[x][y];
 		}
-		fore(j,0,n+2) if (j != s) D[r][j] *= inv;
-		fore(i,0,m+2) if (i != r) D[i][s] *= -inv;
-		D[r][s] = inv;
-		swap(B[r], N[s]);
+		z+=c[y]*b[x];
+		fore(i,0,m)if(i!=y)c[i]-=c[y]*A[x][i];
+		c[y]=-c[y]*A[x][y];
 	}
-
-	bool simplex(ll phase) {
-		ll x = m + phase - 1;
-		for (;;) {
-			ll s = -1;
-			fore(j,0,n+1) if (N[j] != -phase) ltj(D[x]);
-			if (D[x][s] >= -eps) return true;
-			ll r = -1;
-			fore(i,0,m) {
-				if (D[i][s] <= eps) continue;
-				if (r == -1 || MP(D[i][n+1] / D[i][s], B[i])
-				             < MP(D[r][n+1] / D[r][s], B[r])) r = i;
-			}
-			if (r == -1) return false;
-			pivot(r, s);
+	double solve(vd& r){
+		X=vi(m);Y=vi(n);
+		fore(i,0,m)X[i]=i;
+		fore(i,0,n)Y[i]=i+m;
+		while(1){
+			ll x=-1,y=-1;
+			double mn=-eps;
+			fore(i,0,n)if(b[i]<mn)mn=b[i],x=i;
+			if(x<0)break;
+			fore(i,0,m)if(A[x][i]<-eps){y=i;break;}
+			if (y < 0) return -inf; // no solution to Ax<=b
+			pivot(x,y);
 		}
-	}
-
-	T solve(vd &x) {
-		ll r = 0;
-		fore(i,1,m) if (D[i][n+1] < D[r][n+1]) r = i;
-		if (D[r][n+1] < -eps) {
-			pivot(r, n);
-			if (!simplex(2) || D[m+1][n+1] < -eps) return -inf;
-			fore(i,0,m) if (B[i] == -1) {
-				ll s = 0;
-				fore(j,1,n+1) ltj(D[i]);
-				pivot(i, s);
-			}
+		while(1){
+			double mx=eps;
+			ll x=-1,y=-1;
+			fore(i,0,m)if(c[i]>mx)mx=c[i],y=i;
+			if(y<0)break;
+			double mn=1e200;
+			fore(i,0,n)if(A[i][y]>eps&&b[i]/A[i][y]<mn)mn=b[i]/A[i][y],x=i;
+			if (x < 0) return inf; // c^T x is unbounded
+			pivot(x,y);
 		}
-		bool ok = simplex(1); x = vd(n);
-		fore(i,0,m) if (B[i] < n) x[B[i]] = D[i][n+1];
-		return ok ? D[m][n+1] : inf;
+		r = vd(m);
+		fore(i,0,n)if(Y[i]<m)r[Y[i]]=b[i];
+		return z;
 	}
 };
