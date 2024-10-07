@@ -131,9 +131,9 @@ vd treeDP(const vector<vi> &g, const vd &neuts, auto &acc, auto &finalize,
 	vd dp(n);
 	function<Data(ll, ll)> dfs = [&](ll u, ll p) {
 		Data res = neuts[u];
-		ll pid = -1;
-		fore(ei, 0, SZ(g[u])) if (g[u][ei] == p) pid = ei;
-		else acc(res, dfs(g[u][ei], u), u, ei);
+		fore(ei, 0, SZ(g[u])) if (g[u][ei] != p)
+			acc(res, dfs(g[u][ei], u), u, ei);
+		ll pid = p == -1 ? -1 : find(ALL(g[u]), p) - begin(g[u]);
 		return dp[u] = finalize(res, u, pid);
 	};
 	dfs(root, -1);
