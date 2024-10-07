@@ -32,10 +32,9 @@ struct RerootLinear : Reroot {
 		p_ans = merge(p_ans, extend(child_ans, p, ei), p);
 	}
 	void ex(vd& e, vd& a, Data& ne, ll v) {
-		ll d = SZ(a);
-		vd p(d + 1, ne), s(d + 1, ne);
+		ll d = SZ(a); vd p(d + 1, ne), s(d + 1, ne);
 		fore(i,0,d) p[i+1] = merge(p[i], a[i]=extend(a[i],v,i), v);
-		for(ll i = d; i--;) s[i] = merge(a[i], s[i + 1], v);
+		for (ll i = d; i--;) s[i] = merge(a[i], s[i + 1], v);
 		fore(i, 0, d) e[i] = merge(p[i], s[i + 1], v);
 	}
 };

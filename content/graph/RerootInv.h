@@ -15,6 +15,7 @@
  * Time: Fast O(n)
  */
 #pragma once
+
 #include "Reroot.h"
 
 struct RerootInv : Reroot {
@@ -22,8 +23,7 @@ struct RerootInv : Reroot {
 		ans = Data{};
 	}
 	void ex(vd& e, vd& a, Data& ne, ll v) {
-		ll d = SZ(a);
-		Data b = ne;
+		ll d = SZ(a); Data b = ne;
 		fore(i, 0, d) acc(b, a[i], v, i);
 		fill(begin(e), begin(e) + d, b);
 		fore(i, 0, d) unacc(e[i], a[i], v, i);

@@ -53,9 +53,7 @@ struct Data {};
 typedef vector<Data> vd;
 
 struct Reroot {
-	ll n;
-	vector<vi>& g;
-	vd& neuts;
+	ll n; vector<vi>& g; vd& neuts;
 
 	Data finalize(const Data& a, ll p, ll ei) {
 		return a;
@@ -64,8 +62,7 @@ struct Reroot {
 		p_ans = Data{};
 	}
 
-	vd root_dp;
-	vector<vd> fdp, bdp;
+	vd root_dp; vector<vd> fdp, bdp;
 	Reroot(vector<vi>& g, vd& neuts) : n(SZ(g)), g(g),
 			neuts(neuts), root_dp(n), fdp(n), bdp(n) {}
 	void reroot() {
