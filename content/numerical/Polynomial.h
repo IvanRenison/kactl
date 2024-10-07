@@ -45,7 +45,7 @@ pair<Poly, double> divSmall(const Poly& p, double x0) { // O(n)
 	return {res, p[0] + x0 * res[0]};
 }
 pair<Poly, Poly> div(Poly p, const Poly& q) { // O(n^2)
-	if (SZ(p) < SZ(q)) return {{}, p};
+	if (SZ(p) < SZ(q)) return {{}, p};  // returns {res, rem}
 	ll n = SZ(p) - SZ(q) + 1;
 	Poly res(n);
 	for (ll i = n; i--;) {

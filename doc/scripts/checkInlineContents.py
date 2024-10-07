@@ -96,6 +96,8 @@ def checkContents(filePath: str, mandatory: bool = False) -> int:
                 if i < end:
                     while j < len(content_lines) and lines[i] != content_lines[j]:
                         j += 1
+                elif i == end:
+                    j = len(content_lines)
             else:
                 if lines[i] != content_lines[j]:
                     ans = 1
