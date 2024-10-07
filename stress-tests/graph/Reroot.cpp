@@ -11,9 +11,7 @@ struct Data {
 typedef vector<Data> vd;
 
 struct Reroot {
-	ll n;
-	vector<vi>& g;
-	vd& neuts;
+	ll n; vector<vi>& g; vd& neuts;
 	/// START diff
 	vi &ndata;
 	map<ii, ll> &edata;
@@ -30,8 +28,7 @@ struct Reroot {
 		/// END diff
 	}
 
-	vd root_dp;
-	vector<vd> fdp, bdp;
+	vd root_dp; vector<vd> fdp, bdp;
 	/// START diff
 	Reroot(vector<vi>& g, vd& neuts, vi& ndata, map<ii, ll>& edata, ll MOD)
 		: n(SZ(g)),
@@ -96,10 +93,9 @@ struct RerootLinear : Reroot {
 		p_ans = merge(p_ans, extend(child_ans, p, ei), p);
 	}
 	void ex(vd& e, vd& a, Data& ne, ll v) {
-		ll d = SZ(a);
-		vd p(d + 1, ne), s(d + 1, ne);
+		ll d = SZ(a); vd p(d + 1, ne), s(d + 1, ne);
 		fore(i,0,d) p[i+1] = merge(p[i], a[i]=extend(a[i],v,i), v);
-		for(ll i = d; i--;) s[i] = merge(a[i], s[i + 1], v);
+		for (ll i = d; i--;) s[i] = merge(a[i], s[i + 1], v);
 		fore(i, 0, d) e[i] = merge(p[i], s[i + 1], v);
 	}
 };
@@ -116,8 +112,7 @@ struct RerootInv : Reroot {
 		/// END diff
 	}
 	void ex(vd& e, vd& a, Data& ne, ll v) {
-		ll d = SZ(a);
-		Data b = ne;
+		ll d = SZ(a); Data b = ne;
 		fore(i, 0, d) acc(b, a[i], v, i);
 		fill(begin(e), begin(e) + d, b);
 		fore(i, 0, d) unacc(e[i], a[i], v, i);
