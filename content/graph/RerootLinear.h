@@ -19,6 +19,7 @@
  * Time: Slow O(n)
  */
 #pragma once
+
 #include "Reroot.h"
 
 struct RerootLinear : Reroot {
