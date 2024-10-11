@@ -25,7 +25,7 @@ struct Mod {
 	}
 	Mod operator^(ll e) {
 		Mod ans(1);
-		for (Mod b = *this; e; b = b * b, e >> 1)
+		for (Mod b = *this; e; b = b * b, e >>= 1)
 			if (e & 1) ans = ans * b;
 		return ans;
 	}
