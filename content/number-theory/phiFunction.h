@@ -18,7 +18,7 @@
 #pragma once
 
 const ll LIM = 5000000;
-ll phi[LIM];
+array<ll, LIM> phi;
 
 void calculatePhi() {
 	fore(i,0,LIM) phi[i] = i&1 ? i : i/2;
