@@ -11,20 +11,18 @@
  */
 #pragma once
 
-template<class F, class G, class T>
-void rec(ll from, ll to, F& f, G& g, ll& i, T& p, T q) {
+template<class T>
+void rec(ll from, ll to, auto& f, auto& g, ll& i, T& p, T q) {
 	if (p == q) return;
 	if (from == to) {
-		g(i, to, p);
-		i = to; p = q;
+		g(i, to, p), i = to, p = q;
 	} else {
 		ll mid = (from + to) >> 1;
 		rec(from, mid, f, g, i, p, f(mid));
 		rec(mid+1, to, f, g, i, p, q);
 	}
 }
-template<class F, class G>
-void constantIntervals(ll from, ll to, F f, G g) {
+void constantIntervals(ll from, ll to, auto f, auto g) {
 	if (to <= from) return;
 	ll i = from; auto p = f(i), q = f(to-1);
 	rec(from, to-1, f, g, i, p, q);
