@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/multipoint_evaluation
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/241581
+// Submission: https://judge.yosupo.jp/submission/241630
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -21,7 +21,7 @@ const ll mod = (119 << 23) + 1; // faster if const
 /// END diff
 ll modpow(ll b, ll e) {
 	ll ans = 1;
-	for (; e; b = b * b % mod, e /= 2)
+	for (; e; b = b * b % mod, e >>= 1)
 		if (e & 1) ans = ans * b % mod;
 	return ans;
 }
