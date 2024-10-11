@@ -13,7 +13,7 @@
 
 struct Frac { ll p, q; };
 
-Frac fracBS(auto f, ll N) {
+Frac fracBS(auto&& f, ll N) {
 	bool dir = 1, A = 1, B = 1;
 	Frac lo{0, 1}, hi{1, 1}; // Set hi to 1/0 to search (0, N]
 	if (f(lo)) return lo;

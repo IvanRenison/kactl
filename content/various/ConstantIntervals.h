@@ -12,7 +12,7 @@
 #pragma once
 
 template<class T>
-void rec(ll from, ll to, auto& f, auto& g, ll& i, T& p, T q) {
+void rec(ll from, ll to, auto&& f, auto&& g, ll& i, T& p, T q){
 	if (p == q) return;
 	if (from == to) {
 		g(i, to, p), i = to, p = q;
@@ -22,7 +22,7 @@ void rec(ll from, ll to, auto& f, auto& g, ll& i, T& p, T q) {
 		rec(mid+1, to, f, g, i, p, q);
 	}
 }
-void constantIntervals(ll from, ll to, auto f, auto g) {
+void constantIntervals(ll from, ll to, auto&& f, auto&& g) {
 	if (to <= from) return;
 	ll i = from; auto p = f(i), q = f(to-1);
 	rec(from, to-1, f, g, i, p, q);

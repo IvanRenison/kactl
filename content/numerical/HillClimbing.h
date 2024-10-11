@@ -10,7 +10,7 @@
 
 typedef array<double, 2> P;
 
-pair<double, P> hillClimb(P start, auto f) {
+pair<double, P> hillClimb(P start, auto&& f) {
 	pair<double, P> cur(f(start), start);
 	for (double jmp = 1e9; jmp > 1e-20; jmp /= 2) {
 		fore(j,0,100) fore(dx,-1,2) fore(dy,-1,2) {

@@ -14,7 +14,7 @@
  */
 #pragma once
 
-ll ternSearch(ll a, ll b, auto f) {
+ll ternSearch(ll a, ll b, auto&& f) {
 	assert(a <= b);
 	while (b - a >= 5) {
 		ll mid = (a + b) / 2;
