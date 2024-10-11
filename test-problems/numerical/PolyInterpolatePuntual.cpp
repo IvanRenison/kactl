@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/622/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/622/submission/278851327
+// Submission: https://codeforces.com/contest/622/submission/285387976
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -35,13 +35,15 @@ struct Mod {
 	Mod operator*(Mod b) { return Mod((x * b.x) % mod); }
 	Mod operator/(Mod b) { return *this * invert(b); }
 	Mod invert(Mod a) {
-		ll x, y, g = euclid(a.x, mod, x, y);
-		assert(g == 1); return Mod((x + mod) % mod);
+		return a ^ (mod - 2);
+		// ll x, y, g = euclid(a.x, mod, x, y);
+		// assert(g == 1); return Mod((x + mod) % mod);
 	}
 	Mod operator^(ll e) {
-		if (!e) return Mod(1);
-		Mod r = *this ^ (e / 2); r = r * r;
-		return e&1 ? *this * r : r;
+		Mod ans(1);
+		for (Mod b = *this; e; b = b * b, e >>= 1)
+			if (e & 1) ans = ans * b;
+		return ans;
 	}
 };
 /// END content
