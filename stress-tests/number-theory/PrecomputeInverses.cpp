@@ -25,7 +25,7 @@ int main() {
 		mod = it;
 		if (!isPrime(mod)) continue;
 		initInv();
-		for (ll i=1; i<it; i++){
+		for (ll i=1; i<it; i++) {
 			assert(inv[i] == modpow(i, mod-2, mod));
 		}
 	}

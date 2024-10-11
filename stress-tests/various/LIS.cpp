@@ -26,7 +26,7 @@ int main() {
 		fore(it,0,1000000) {
 			ll n = rand() % 7;
 			vi v(n);
-			for(auto &x: v) x = rand() % 4;
+			for (auto &x : v) x = rand() % 4;
 			vi inds = weak ? lisWeak(v) : lis(v);
 			fore(i,0,SZ(inds)-1) {
 				assert(lt(v[inds[i]], v[inds[i+1]]));
@@ -40,7 +40,7 @@ int main() {
 					prev = v[i];
 				}
 				cout << "exists lis of size " << si << " but found only " << SZ(inds) << endl;
-				for(auto &x: v) cout << x << ' ';
+				for (auto &x : v) cout << x << ' ';
 				cout << endl;
 				abort();
 	next:;

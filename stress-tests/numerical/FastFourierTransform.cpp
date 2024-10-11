@@ -19,8 +19,8 @@ int main() {
 	}
 
 	vd A(4), B(6);
-	for(auto &x: A) x = rand() / (RAND_MAX + 1.0) * 10 - 5;
-	for(auto &x: B) x = rand() / (RAND_MAX + 1.0) * 10 - 5;
+	for (auto &x : A) x = rand() / (RAND_MAX + 1.0) * 10 - 5;
+	for (auto &x : B) x = rand() / (RAND_MAX + 1.0) * 10 - 5;
 	vd C = conv(A, B);
 	fore(i,0,SZ(A) + SZ(B) - 1) {
 		double sum = 0;
@@ -29,5 +29,5 @@ int main() {
 		}
 		assert(abs(sum - C[i]) < eps);
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

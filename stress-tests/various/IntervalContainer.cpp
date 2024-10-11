@@ -44,7 +44,7 @@ int main() {
 		}
 		ll last = -1;
 		ll ct = 0;
-		for(auto &pa: iv) {
+		for (auto &pa : iv) {
 			assert(0 <= pa.fst && pa.snd <= N);
 			assert(pa.fst < pa.snd);
 			assert(last < pa.fst);
@@ -57,5 +57,5 @@ int main() {
 		sum += SZ(iv);
 		++sumit;
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

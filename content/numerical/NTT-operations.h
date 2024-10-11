@@ -44,7 +44,7 @@ Poly takeMod(Poly p, ll n) { // O(n)
 Poly inv(const Poly& p, ll d) { // O(n log(n))
 	Poly res = {inv(p[0])};       // first d terms of 1/p
 	ll sz = 1;
-	while (sz < d){
+	while (sz < d) {
 		sz *= 2;
 		Poly pre(p.begin(), p.begin() + min(SZ(p), sz));
 		Poly cur = conv(res, pre);
@@ -55,8 +55,8 @@ Poly inv(const Poly& p, ll d) { // O(n log(n))
 	res.resize(d);
 	return res;
 }
-Poly log(const Poly& p, ll d){ // O(n log(n))
-	Poly cur = takeMod(p, d);    // first d terms of log(p)
+Poly log(const Poly& p, ll d) { // O(n log(n))
+	Poly cur = takeMod(p, d);     // first d terms of log(p)
 	Poly res = integrate(
 		takeMod(conv(inv(cur, d), derivate(cur)), d - 1));
 	res.resize(d);
@@ -76,7 +76,7 @@ Poly exp(const Poly& p, ll d) { // O(n log(n)^2)
 	return res;
 }
 
-pair<Poly,Poly> div(const Poly& a, const Poly& b){
+pair<Poly,Poly> div(const Poly& a, const Poly& b) {
 	ll m = SZ(a), n = SZ(b);   // O(n log(n)), returns {res, rem}
 	if (m < n) return {{}, a}; // if min(m-n,n) < 750 it may be
 	Poly ap = a, bp = b;       // faster to use cuadratic version

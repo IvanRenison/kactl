@@ -35,7 +35,7 @@ struct VecSuffixArray {
 
 string display(const string& s) {
 	string ret;
-	for(auto &x: s) ret += (char)('a' + x - 1);
+	for (auto &x : s) ret += (char)('a' + x - 1);
 	return ret;
 }
 
@@ -242,7 +242,7 @@ void perf2() {
 int main() {
 	// compare();
 	stress(0);
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	// perf();
 	// perf2();
 }

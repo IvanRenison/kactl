@@ -8,7 +8,7 @@
  * To reverse which of the sides allows non-strict inequalities, change the < marked with (A) to <=, and reverse the loop at (B).
  * To minimize $f$, change it to >, also at (B).
  * Usage:
-	ll ind = ternSearch(0,n-1,[\&](ll i){return a[i];});
+	ll ind = ternSearch(0,n-1,[\&](ll i) {return a[i];});
  * Time: O(\log(b-a))
  * Status: tested
  */

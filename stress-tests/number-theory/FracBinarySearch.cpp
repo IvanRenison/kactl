@@ -23,6 +23,6 @@ int main() {
 			assert(best.snd == f.q);
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	return 0;
 }

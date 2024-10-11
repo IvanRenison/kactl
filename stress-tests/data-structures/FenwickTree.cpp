@@ -21,5 +21,5 @@ int main() {
 		}
 		assert(res == ind);
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

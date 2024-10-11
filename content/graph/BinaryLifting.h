@@ -11,18 +11,17 @@
  */
 #pragma once
 
-vector<vi> treeJump(vi& P){
+vector<vi> treeJump(vi& P) {
 	ll on = 1, d = 1;
-	while(on < SZ(P)) on *= 2, d++;
+	while (on < SZ(P)) on *= 2, d++;
 	vector<vi> jmp(d, P);
 	fore(i,1,d) fore(j,0,SZ(P))
 		jmp[i][j] = jmp[i-1][jmp[i-1][j]];
 	return jmp;
 }
 
-ll jmp(vector<vi>& tbl, ll nod, ll steps){
-	fore(i,0,SZ(tbl))
-		if(steps&(1<<i)) nod = tbl[i][nod];
+ll jmp(vector<vi>& tbl, ll nod, ll steps) {
+	fore(i,0,SZ(tbl)) if (steps&(1<<i)) nod = tbl[i][nod];
 	return nod;
 }
 

@@ -75,5 +75,5 @@ signed main() {
 	test(100, 1000, 5);
 	test(100, 1, 20);
 	test(5, 5, 20000);
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

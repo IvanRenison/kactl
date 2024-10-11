@@ -42,5 +42,5 @@ int main() {
 			fore(k,i,j) v[k] = x;
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

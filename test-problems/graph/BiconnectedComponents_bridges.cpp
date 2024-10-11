@@ -26,7 +26,7 @@ auto BCC(ll n, const vector<ii>& edges) {
 	vi edgesComp(m, -1); // comp of each edge or -1 if bridge
 	vector<set<ll>> nodesComp(n); // comp of each node
 
-	function<ll(ll, ll)> dfs = [&](ll at, ll par){
+	function<ll(ll, ll)> dfs = [&](ll at, ll par) {
 		ll me = num[at] = ++Time, top = me;
 		for (auto [y, e] : adj[at]) if (e != par) {
 			if (y == at) { // self loop

@@ -51,5 +51,5 @@ int main() {
 		}
 	}
 
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

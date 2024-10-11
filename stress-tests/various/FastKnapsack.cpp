@@ -28,5 +28,5 @@ int main() {
 		ll t = rand() % (MAX_N*maxw);
 		assert(naive(w,t) == knapsack(w,t));
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

@@ -59,7 +59,7 @@ ll test2() {
 			fore(j,0,K) v[j] = max(v[j], k*x[j] + m);
 		}
 // cerr << mh.eval(x) << ' ' << v << endl;
-// for(auto &li: mh) cerr << li.k << ' ' << li.m << ' ' << li.p << endl;
+// for (auto &li: mh) cerr << li.k << ' ' << li.m << ' ' << li.p << endl;
 		fore(j,0,K)
 			assert(mh.query(x[j]) == v[j]);
 	}
@@ -93,5 +93,5 @@ int main() {
 		}
 	}
 	test2();
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

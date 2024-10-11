@@ -106,7 +106,7 @@ Poly takeMod(Poly p, ll n) { // O(n)
 Poly inv(const Poly& p, ll d) { // O(n log(n))
 	Poly res = {inv(p[0])};       // first d terms of 1/p
 	ll sz = 1;
-	while (sz < d){
+	while (sz < d) {
 		sz *= 2;
 		Poly pre(p.begin(), p.begin() + min(SZ(p), sz));
 		Poly cur = conv(res, pre);
@@ -117,7 +117,7 @@ Poly inv(const Poly& p, ll d) { // O(n log(n))
 	res.resize(d);
 	return res;
 }
-Poly log(const Poly& p, ll d){ // O(n log(n))
+Poly log(const Poly& p, ll d) { // O(n log(n))
 	Poly cur = takeMod(p, d);    // first d terms of log(p)
 	Poly res = integrate(
 		takeMod(conv(inv(cur, d), derivate(cur)), d - 1));

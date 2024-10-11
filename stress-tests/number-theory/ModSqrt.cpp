@@ -19,5 +19,5 @@ int main() {
 		}
 next:;
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

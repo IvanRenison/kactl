@@ -83,7 +83,7 @@ void testAgainstBrute(ll n, ll iters, ll queries) {
 				ll val = rand() % 10;
 				hld.updPath(a, b, val);
 				hld2.updPath(a, b, val);
-			} else if (rng == 1){
+			} else if (rng == 1) {
 				ll a = rand() % n;
 				ll b = rand() % n;
 				hld.queryPath(a, b);

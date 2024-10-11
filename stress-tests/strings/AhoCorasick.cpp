@@ -73,5 +73,5 @@ int main() {
 			test(s);
 		});
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

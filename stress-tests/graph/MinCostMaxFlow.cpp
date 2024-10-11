@@ -5,7 +5,7 @@
 // #include "mcmfold.h"
 // #include "mcmfnew.h"
 #include <bits/extc++.h>
-#define setpi dummy(){} bool setpi
+#define setpi dummy() {} bool setpi
 #undef assert
 #define assert(x) return x
 #include "../../content/graph/MinCostMaxFlow.h"
@@ -80,7 +80,7 @@ ll MinCostMatching(const vector<vi>& cost, vi& L, vi& R) {
 		ll j = 0;
 		for (;;) { /// find closest
 			j = -1;
-			fore(k,0,n){
+			fore(k,0,n) {
 				if (seen[k]) continue;
 				if (j == -1 || dist[k] < dist[j]) j = k;
 			}
@@ -197,7 +197,7 @@ void testNeg() {
 		::i = lasti;
 	}
 	// cerr << negs << "/" << ITS << " graphs with negative edge costs" << endl;
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }
 
 int main() {

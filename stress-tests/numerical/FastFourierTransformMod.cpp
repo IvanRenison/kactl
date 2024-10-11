@@ -10,7 +10,7 @@ vi simpleConv(vi a, vi b) {
 	vi c(s);
 	fore(i,0,SZ(a)) fore(j,0,SZ(b))
 		c[i+j] = (c[i+j] + (ll)a[i] * b[j]) % mod;
-	for(auto &x: c) if (x < 0) x += mod;
+	for (auto &x : c) if (x < 0) x += mod;
 	return c;
 }
 
@@ -27,11 +27,11 @@ int main() {
 	fore(it,0,6000) {
 		a.resize(ra() % 100);
 		b.resize(ra() % 100);
-		for(auto &x: a) x = ra() % mod;
-		for(auto &x: b) x = ra() % mod;
+		for (auto &x : a) x = ra() % mod;
+		for (auto &x : b) x = ra() % mod;
 		auto v1 = simpleConv(a, b);
 		auto v2 = convMod<mod>(a, b);
 		assert(v1 == v2);
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

@@ -26,7 +26,7 @@ struct LCA {
 			if (d) ret.pb({d, p});
 			time[v] = T++;
 			dist[v] = di;
-			for(auto &e: C[v]) if (e.fst != p)
+			for (auto &e : C[v]) if (e.fst != p)
 				q.pb({e.fst, v, d+1, di + e.snd});
 		}
 		return ret;
@@ -48,7 +48,7 @@ struct LCA {
 void getPars(vector<vi> &tree, ll cur, ll p, ll d, vi &par, vi &depth) {
 	par[cur] = p;
 	depth[cur] = d;
-	for(auto i: tree[cur]) if (i != p) {
+	for (auto i : tree[cur]) if (i != p) {
 		getPars(tree, i, cur, d+1, par, depth);
 	}
 }
@@ -81,5 +81,5 @@ signed main() {
 	test_n(10, 1000);
 	test_n(100, 100);
 	test_n(1000, 10);
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/staticrmq
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/229484
+// Submission: https://judge.yosupo.jp/submission/241578
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -38,10 +38,10 @@ struct RMQ {
 					min(bk[top*(k-1) + i], bk[top*(k-1) + i + (1<<k-1)]);
 		}
 	}
-	T get(ll st, ll en){
+	T get(ll st, ll en) {
 		return v[en-64+__builtin_clzll(mk[en-1]&((1ll<<en-st)-1))];
 	}
-	T query(ll s, ll e){ // [s, e)
+	T query(ll s, ll e) { // [s, e)
 		ll b1 = f(s), b2 = f(e - 1);
 		if (b1 == b2) return get(s, e);
 		T ans = min(get(s, (b1 + 1)*32), get(b2*32, e));

@@ -18,7 +18,7 @@ vi simpleConv(vi a, vi b) {
 	vi c(s);
 	fore(i,0,SZ(a)) fore(j,0,SZ(b))
 		c[i+j] = (c[i+j] + (ll)a[i] * b[j]) % mod;
-	for(auto &x: c) if (x < 0) x += mod;
+	for (auto &x : c) if (x < 0) x += mod;
 	return c;
 }
 
@@ -37,10 +37,10 @@ int main() {
 	fore(it,0,6000) {
 		a.resize(ra() % 10);
 		b.resize(ra() % 10);
-		for(auto &x: a) x = (ra() % 100 - 50+mod)%mod;
-		for(auto &x: b) x = (ra() % 100 - 50+mod)%mod;
-		for(auto &x: simpleConv(a, b)) res += (ll)x * ind++ % mod;
-		for(auto &x: conv(a, b)) res2 += (ll)x * ind2++ % mod;
+		for (auto &x : a) x = (ra() % 100 - 50+mod)%mod;
+		for (auto &x : b) x = (ra() % 100 - 50+mod)%mod;
+		for (auto &x : simpleConv(a, b)) res += (ll)x * ind++ % mod;
+		for (auto &x : conv(a, b)) res2 += (ll)x * ind2++ % mod;
 		a.resize(16);
 			vi a2 = a;
 			ntt(a2);
@@ -51,5 +51,5 @@ int main() {
 			}
 	}
 	assert(res==res2);
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

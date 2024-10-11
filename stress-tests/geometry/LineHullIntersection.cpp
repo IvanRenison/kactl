@@ -89,7 +89,7 @@ int main() {
 
 		auto fail = [&](ll line) {
 			cerr << SZ(ps) << endl;
-			for(auto &p: ps) cout << p<<' ';
+			for (auto &p : ps) cout << p <<' ';
 			cout<<endl;
 			cout << "line: "<<p<<' '<<q<<endl;
 			cout << "-> " << r.fst << ' ' << r.snd << endl;

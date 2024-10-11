@@ -17,9 +17,9 @@ ll solveLinear(vector<bs>& A, vi& b, bs& x, ll m) {
 	assert(m <= SZ(x));
 	vi col(m); iota(ALL(col), 0);
 	fore(i,0,n) {
-		for (br=i; br<n; ++br) if (A[br].any()) break;
+		for (br = i; br < n; ++br) if (A[br].any()) break;
 		if (br == n) {
-			fore(j,i,n) if(b[j]) return -1;
+			fore(j,i,n) if (b[j]) return -1;
 			break;
 		}
 		ll bc = (ll)A[br]._Find_next(i-1);

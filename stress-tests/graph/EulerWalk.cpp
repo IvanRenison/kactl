@@ -9,14 +9,14 @@ bool hasEulerWalk(vector<vector<ii>>& ed, ll start, bool undir, bool cycle) {
 	bool anyEdges = false;
 	vi nins(n);
 	fore(i,0,n) {
-		for(auto &x: ed[i]) nins[x.fst]++;
+		for (auto &x : ed[i]) nins[x.fst]++;
 	}
 	fore(i,0,n) {
 		if (!ed[i].empty()) anyEdges = true;
 		if (undir) {
 			assert(SZ(ed[i]) == nins[i]);
 			ll nout = 0;
-			for(auto &x: ed[i]) if (x.fst != i) nout++;
+			for (auto &x : ed[i]) if (x.fst != i) nout++;
 			if (i != start && nout % 2) odd++;
 		}
 		else {
@@ -29,7 +29,7 @@ bool hasEulerWalk(vector<vector<ii>>& ed, ll start, bool undir, bool cycle) {
 	if (odd > !cycle) { return false; }
 	if (ed[start].empty() && anyEdges) { return false; }
 	UF uf(n);
-	fore(i,0,n) for(auto &x: ed[i]) uf.join(i, x.fst);
+	fore(i,0,n) for (auto &x : ed[i]) uf.join(i, x.fst);
 	ll comp = 0;
 	fore(i,0,n) if (uf.find(i) == i) {
 		if (ed[i].empty()) continue;
@@ -83,11 +83,11 @@ int main() {
 			if (0) {
 				cout << n << ' ' << m << ' ' << start << ' ' << undir << ' ' << cycle << endl;
 				fore(i,0,n) {
-					for(auto &x: ed[i]) cout << x.fst << ' ';
+					for (auto &x : ed[i]) cout << x.fst << ' ';
 					cout << endl;
 				}
 				cout << "returned" << endl;
-				for(auto &x: res) cout << x << ' ';
+				for (auto &x : res) cout << x << ' ';
 				cout << endl;
 				cout << "of length " << SZ(res) << endl;
 			}
@@ -103,7 +103,7 @@ int main() {
 				vi seenEdge(m);
 				fore(i,1,SZ(res)) {
 					ll x = res[i];
-					for(auto &eid: allEds[{cur, x}]) {
+					for (auto &eid : allEds[{cur, x}]) {
 						if (!seenEdge[eid]) {
 							seenEdge[eid] = 1;
 							goto ok;

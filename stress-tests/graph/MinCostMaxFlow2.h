@@ -46,7 +46,7 @@ pair<Flow, Flow> aug(G &g, ll s, ll t) {
 	if (mark[t] < 0) return make_pair(0, 0);
 	Flow inc = inf;
 	FlowEdge* e; ll v = t;
-	while (v != s){
+	while (v != s) {
 		e = &g[v][mark[v]];
 		v = e->dest;
 		inc = min(inc, g[v][e->back].r());
@@ -61,7 +61,7 @@ pair<Flow, Flow> aug(G &g, ll s, ll t) {
 template<class G>
 pair<Flow, Flow> min_cost_max_flow(G& graph, ll s, ll t) {
 	pair<Flow, Flow> flow, inc;
-	while ((inc = aug(graph, s, t)).fst){
+	while ((inc = aug(graph, s, t)).fst) {
 		flow.fst += inc.fst;
 		flow.snd += inc.snd;
 	}
