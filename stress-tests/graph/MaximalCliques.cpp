@@ -45,7 +45,7 @@ ll main1() {
 			}
 			return true;
 		};
-		for(auto &c: cl) {
+		for (auto &c : cl) {
 			assert(isClique(c));
 		}
 
@@ -57,7 +57,7 @@ ll main1() {
 		}
 		assert(co == realCo);
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	return 0;
 }
 

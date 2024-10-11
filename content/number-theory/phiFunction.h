@@ -22,6 +22,6 @@ ll phi[LIM];
 
 void calculatePhi() {
 	fore(i,0,LIM) phi[i] = i&1 ? i : i/2;
-	for (ll i = 3; i < LIM; i += 2) if(phi[i] == i)
+	for (ll i = 3; i < LIM; i += 2) if (phi[i] == i)
 		for (ll j = i; j < LIM; j += i) phi[j] -= phi[j] / i;
 }

@@ -9,7 +9,7 @@ namespace old {
 pair<vi, vi> ulHull(const vector<P>& S) {
 	vi Q(SZ(S)), U, L;
 	iota(ALL(Q), 0);
-	sort(ALL(Q), [&S](ll a, ll b){ return S[a] < S[b]; });
+	sort(ALL(Q), [&S](ll a, ll b) { return S[a] < S[b]; });
 	for(auto &it: Q) {
 #define ADDP(C, cmp) while (SZ(C) > 1 && S[C[SZ(C)-2]].cross(\
 	S[it], S[C.back()]) cmp 0) C.pop_back(); C.pb(it);

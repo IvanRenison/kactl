@@ -31,7 +31,7 @@ struct Node {
 
 	Node *l = 0, *r = 0;
 	ll lo, hi; T val = tneut; L lazy = lneut;
-	Node(ll lo,ll hi):lo(lo),hi(hi){}//Large interval of tneut
+	Node(ll lo,ll hi):lo(lo),hi(hi) {} //Large interval of tneut
 	Node(vector<T>& v, ll lo, ll hi) : lo(lo), hi(hi) {
 		if (lo + 1 < hi) {
 			ll mid = lo + (hi - lo)/2;

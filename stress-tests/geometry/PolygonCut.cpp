@@ -45,7 +45,7 @@ int main() {
 		// cout << N << ' ' << realArea << '\t' << approxArea << '\t' << realArea - approxArea << endl;
 
 		// cerr << N << endl;
-		// for(auto &x: ps) {
+		// for (auto &x : ps) {
 			// cout << x.x << ' ' << x.y << endl;
 		// }
 	}

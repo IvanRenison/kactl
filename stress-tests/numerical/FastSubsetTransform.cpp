@@ -5,8 +5,8 @@
 int main() {
 	fore(k,0,10) {
 		vi a(1 << k), b = a, c = a, target = a;
-		for(auto &x: a) x = rand() % 6 - 2;
-		for(auto &x: b) x = rand() % 6 - 2;
+		for (auto &x : a) x = rand() % 6 - 2;
+		for (auto &x : b) x = rand() % 6 - 2;
 		fore(i,0,1 << k) fore(j,0,1 << k) target[i & j] += a[i] * b[j];
 		// fore(i,0,1 << k) cout << a[i] << ' '; cout << endl;
 		// fore(i,0,1 << k) cout << b[i] << ' '; cout << endl;
@@ -18,5 +18,5 @@ int main() {
 		// fore(i,0,1 << k) cout << target[i] << ' '; cout << endl;
 		assert(c == target);
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

@@ -37,7 +37,7 @@ int main() {
 
 		auto fail = [&]() {
 			cout << "Points:" << endl;
-			for(auto &p: ps) {
+			for (auto &p : ps) {
 				cout << p.x << ' ' << p.y << endl;
 			}
 

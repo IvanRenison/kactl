@@ -53,14 +53,14 @@ int main() {
 		});
 		});
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	return 0;
 }
 
 ll main2() {
 	vi v{0, 1, 1, 3, 5, 11};
 	auto v2 = berlekampMassey(v);
-	for(auto &x: v2) cout << x << ' ';
+	for (auto &x : v2) cout << x << ' ';
 	cout << endl;
 	return 0;
 }

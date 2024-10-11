@@ -33,7 +33,7 @@ struct Maxclique {
 			if (SZ(q) + R.back().d <= SZ(qmax)) return;
 			q.pb(R.back().i);
 			vv T;
-			for(auto v:R) if (e[R.back().i][v.i]) T.pb({v.i});
+			for (auto v : R) if (e[R.back().i][v.i]) T.pb({v.i});
 			if (SZ(T)) {
 				if (S[lev]++ / ++pk < limit) init(T);
 				ll j = 0, mxk = 1, mnk = max(SZ(qmax) - SZ(q) + 1,1ll);

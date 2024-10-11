@@ -3,10 +3,10 @@
 #include "../../content/number-theory/Factor.h"
 
 mt19937_64 uni(time(0));
-void assertValid(ull N, vector<ull> prFac){
+void assertValid(ull N, vector<ull> prFac) {
 	ull cur=1;
-	for (auto i: prFac){
-		if (!isPrime(i)){
+	for (auto i: prFac) {
+		if (!isPrime(i)) {
 			cout<<N<<endl;
 			cout<<i<<endl;
 			assert(isPrime(i));
@@ -38,5 +38,5 @@ int main() {
 		auto res = factor(n);
 		assertValid(n, res);
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

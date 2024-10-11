@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/1140/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/1140/submission/272721785
+// Submission: https://codeforces.com/contest/1140/submission/285377309
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -34,7 +34,7 @@ struct RSUF {
 	vector<tuple<ll,ll,ll,D,T>> st;
 	/// START diff
 	RSUF(ll n) : ans(0), n(n), e(n, -1), d(n) {}
-	RSUF(vector<D>& d) : ans(0), n(SZ(d)), e(n,-1), d(d){}
+	RSUF(vector<D>& d) : ans(0), n(SZ(d)), e(n, -1), d(d) {}
 	/// END diff
 	ll size(ll x) { return -e[find(x)]; }
 	ll find(ll x) { return e[x] < 0 ? x : find(e[x]); }

@@ -49,7 +49,7 @@ int main() {
 
 		// Conservation of flow for PushRelabel
 		vi flows(n);
-		fore(i,0,n) for(auto &e: pr.g[i]) if (e.f > 0) {
+		fore(i,0,n) for (auto &e : pr.g[i]) if (e.f > 0) {
 			assert(e.c >= 0);
 			flows[i] += e.f;
 			flows[e.dest] -= e.f;
@@ -60,7 +60,7 @@ int main() {
 
 		// Conservation of flow for Dinic
 		vi dinicFlows(n);
-		fore(i,0,n) for(auto &e: dinic.adj[i]) {
+		fore(i,0,n) for (auto &e : dinic.adj[i]) {
 			assert(e.flow() <= e.oc);
 			dinicFlows[i] += e.flow();
 			dinicFlows[e.to] -= e.flow();
@@ -69,7 +69,7 @@ int main() {
 
 		// Conservation of flow for EdmondsKarp
 		vi ekFlows(n);
-		fore(i,0,n) for(auto [u, v]: origEk[i]) {
+		fore(i,0,n) for (auto [u, v] : origEk[i]) {
 			ll nc = ek[i][u];
 			assert(nc >= 0);
 			ll flow = v - nc;
@@ -84,7 +84,7 @@ int main() {
 		ll acrossCut = 0;
 		assert(pr.leftOfMinCut(s));
 		assert(!pr.leftOfMinCut(t));
-		fore(i,0,n) for(auto &e: pr.g[i]) {
+		fore(i,0,n) for (auto &e : pr.g[i]) {
 			if (pr.leftOfMinCut(i) && !pr.leftOfMinCut(e.dest)) {
 				assert(e.f >= 0);
 				assert(e.c == 0);

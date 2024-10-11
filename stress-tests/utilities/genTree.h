@@ -28,7 +28,7 @@ vector<ii> pruferCodeToTree(vi &pruferCode) {
 
 	vector<ii> edges;
 	/*Connect Edges*/
-	for ( ll i = 0; i < len; i++ ){
+	for ( ll i = 0; i < len; i++ ) {
 		ll a = pruferCode[i]; // First node
 
 		//Find the smallest number which is not present in prufer code now

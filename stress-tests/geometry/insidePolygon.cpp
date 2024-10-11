@@ -35,7 +35,7 @@ void test(ll numPts, ll range) {
 		fore(j,0, numPts)
 			poly.pb(P(rand()%range, rand()%range));
 		poly = genPolygon(poly);
-		fore(i,0,PTPERPOLY){
+		fore(i,0,PTPERPOLY) {
 			P p(rand()%range, rand()%range);
 			assert(inPolygon(poly, p, true) == old::insidePolygon(ALL(poly), p, true));
 			assert(inPolygon(poly, p, false) == old::insidePolygon(ALL(poly), p, false));

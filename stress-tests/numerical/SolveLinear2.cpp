@@ -47,7 +47,7 @@ int main() {
 	fore(i,0,n) b[i] = rand() * 1000.0 / RAND_MAX;
 	ll r = solve_linear(A, b, x);
 	assert(r == 0);
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	// cout << r << endl;
 	// fore(i,0,n) cout << x[i] << ' ';
 	// cout << endl;

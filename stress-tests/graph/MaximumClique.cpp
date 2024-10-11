@@ -31,8 +31,8 @@ int main() {
 		}
 		Maxclique clique2(ed);
 		ll mx = 0;
-		maximal::cliques(ed2, [&](auto x){mx = max(mx, ll(x.count()));});
+		maximal::cliques(ed2, [&](auto x) {mx = max(mx, ll(x.count()));});
 		assert(mx == SZ(clique2.maxClique()));
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

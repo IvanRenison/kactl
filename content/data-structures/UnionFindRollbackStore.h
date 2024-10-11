@@ -23,7 +23,7 @@ struct RSUF {
 	vi e; vector<D> d;
 	vector<tuple<ll,ll,ll,D,T>> st;
 	RSUF(ll n) : ans(n), n(n), e(n, -1), d(n) {}
-	RSUF(vector<D>& d) : ans(SZ(d)), n(SZ(d)), e(n,-1), d(d){}
+	RSUF(vector<D>& d) : ans(SZ(d)), n(SZ(d)), e(n,-1), d(d) {}
 	ll size(ll x) { return -e[find(x)]; }
 	ll find(ll x) { return e[x] < 0 ? x : find(e[x]); }
 	ll time() { return SZ(st); }

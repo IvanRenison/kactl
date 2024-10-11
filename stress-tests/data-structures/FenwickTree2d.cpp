@@ -12,10 +12,10 @@ int main() {
 		}
 
 		vector<vi> grid(12, vi(12)), sumto(13, vi(13));
-		for(auto &pa: upd)
+		for (auto &pa : upd)
 			ft.fakeUpd(get<0>(pa), get<1>(pa));
 		ft.init();
-		for(auto &pa: upd) {
+		for (auto &pa : upd) {
 			grid[get<0>(pa)][get<1>(pa)] += get<2>(pa);
 			ft.upd(get<0>(pa), get<1>(pa), get<2>(pa));
 		}
@@ -31,5 +31,5 @@ int main() {
 			}
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

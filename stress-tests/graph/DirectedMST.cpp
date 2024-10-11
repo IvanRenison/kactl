@@ -110,7 +110,7 @@ int main() {
 		ll cnt = 0;
 		vector<Edge> edges;
 		fore(i,0,n)
-			fore(j,0,n){
+			fore(j,0,n) {
 				if (i==j) continue;
 				if (rand() % 100 >= density) continue;
 				ll weight = rand()%100;
@@ -129,9 +129,9 @@ int main() {
 			vi par = pa.snd;
 			if (0) {
 				cout << "r = " << r << endl;
-				for(auto &x: par) cout << x << ' ';
+				for (auto &x : par) cout << x << ' ';
 				cout << endl;
-				for(auto &e: edges) {
+				for (auto &e : edges) {
 					cout << e.a << ' ' << e.b << ' ' << e.w << endl;
 				}
 			}
@@ -150,11 +150,11 @@ int main() {
 			for (ll qi = 0; qi < SZ(q); qi++) {
 				ll s = q[qi];
 				if (!seen[s]++)
-					for(auto &x: ch[s]) q.pb(x);
+					for (auto &x : ch[s]) q.pb(x);
 			}
 			assert(count(ALL(seen), 0) == 0);
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	return 0;
 }

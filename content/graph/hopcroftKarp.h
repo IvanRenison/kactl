@@ -33,8 +33,8 @@ ll hopcroftKarp(vector<vi>& g, vi& btoa) {
 		fill(ALL(B), 0);
 		/// Find the starting nodes for BFS (i.e. layer 0).
 		cur.clear();
-		for (ll a : btoa) if(a != -1) A[a] = -1;
-		fore(a,0,SZ(g)) if(A[a] == 0) cur.pb(a);
+		for (ll a : btoa) if (a != -1) A[a] = -1;
+		fore(a,0,SZ(g)) if (A[a] == 0) cur.pb(a);
 		/// Find all layers using bfs.
 		for (ll lay = 1;; lay++) {
 			bool islast = 0;

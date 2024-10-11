@@ -15,7 +15,7 @@ const ll L = 1e6;
 array<ll, L> s;
 vi sieve() {
 	vi p;
-	for(ll i = 4; i < L; i += 2) s[i] = 2;
+	for (ll i = 4; i < L; i += 2) s[i] = 2;
 	for (ll i = 3; i * i < L; i += 2) if (!s[i])
 		for (ll j=i*i; j < L; j += 2*i) if (!s[j]) s[j] = i;
 	fore(i,2,L) if (!s[i]) p.pb(i), s[i] = i;

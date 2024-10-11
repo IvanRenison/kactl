@@ -47,5 +47,5 @@ int main() {
 			assert(h == hi.hashInterval(0, n));
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

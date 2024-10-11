@@ -125,7 +125,7 @@ int main1() {
 		if (ret >= b) ret -= b;
 		assert(ret == a % b);
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	return 0;
 }
 

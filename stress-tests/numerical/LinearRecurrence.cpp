@@ -21,7 +21,7 @@ int main() {
 		vi full(size);
 		gen(start,0,[&]() {
 			gen(coef,0,[&]() {
-				for(auto &x:full) x = 0;
+				for (auto &x : full) x = 0;
 				fore(i,0,n) full[i] = start[i];
 				fore(i,n,size) fore(j,0,n) full[i] = (full[i] + coef[j] * full[i-1 - j]) % mod;
 	// fore(i,0,size) cerr << full[i] << ' '; cerr << endl;
@@ -38,5 +38,5 @@ int main() {
 			});
 		});
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

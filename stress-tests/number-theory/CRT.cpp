@@ -36,5 +36,5 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

@@ -53,8 +53,8 @@ const ll MAXPR = 1e6;
 int main() {
 	auto prs = sieve::eratosthenes();
 	vector<bool> isprime(MAXPR);
-	for (auto i: prs) isprime[i] = true;
-	for(auto &a: A) rec(1, a, 0, 0);
+	for (auto i : prs) isprime[i] = true;
+	for (auto &a : A) rec(1, a, 0, 0);
 
 	fore(n,0,MAXPR) {
 		if (isPrime(n) != isprime[n]) {

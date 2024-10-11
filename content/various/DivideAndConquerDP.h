@@ -19,7 +19,7 @@ struct DP { // Modify at will:
 		if (L >= R) return;
 		ll mid = (L + R) >> 1;
 		ii best(LLONG_MAX, LO);
-		for(ll k = max(LO, lo(mid)); k < min(HI, hi(mid)); k++)
+		for (ll k = max(LO, lo(mid)); k < min(HI, hi(mid)); k++)
 			best = min(best, make_pair(f(mid, k), k));
 		store(mid, best.snd, best.fst);
 		rec(L, mid, LO, best.snd+1);

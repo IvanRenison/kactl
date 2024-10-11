@@ -29,7 +29,7 @@ fail:;
 }
 
 int main() {
-	// string str; cin >> str; for(auto &x: pi(str)) cout << x; cout << endl;
+	// string str; cin >> str; for (auto &x : pi(str)) cout << x; cout << endl;
 	// test ~3^12 strings
 	fore(n,0,13) {
 		string s(n, 'x');
@@ -44,5 +44,5 @@ int main() {
 			test(s);
 		});
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

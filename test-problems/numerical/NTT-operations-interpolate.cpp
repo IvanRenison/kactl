@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/polynomial_interpolation
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/237473
+// Submission: https://judge.yosupo.jp/submission/241583
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -112,7 +112,7 @@ Poly takeMod(Poly p, ll n) { // O(n)
 Poly inv(const Poly& p, ll d) { // O(n log(n))
 	Poly res = {inv(p[0])};       // first d terms of 1/p
 	ll sz = 1;
-	while (sz < d){
+	while (sz < d) {
 		sz *= 2;
 		Poly pre(p.begin(), p.begin() + min(SZ(p), sz));
 		Poly cur = conv(res, pre);
@@ -125,7 +125,7 @@ Poly inv(const Poly& p, ll d) { // O(n log(n))
 }
 /// START diff
 /// END diff
-pair<Poly,Poly> div(const Poly& a, const Poly& b){
+pair<Poly,Poly> div(const Poly& a, const Poly& b) {
 	ll m = SZ(a), n = SZ(b);   // O(n log(n)), returns {res, rem}
 	if (m < n) return {{}, a}; // if min(m-n,n) < 750 it may be
 	Poly ap = a, bp = b;       // faster to use cuadratic version

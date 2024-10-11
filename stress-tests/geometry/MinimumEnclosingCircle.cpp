@@ -16,7 +16,7 @@ int main() {
 		P mid = pa.fst;
 		double rad = pa.snd;
 		double maxDist = 0;
-		for(auto &p: ps) {
+		for (auto &p : ps) {
 			maxDist = max(maxDist, (p - mid).dist());
 		}
 
@@ -24,8 +24,8 @@ int main() {
 
 		fore(it2,0,50) {
 			P q2 = mid - P(0, 1e-6).rotate(it2);
-			for(auto &p: ps) {
-				if((p - q2).dist() > rad - 1e-7) goto fail;
+			for (auto &p : ps) {
+				if ((p - q2).dist() > rad - 1e-7) goto fail;
 			}
 			assert(0);
 fail:;

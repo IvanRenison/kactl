@@ -32,5 +32,5 @@ int main() {
 		assert(minRotation(v) == 0);
 		assert(min_rotation2(v) == 0);
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 }

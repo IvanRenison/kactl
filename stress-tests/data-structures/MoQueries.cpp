@@ -32,7 +32,7 @@ vi mo(vector<ii> Q) {
 	vi s(SZ(Q)), res = s;
 #define K(x) ii(x.fst/blk, x.snd ^ -(x.fst/blk & 1))
 	iota(ALL(s), 0);
-	sort(ALL(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
+	sort(ALL(s), [&](ll s, ll t) { return K(Q[s]) < K(Q[t]); });
 	for (ll qi : s) {
 		ii q = Q[qi];
 		while (L > q.fst) add(--L, 0);
@@ -97,7 +97,7 @@ void del(ll i, ll end) {
 }
 ll calc() { return sum; }
 
-vi moTree(vector<array<ll, 2>> Q, vector<vi>& ed, ll root=0){
+vi moTree(vector<array<ll, 2>> Q, vector<vi>& ed, ll root=0) {
 	ll N = SZ(ed), pos[2] = {};
 	vi s(SZ(Q)), res = s, I(N), L(N), R(N), in(N), par(N);
 	add(0, 0), in[0] = 1;
@@ -112,7 +112,7 @@ vi moTree(vector<array<ll, 2>> Q, vector<vi>& ed, ll root=0){
 	dfs(root, -1, 0, dfs);
 #define K(x) ii(I[x[0]] / blk, I[x[1]] ^ -(I[x[0]] / blk & 1))
 	iota(ALL(s), 0);
-	sort(ALL(s), [&](ll s, ll t){ return K(Q[s]) < K(Q[t]); });
+	sort(ALL(s), [&](ll s, ll t) { return K(Q[s]) < K(Q[t]); });
 	for (ll qi : s) fore(end,0,2) {
 		ll &a = pos[end], b = Q[qi][end], i = 0;
 #define step(c) { if (in[c]) { del(a, end); in[a] = 0; } \

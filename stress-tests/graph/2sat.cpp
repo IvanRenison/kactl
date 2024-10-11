@@ -94,12 +94,12 @@ int main() {
 		assert(ts.solve());
 		ll to = 0;
 		fore(i,0,N) to += (ts.values[i] == v[i]);
-		for(auto &r: atm) {
+		for (auto &r : atm) {
 			ll co = 0;
-			for(auto &x: r) co += (ts.values[max(x, ~x)] == (x >= 0));
+			for (auto &x : r) co += (ts.values[max(x, ~x)] == (x >= 0));
 			assert(co <= 1);
 		}
 	}
-	cout<<"Tests passed!"<<endl;
+	cout << "Tests passed!" << endl;
 	return 0;
 }
