@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/log_of_formal_power_series
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/241585
+// Submission: https://judge.yosupo.jp/submission/241602
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -118,7 +118,7 @@ Poly inv(const Poly& p, ll d) { // O(n log(n))
 	return res;
 }
 Poly log(const Poly& p, ll d) { // O(n log(n))
-	Poly cur = takeMod(p, d);    // first d terms of log(p)
+	Poly cur = takeMod(p, d);     // first d terms of log(p)
 	Poly res = integrate(
 		takeMod(conv(inv(cur, d), derivate(cur)), d - 1));
 	res.resize(d);
