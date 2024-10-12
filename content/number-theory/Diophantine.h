@@ -5,6 +5,8 @@
  * Usage: auto [x, y, dx, dy] = diophantine(a, b, r);
  * Description: All integer solutions to $ax + by = r$ are of
  * the form $(x + k \cdot dx, y + k \cdot dy)$ for integer $k$.
+ * Time: O(\log(\min(a,b)))
+ * Status: stress-tested
  */
 #pragma once
 
