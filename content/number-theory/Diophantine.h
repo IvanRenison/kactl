@@ -11,8 +11,8 @@
 #include "./euclid.h"
 
 array<ll, 4> diophantine(ll a, ll b, ll r) {
-  ll x, y, g = euclid(a, b, x, y);
-  a /= g, b /= g, r /= g, x *= r, y *= r;
-  assert(a * x + b * y == r); // otherwise no solution
-  return {x, y, -b, a};
+	ll x, y, g = euclid(a, b, x, y);
+	a /= g, b /= g, r /= g, x *= r, y *= r;
+	assert(a * x + b * y == r); // otherwise no solution
+	return {x, y, -b, a};
 }
