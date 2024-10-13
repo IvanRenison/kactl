@@ -13,13 +13,11 @@
 #include "Point.h"
 #include "3dHull.h"
 
-template<class P, class F>
-void delaunay(vector<P>& ps, F trifun) {
-	if (SZ(ps) == 3) { ll d = (ps[0].cross(ps[1], ps[2]) < 0);
-		trifun(0,1+d,2-d); }
+template<class P> void delaunay(vector<P>& ps, auto f) {
+	if (SZ(ps)==3){ll d=ps[0].cross(ps[1],ps[2])<0;f(0,1+d,2-d);}
 	vector<P3> p3;
 	for (P p : ps) p3.pb(P3{p.x, p.y, p.dist2()});
-	if (SZ(ps) > 3) for(auto t:hull3d(p3)) if ((p3[t.b]-p3[t.a]).
-			cross(p3[t.c]-p3[t.a]).dot(P3(0,0,1)) < 0)
-		trifun(t.a, t.c, t.b);
+	if (SZ(ps) > 3) for (auto [_, a, b, c] : hull3d(p3))
+		if ((p3[b]-p3[a]).cross(p3[c]-p3[a]).dot(P3(0,0,1)) < 0)
+			f(a, c, b);
 }
