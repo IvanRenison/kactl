@@ -1,10 +1,11 @@
 /**
- * Author: Unknown
+ * Author: Pietro Palombini
  * Date: 2024-10-11
- * Source: vasito
+ * Source: notebook el vasito
  * Usage: auto [x, y, dx, dy] = diophantine(a, b, r);
- * Description: All integer solutions to $ax + by = r$ are of
- * the form $(x + k \cdot dx, y + k \cdot dy)$ for integer $k$.
+ * Description: All integer solutions (x, y) to $ax + by = r$
+ * are of * the form $(x + k \cdot dx, y + k \cdot dy)$ for
+ * integer $k$.
  * Time: O(\log(\min(a,b)))
  * Status: stress-tested
  */
