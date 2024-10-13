@@ -12,7 +12,7 @@
 
 vi divisors(vector<ii>& f) {
 	vi res = {1};
-	for (auto &[p, k] : f) {
+	for (auto& [p, k] : f) {
 		ll sz = SZ(res);
 		fore(i,0,sz) for(ll j=0,x=p;j<k;j++,x*=p) res.pb(res[i]*x);
 	}
