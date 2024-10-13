@@ -22,10 +22,10 @@
  */
 #pragma once
 
-auto suffixArray(string& s, ll lim = 'z' + 1) {
+array<vi, 3> suffixArray(string& s, ll lim = 'z' + 1) {
 	ll n = SZ(s) + 1, k = 0, a, b;
-	vi x(ALL(s)), y(n), ws(max(n, lim)), sa(n), lcp(n), rank(n);
-	x.pb(0), iota(ALL(sa), 0);
+	vi x(ALL(s)+1), y(n), ws(max(n,lim)), sa(n), lcp(n), rank(n);
+	iota(ALL(sa), 0);
 	for (ll j = 0, p = 0; p < n; j = max(1ll, j * 2), lim = p) {
 		p = j, iota(ALL(y), n - j), fill(ALL(ws), 0);
 		fore(i, 0, n) if (ws[x[i]]++, sa[i] >= j) y[p++] = sa[i]-j;
@@ -38,5 +38,5 @@ auto suffixArray(string& s, ll lim = 'z' + 1) {
 	fore(i, 1, n) rank[sa[i]] = i;
 	for(ll i = 0, j; i < n - 1; lcp[rank[i++]] = k)
 		for(k && k--, j = sa[rank[i] - 1]; s[i+k] == s[j+k]; k++);
-	return tuple(sa, lcp, rank);
+	return {sa, lcp, rank};
 }

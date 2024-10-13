@@ -9,16 +9,14 @@ namespace smallAlphabet {
 namespace largeAlphabet {
 /// content/strings/SuffixArray.h
 /// START diff
-auto suffixArray(basic_string<ll>& s, ll lim = MAXA + 1) {
+array<vi, 3> suffixArray(basic_string<ll>& s, ll lim = MAXA + 1) {
 	/// END diff
 	ll n = SZ(s) + 1, k = 0, a, b;
-	vi x(ALL(s)), y(n), ws(max(n, lim)), sa(n), lcp(n), rank(n);
-	x.pb(0), iota(ALL(sa), 0);
+	vi x(ALL(s)+1), y(n), ws(max(n,lim)), sa(n), lcp(n), rank(n);
+	iota(ALL(sa), 0);
 	for (ll j = 0, p = 0; p < n; j = max(1ll, j * 2), lim = p) {
-		p = j, iota(ALL(y), n - j);
-		fore(i, 0, n) if (sa[i] >= j) y[p++] = sa[i] - j;
-		fill(ALL(ws), 0);
-		fore(i, 0, n) ws[x[i]]++;
+		p = j, iota(ALL(y), n - j), fill(ALL(ws), 0);
+		fore(i, 0, n) if (ws[x[i]]++, sa[i] >= j) y[p++] = sa[i]-j;
 		fore(i, 1, lim) ws[i] += ws[i - 1];
 		for (ll i = n; i--;) sa[--ws[x[y[i]]]] = y[i];
 		swap(x, y), p = 1, x[sa[0]] = 0;
@@ -28,7 +26,7 @@ auto suffixArray(basic_string<ll>& s, ll lim = MAXA + 1) {
 	fore(i, 1, n) rank[sa[i]] = i;
 	for(ll i = 0, j; i < n - 1; lcp[rank[i++]] = k)
 		for(k && k--, j = sa[rank[i] - 1]; s[i+k] == s[j+k]; k++);
-	return tuple(sa, lcp, rank);
+	return {sa, lcp, rank};
 }
 /// END content
 } // namespace largeAlphabet
