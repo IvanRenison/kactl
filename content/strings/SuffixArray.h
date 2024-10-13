@@ -13,8 +13,9 @@
  * \texttt{lcp[i] = lcp(sa[i], sa[i-1])}, \texttt{lcp[0] = 0}.
  * \texttt{rank} is the inverse of the suffix array:
  * \texttt{rank[sa[i]] = i}.
- * \textt{lim} should be strictly larger than all elements.
- * For larger alphabets use basic_string<ll> instead of string.
+ * \texttt{lim} should be strictly larger than all elements.
+ * For larger alphabets use \texttt{basic\_string<ll>} instead
+ * of \texttt{string}.
  * The input string must not contain any zero bytes.
  * Time: O(n \log n)
  * Status: stress-tested
