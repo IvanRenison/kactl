@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../../stress-tests/utilities/template.h"
-
 const ll L = 1e6;
 array<int8_t, L> mu;
 void calculateMu() {
