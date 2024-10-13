@@ -27,10 +27,8 @@ auto suffixArray(string& s, ll lim = 'z' + 1) {
 	vi x(ALL(s)), y(n), ws(max(n, lim)), sa(n), lcp(n), rank(n);
 	x.pb(0), iota(ALL(sa), 0);
 	for (ll j = 0, p = 0; p < n; j = max(1ll, j * 2), lim = p) {
-		p = j, iota(ALL(y), n - j);
-		fore(i, 0, n) if (sa[i] >= j) y[p++] = sa[i] - j;
-		fill(ALL(ws), 0);
-		fore(i, 0, n) ws[x[i]]++;
+		p = j, iota(ALL(y), n - j), fill(ALL(ws), 0);
+		fore(i, 0, n) if (ws[x[i]]++, sa[i] >= j) y[p++] = sa[i]-j;
 		fore(i, 1, lim) ws[i] += ws[i - 1];
 		for (ll i = n; i--;) sa[--ws[x[y[i]]]] = y[i];
 		swap(x, y), p = 1, x[sa[0]] = 0;
