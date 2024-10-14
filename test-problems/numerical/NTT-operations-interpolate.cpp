@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/polynomial_interpolation
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/241583
+// Submission: https://judge.yosupo.jp/submission/241632
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -21,7 +21,7 @@ const ll mod = (119 << 23) + 1; // faster if const
 /// END diff
 ll modpow(ll b, ll e) {
 	ll ans = 1;
-	for (; e; b = b * b % mod, e /= 2)
+	for (; e; b = b * b % mod, e >>= 1)
 		if (e & 1) ans = ans * b % mod;
 	return ans;
 }

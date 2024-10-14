@@ -14,7 +14,7 @@ ll inv(ll a);
 /// END diff
 ll modpow(ll b, ll e) {
 	ll ans = 1;
-	for (; e; b = b * b % mod, e /= 2)
+	for (; e; b = b * b % mod, e >>= 1)
 		if (e & 1) ans = ans * b % mod;
 	return ans;
 }
