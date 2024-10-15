@@ -2,7 +2,7 @@
  * Author: Pietro Palombini
  * Date: 2024-10-11
  * Source: notebook el vasito
- * Description: Returns $(x_0, y_0, dx, dy)$ such that all integer solutions (x, y) to $ax + by = r$
+ * Description: Returns $(x_0, y_0, dx, dy)$ such that all integer solutions $(x, y)$ to $ax + by = r$
  * are $(x_0 + k \cdot dx, y_0 + k \cdot dy)$ for integer $k$.
  * Time: O(\log(\min(a,b)))
  * Status: stress-tested
