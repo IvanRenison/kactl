@@ -53,8 +53,7 @@ struct SuffixTree {
 		ll mask = 0, len = node ? olen + (r[node] - l[node]) : 0;
 		fore(c,0,ALPHA) if (t[node][c] != -1)
 			mask |= lcs(t[node][c], i1, i2, len);
-		if (mask == 3)
-			best = max(best, {len, r[node] - len});
+		if (mask == 3) best = max(best, {len, r[node] - len});
 		return mask;
 	}
 	static ii LCS(string s, string t) {
