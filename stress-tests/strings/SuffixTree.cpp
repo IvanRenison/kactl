@@ -24,7 +24,7 @@ vector<string> getPathsStrings(const SuffixTree& st, ll src) {
 }
 
 vector<string> getLongestSuffixes(string& s) { // Get all suffixes that are not a prefix of another suffix
-	ll n = s.size();
+	ll n = SZ(s);
 
 	vector<string> ans;
 	fore(i, 0, n + 1) {
@@ -76,7 +76,7 @@ void testEndSpecial() {
 
 int main() {
 
-	fore(_, 0, 100) {
+	fore(_, 0, 1000) {
 		test();
 		testEndSpecial();
 	}
