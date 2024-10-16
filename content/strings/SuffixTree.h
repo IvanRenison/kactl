@@ -28,10 +28,9 @@ struct SuffixTree {
 			else q = l[v = t[v][c]];
 		if (q == -1 || c == toi(a[q])) q++;
 		else {
-			l[m+1] = i, l[m] = l[v], r[m] = l[v] = q;
-			p[m] = p[v], t[m][toi(a[q])] = v;
+			l[m+1] = i, l[m] = l[v], r[m] = l[v] = q, p[m] = p[v];
 			p[t[m][c] = m+1] = p[v] = t[p[m]][toi(a[l[m]])] = m;
-			v = s[p[m]], q = l[m];
+			t[m][toi(a[q])] = v, v = s[p[m]], q = l[m];
 			while (q < r[m]) v = t[v][toi(a[q])], q += r[v]-l[v];
 			if (q == r[m]) s[m] = v;
 			else s[m] = m + 2;
