@@ -14,34 +14,33 @@
 #pragma once
 
 struct SuffixTree {
-	enum { N = 200010, ALPHA = 26 }; // N ~ 2*maxlen+10
+	static constexpr ll ALPHA = 26; // alphabet size
 	ll toi(char c) { return c - 'a'; }
-	string a; // v = cur node, q = cur position
-	vector<vi> t = vector<vi>(N, vi(ALPHA, -1)); // transitions
-	// a[l[i]:r[i]] is substring on edge to i
-	vi r, l = vi(N), p = vi(N), s = vi(N, 0);
-	ll v = 0, q = 0, m = 2;
+	string a;
+	ll N, v = 0, q = 0, m = 2; // v = cur node, q = cur position
+	vector<vi> t; // transitions
+	vi r, l, p, s; // a[l[i]:r[i]] is substring on edge to i
 
-	void ukkadd(ll i, ll c) { suff:
-		if (r[v]<=q) {
-			if (t[v][c]==-1) { t[v][c]=m;  l[m]=i;
-				p[m++]=v; v=s[v]; q=r[v];  goto suff; }
-			v=t[v][c]; q=l[v];
-		}
-		if (q==-1 || c==toi(a[q])) q++; else {
-			l[m+1]=i;  p[m+1]=m;  l[m]=l[v];  r[m]=q;
-			p[m]=p[v];  t[m][c]=m+1;  t[m][toi(a[q])]=v;
-			l[v]=q;  p[v]=m;  t[p[m]][toi(a[l[m]])]=m;
-			v=s[p[m]];  q=l[m];
-			while (q<r[m]) { v=t[v][toi(a[q])];  q+=r[v]-l[v]; }
-			if (q==r[m])  s[m]=v;  else s[m]=m+2;
-			q=r[v]-(q-r[m]);  m+=2;  goto suff;
+	void ukkadd(ll i, ll c) {
+		if (r[v] <= q)
+			if (t[v][c] == -1) return l[t[v][c] = m] = i,
+				q = r[v = s[p[m++] = v]], ukkadd(i, c);
+			else q = l[v = t[v][c]];
+		if (q == -1 || c == toi(a[q])) q++;
+		else {
+			l[m+1] = i, l[m] = l[v], r[m] = l[v] = q, p[m] = p[v];
+			p[t[m][c] = m+1] = p[v] = t[p[m]][toi(a[l[m]])] = m;
+			t[m][toi(a[q])] = v, v = s[p[m]], q = l[m];
+			while (q < r[m]) v = t[v][toi(a[q])], q += r[v]-l[v];
+			if (q == r[m]) s[m] = v;
+			else s[m] = m + 2;
+			q = r[v]-(q-r[m]), m += 2, ukkadd(i, c);
 		}
 	}
 
-	SuffixTree(string a) : a(a), r(N, SZ(a)) {
-		t[1] = vi(ALPHA, 0);
-		s[0] = 1; l[0] = l[1] = -1; r[0] = r[1] = p[0] = p[1] = 0;
+	SuffixTree(string a) : a(a), N(2*SZ(a)+2), t(N,vi(ALPHA,-1)){
+		r = vi(N, SZ(a)), l = p = s = vi(N), t[1] = vi(ALPHA, 0);
+		s[0] = 1, l[0] = l[1] = -1, r[0] = r[1] = p[0] = p[1] = 0;
 		fore(i,0,SZ(a)) ukkadd(i, toi(a[i]));
 	}
 
@@ -53,8 +52,7 @@ struct SuffixTree {
 		ll mask = 0, len = node ? olen + (r[node] - l[node]) : 0;
 		fore(c,0,ALPHA) if (t[node][c] != -1)
 			mask |= lcs(t[node][c], i1, i2, len);
-		if (mask == 3)
-			best = max(best, {len, r[node] - len});
+		if (mask == 3) best = max(best, {len, r[node] - len});
 		return mask;
 	}
 	static ii LCS(string s, string t) {
