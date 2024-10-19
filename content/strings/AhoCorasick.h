@@ -19,10 +19,10 @@
 
 struct AhoCorasick {
 	enum {alpha = 26, first = 'A'}; // change this!
-	struct Node {
-		// (nmatches is optional)
-		ll back, next[alpha], start = -1, end = -1, nmatches = 0;
-		Node(ll v) { memset(next, v, sizeof(next)); }
+	struct Node { // (nmatches is optional)
+		ll back, start = -1, end = -1, nmatches = 0;
+		array<ll, alpha> next;
+		Node(ll v) { fill(ALL(next), v); }
 	};
 	vector<Node> N;
 	vi backp;
@@ -31,55 +31,43 @@ struct AhoCorasick {
 		ll n = 0;
 		for (char c : s) {
 			ll& m = N[n].next[c - first];
-			if (m == -1) { n = m = SZ(N); N.pb(-1); }
+			if (m == -1) n = m = SZ(N), N.pb(-1);
 			else n = m;
 		}
 		if (N[n].end == -1) N[n].start = j;
-		backp.pb(N[n].end);
-		N[n].end = j;
-		N[n].nmatches++;
+		backp.pb(N[n].end), N[n].end = j, N[n].nmatches++;
 	}
 	AhoCorasick(vector<string>& pat) : N(1, -1) {
 		fore(i,0,SZ(pat)) insert(pat[i], i);
-		N[0].back = SZ(N);
-		N.pb(0);
+		N[0].back = SZ(N), N.pb(0);
 
-		queue<ll> q;
-		for (q.push(0); !q.empty(); q.pop()) {
+		for (queue<ll> q = queue<ll>({0}); !q.empty(); q.pop()) {
 			ll n = q.front(), prev = N[n].back;
 			fore(i,0,alpha) {
 				ll &ed = N[n].next[i], y = N[prev].next[i];
 				if (ed == -1) ed = y;
-				else {
-					N[ed].back = y;
+				else
+					N[ed].nmatches += N[N[ed].back = y].nmatches,
 					(N[ed].end == -1 ? N[ed].end : backp[N[ed].start])
-						= N[y].end;
-					N[ed].nmatches += N[y].nmatches;
-					q.push(ed);
-				}
+						= N[y].end, q.push(ed);
 			}
 		}
 	}
-	vi find(string word) {
+	vi find(string& word) {
 		ll n = 0;
 		vi res; // ll count = 0;
 		for (char c : word) {
-			n = N[n].next[c - first];
-			res.pb(N[n].end);
+			n = N[n].next[c - first], res.pb(N[n].end);
 			// count += N[n].nmatches;
 		}
 		return res;
 	}
-	vector<vi> findAll(vector<string>& pat, string word) {
+	vector<vi> findAll(vector<string>& pat, string& word) {
 		vi r = find(word);
 		vector<vi> res(SZ(word));
-		fore(i,0,SZ(word)) {
-			ll ind = r[i];
-			while (ind != -1) {
+		fore(i,0,SZ(word))
+			for (ll ind = r[i]; ind != -1; ind = backp[ind])
 				res[i - SZ(pat[ind]) + 1].pb(ind);
-				ind = backp[ind];
-			}
-		}
 		return res;
 	}
 };
