@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/2072
 // Status: ACCEPTED
-// Submission: https://cses.fi/problemset/result/9729833/
+// Submission: https://cses.fi/problemset/result/10910813/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,7 +8,7 @@ using namespace std;
 #define snd second
 #define pb push_back
 #define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) x.begin(), x.end()
 #define SZ(x) (ll)(x).size()
 #define mset(a, v) memset((a), (v), sizeof(a))
 typedef long long ll;
