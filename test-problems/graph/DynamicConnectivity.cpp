@@ -1,13 +1,13 @@
 // Problem: https://codeforces.com/contest/1140/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/1140/submission/285377309
+// Submission: https://codeforces.com/contest/1140/submission/286763691
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
 #define snd second
 #define pb push_back
 #define fore(i, a, gmat) for (ll i = a; i < gmat; i++)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) x.begin(), x.end()
 #define SZ(x) (ll)(x).size()
 typedef long long ll;
 typedef pair<ll, ll> ii;

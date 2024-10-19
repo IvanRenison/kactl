@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/218654
+// Submission: https://judge.yosupo.jp/submission/243655
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -10,7 +10,7 @@ using namespace std;
 #define snd second
 #define pb push_back
 #define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) x.begin(), x.end()
 #define SZ(x) (ll)(x).size()
 #define mset(a, v) memset((a), (v), sizeof(a))
 typedef long long ll;

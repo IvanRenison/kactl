@@ -7,7 +7,7 @@ using namespace std;
 #define snd second
 #define pb push_back
 #define fore(i, a, gmat) for (ll i = a; i < gmat; i++)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) x.begin(), x.end()
 #define SZ(x) (ll)(x).size()
 typedef long long ll;
 typedef pair<ll, ll> ii;
