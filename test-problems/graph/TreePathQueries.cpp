@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/1902/problem/F
 // Status: Accepted
-// Submission: https://codeforces.com/contest/1902/submission/262948210
+// Submission: https://codeforces.com/contest/1902/submission/286766680
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,7 +8,7 @@ using namespace std;
 #define snd second
 #define pb push_back
 #define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) x.begin(), x.end()
 #define SZ(x) (ll)(x).size()
 #define mset(a, v) memset((a), (v), sizeof(a))
 typedef long long ll;
