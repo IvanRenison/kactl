@@ -58,8 +58,8 @@ test-test-problems:
 	bash ./doc/scripts/checkAllTestProblems.sh
 
 showexcluded: build
-	grep -RoPh '^\s*\\kactlimport{\K.*' content/ | sed 's/.$$//' > build/headers_included
-	find ./content -name "*.h" -o -name "*.py" -o -name "*.java" | grep -vFf build/headers_included
+	grep -RoPh '^\s*\\kactlimport(\[[^]]*\])?{\K.*' content/ | sed 's/.$$//' > build/headers_included
+	find ./content -not -path "./content/tex/*" \( -name "*.h" -o -name "*.cpp" -o -name "*.py" -o -name "*.java" \) | grep -vFf build/headers_included
 
 snippets:
 	find content/ -type f -name "*.*" ! -name "*.tex" ! -name "*.txt" ! -name "*.pdf" ! -path "*/tex/*" ! -path "*/contest/*" -print0 \

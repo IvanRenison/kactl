@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/2007/problem/E
 // Status: Accepted
-// Submission: https://codeforces.com/contest/2007/submission/279727345
+// Submission:
 // Testing usage of normal segment tree (not lazy) for HLD with values in edges
 #include <bits/stdc++.h>
 using namespace std;
@@ -9,7 +9,7 @@ using namespace std;
 #define snd second
 #define pb push_back
 #define fore(i, a, b) for (ll i = a, gmat = b; i < gmat; i++)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) x.begin(), x.end()
 #define SZ(x) (ll)(x).size()
 #define mset(a, v) memset((a), (v), sizeof(a))
 typedef long long ll;
