@@ -1,13 +1,13 @@
 // Problem: https://cses.fi/problemset/task/1675/
 // Status: ACCEPTED
-// Submission: https://cses.fi/problemset/result/8757315/
+// Submission:
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
 #define snd second
 #define pb push_back
 #define fore(i, a, gmat) for (ll i = a; i < gmat; i++)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) x.begin(), x.end()
 #define SZ(x) (ll)(x).size()
 typedef long long ll;
 typedef pair<ll, ll> ii;
