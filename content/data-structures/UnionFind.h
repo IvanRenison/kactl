@@ -18,7 +18,7 @@ struct UF {
 		a = find(a), b = find(b);
 		if (a == b) return false;
 		if (e[a] > e[b]) swap(a, b);
-		e[a] += e[b]; e[b] = a;
+		e[a] += e[b], e[b] = a;
 		return true;
 	}
 };
