@@ -15,24 +15,21 @@ typedef vector<ll> vi;
 
 /// content/graph/BiconnectedComponents.h
 auto BCC(ll n, const vector<ii>& edges) {
-	ll m = SZ(edges), Time = 0, eid = 0;
+	ll Time = 0, eid = 0;
 	vi num(n), st;
 	vector<vector<ii>> adj(n);
-	for (auto [a, b] : edges) {
+	for (auto [a, b] : edges)
 		adj[a].pb({b, eid}), adj[b].pb({a, eid++});
-	}
 
 	ll nComps = 0; // number of biconnected components
-	vi edgesComp(m, -1); // comp of each edge or -1 if bridge
-	vector<set<ll>> nodesComp(n); // comp of each node
+	vi edgesComp(eid, -1); // comp of each edge or -1 if bridge
+	vector<set<ll>> nodesComp(n); // comps of each node
 
 	function<ll(ll, ll)> dfs = [&](ll at, ll par) {
 		ll me = num[at] = ++Time, top = me;
 		for (auto [y, e] : adj[at]) if (e != par) {
 			if (y == at) { // self loop
-				edgesComp[e] = nComps;
-				nodesComp[at].insert(nComps);
-				nComps++;
+				nodesComp[at].insert(edgesComp[e] = nComps++);
 			} else if (num[y]) {
 				top = min(top, num[y]);
 				if (num[y] < me) st.pb(e);
@@ -47,16 +44,16 @@ auto BCC(ll n, const vector<ii>& edges) {
 						nodesComp[u].insert(nComps);
 						nodesComp[v].insert(nComps);
 					}
-					nComps++;
-					st.resize(si);
-				}
-				else if (up < me) st.pb(e); // else e is bridge
+					nComps++, st.resize(si);
+				} else if (up < me) st.pb(e); // else e is bridge
 			}
 		}
 		return top;
 	};
 
-	fore(i, 0, n) if (!num[i]) dfs(i, -1);
+	fore(u, 0, n) if (!num[u]) dfs(u, -1);
+	fore(u, 0, n) if (nodesComp[u].empty())
+		nodesComp[u].insert(nComps++);
 
 	fore(u, 0, n) if (nodesComp[u].empty()) {
 		nodesComp[u].insert(nComps);
