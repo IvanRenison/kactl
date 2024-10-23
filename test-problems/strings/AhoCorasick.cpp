@@ -17,41 +17,34 @@ typedef vector<ll> vi;
 /// content/strings/AhoCorasick.h
 struct AhoCorasick {
 /// START diff
-	enum {alpha = 10, first = 'a'}; // change this!
+	static const ll alpha = 10; // Size of the alphabet
 /// END diff
-	struct vertex {
-		vi next = vi(alpha, -1), go = vi(alpha, -1);
-		ll p, link, pch;
-		vi leaf;
-		vertex(ll p = -1, ll pch = -1) : p(p), link(-1), pch(pch) {}
+	struct Node {
+		array<ll, alpha> next, go; vi leaf; ll p, link, pch;
+		Node(ll p = -1, ll pch = -1) : p(p), link(-1), pch(pch) {
+			fill(ALL(next), -1), go = next;
+		}
 	};
-	vector<vertex> t;
-	AhoCorasick() : t(1) {}
-	ll add_string(string& s, ll id) {
-		ll v = 0;
-		for (char c : s) {
-			if (t[v].next[c - first] == -1) {
-				t[v].next[c - first] = SZ(t);
-				t.pb(vertex(v, c - first));
+	vector<Node> t;
+	AhoCorasick(vector<vi>& words) : t(1) {
+		fore(i, 0, SZ(words)) {
+			ll v = 0;
+			for (ll c : words[i]) {
+				if (t[v].next[c]<0) t[v].next[c]=SZ(t),t.pb(Node(v,c));
+				v = t[v].next[c];
 			}
-			v = t[v].next[c - first];
+			t[v].leaf.pb(i);
 		}
-		t[v].leaf.pb(id);
-		return v;
 	}
-	ll get_link(ll v) {
-		if (t[v].link < 0) {
-			if (!v || !t[v].p) t[v].link = 0;
-			else t[v].link = go(get_link(t[v].p), t[v].pch + first);
-		}
+	ll getLink(ll v) {
+		if (t[v].link < 0) t[v].link = v && t[v].p ?
+			go(getLink(t[v].p), t[v].pch) : 0;
 		return t[v].link;
 	}
-	ll go(ll v, char c) {
-		if (t[v].go[c - first] == -1) {
-			if (t[v].next[c - first] != -1) t[v].go[c - first] = t[v].next[c - first];
-			else t[v].go[c - first] = v == 0 ? 0 : go(get_link(v), c);
-		}
-		return t[v].go[c - first];
+	ll go(ll v, ll c) {
+		if (t[v].go[c] < 0) t[v].go[c] = t[v].next[c] >= 0 ?
+			t[v].next[c] : v ? go(getLink(v),c) : 0;
+		return t[v].go[c];
 	}
 };
 /// END content
@@ -59,23 +52,27 @@ struct AhoCorasick {
 string solve(vector<string>& horribles, vector<string>& kinds) {
 	ll N = SZ(horribles), M = SZ(kinds);
 
-	AhoCorasick ac;
+	vector<vi> words(N + M);
+	fore(i, 0, N) {
+		for (char c : horribles[i]) words[i].pb(c - 'a');
+	}
+	fore(i, 0, M) {
+		for (char c : kinds[i]) words[N + i].pb(c - 'a');
+	}
 
-	fore(i, 0, N) ac.add_string(horribles[i], i);
-	fore(i, 0, M) ac.add_string(kinds[i], i + N);
+	AhoCorasick ac(words);
 
 	ll n = SZ(ac.t);
 
 	vi leafs(n, -1); // dp of leafs including the ones of links, returns bits
-	function<ll(ll)> get_leafs = [&](ll u) -> ll {
+	auto get_leafs = [&](ll u, auto&& get_leafs) -> ll {
 		ll& ans = leafs[u];
 		if (ans != -1) return ans;
 		ans = 0;
 		for (ll i : ac.t[u].leaf) ans |= 1 << i;
-		if (u != 0) ans |= get_leafs(ac.get_link(u));
+		if (u != 0) ans |= get_leafs(ac.getLink(u), get_leafs);
 		return ans;
 	};
-
 
 	vector<vector<tuple<ll, ll, char>>> vis(n, vector<tuple<ll, ll, char>>(1 << N, {-1, -1, '#'}));
 	queue<ii> s;
@@ -86,8 +83,8 @@ string solve(vector<string>& horribles, vector<string>& kinds) {
 		s.pop();
 
 		for (char c = 'a'; c <= 'j'; c++) {
-			ll v = ac.go(u, c);
-			ll y = x | get_leafs(v);
+			ll v = ac.go(u, c - 'a');
+			ll y = x | get_leafs(v, get_leafs);
 			if (y < (1 << N) && get<0>(vis[v][y]) == -1) {
 				vis[v][y] = {u, x, c};
 				s.push({v, y});
@@ -121,12 +118,3 @@ int main() {
 	string ans = solve(horribles, kinds);
 	cout << ans << '\n';
 }
-/*
-5 0
-cabbcab
-abbc
-cabbcaba
-abaabaac
-a
-
-*/
