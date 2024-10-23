@@ -12,16 +12,10 @@
 #pragma once
 
 vi topoSort(const vector<vi>& gr) {
-	vi indeg(SZ(gr)), ret;
+	vi indeg(SZ(gr)), q;
 	for (auto& li : gr) for (ll x : li) indeg[x]++;
-	queue<ll> q; // use priority_queue for lexic. largest ans.
-	fore(i,0,SZ(gr)) if (indeg[i] == 0) q.push(i);
-	while (!q.empty()) {
-		ll i = q.front(); // top() for priority queue
-		ret.pb(i);
-		q.pop();
-		for (ll x : gr[i])
-			if (--indeg[x] == 0) q.push(x);
-	}
-	return ret;
+	fore(i,0,SZ(gr)) if (indeg[i] == 0) q.pb(i);
+	for(int j = 0; j < SZ(q); j++) for (ll x : gr[q[j]])
+		if (--indeg[x] == 0) q.pb(x);
+	return q;
 }
