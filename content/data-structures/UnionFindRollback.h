@@ -27,7 +27,7 @@ struct RollbackUF {
 		if (a == b) return false;
 		if (e[a] > e[b]) swap(a, b);
 		st.pb({a, e[a]}), st.pb({b, e[b]});
-		e[a] += e[b]; e[b] = a;
+		e[a] += e[b], e[b] = a;
 		return true;
 	}
 };
