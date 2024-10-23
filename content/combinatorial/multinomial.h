@@ -9,7 +9,6 @@
 
 ll multinomial(vi& v) {
 	ll c = 1, m = v.empty() ? 1 : v[0];
-	fore(i,1,SZ(v)) fore(j,0,v[i])
-		c = c * ++m / (j+1);
+	fore(i,1,SZ(v)) fore(j,0,v[i]) c = c * ++m / (j+1);
 	return c;
 }
