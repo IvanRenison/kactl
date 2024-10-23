@@ -1,73 +1,48 @@
 /**
- * Author: Simon Lindholm
- * Date: 2015-02-18
+ * Author: Iván Renison
+ * Date: 2024-10-23
  * License: CC0
- * Source: marian's (TC) code
- * Description: Aho-Corasick automaton, used for multiple pattern matching.
- * Initialize with AhoCorasick ac(patterns); the automaton start node will be at index 0.
- * find(word) returns for each position the index of the longest word that ends there, or -1 if none.
- * findAll($-$, word) finds all words (up to $N \sqrt N$ many if no duplicate patterns)
- * that start at each position (shortest first).
- * Duplicate patterns are allowed; empty patterns are not.
- * To find the longest words that start at each position, reverse all input.
- * For large alphabets, split each symbol into chunks, with sentinel bits for symbol boundaries.
- * Time: construction takes $O(26N)$, where $N =$ sum of length of patterns.
- * find(x) is $O(N)$, where N = length of x. findAll is $O(NM)$.
+ * Source: notebook el vasito
+ * Description:
+ * Time:
  * Status: stress-tested
  */
 #pragma once
 
 struct AhoCorasick {
 	enum {alpha = 26, first = 'A'}; // change this!
-	struct Node { // (nmatches is optional)
-		ll back, start = -1, end = -1, nmatches = 0;
-		array<ll, alpha> next;
-		Node(ll v) { fill(ALL(next), v); }
+	struct vertex {
+		vi next = vi(alpha, -1), go = vi(alpha, -1);
+		ll p, link, pch;
+		vi leaf;
+		vertex(ll p = -1, ll pch = -1) : p(p), link(-1), pch(pch) {}
 	};
-	vector<Node> N;
-	vi backp;
-	void insert(string& s, ll j) {
-		assert(!s.empty());
-		ll n = 0;
+	vector<vertex> t;
+	AhoCorasick() : t(1) {}
+	ll add_string(string& s, ll id) {
+		ll v = 0;
 		for (char c : s) {
-			ll& m = N[n].next[c - first];
-			if (m == -1) n = m = SZ(N), N.pb(-1);
-			else n = m;
-		}
-		if (N[n].end == -1) N[n].start = j;
-		backp.pb(N[n].end), N[n].end = j, N[n].nmatches++;
-	}
-	AhoCorasick(vector<string>& pat) : N(1, -1) {
-		fore(i,0,SZ(pat)) insert(pat[i], i);
-		N[0].back = SZ(N), N.pb(0);
-
-		for (queue<ll> q = queue<ll>({0}); !q.empty(); q.pop()) {
-			ll n = q.front(), prev = N[n].back;
-			fore(i,0,alpha) {
-				ll &ed = N[n].next[i], y = N[prev].next[i];
-				if (ed == -1) ed = y;
-				else
-					N[ed].nmatches += N[N[ed].back = y].nmatches,
-					(N[ed].end == -1 ? N[ed].end : backp[N[ed].start])
-						= N[y].end, q.push(ed);
+			if (t[v].next[c - first] == -1) {
+				t[v].next[c - first] = SZ(t);
+				t.pb(vertex(v, c - first));
 			}
+			v = t[v].next[c - first];
 		}
+		t[v].leaf.pb(id);
+		return v;
 	}
-	vi find(string& word) {
-		ll n = 0;
-		vi res; // ll count = 0;
-		for (char c : word) {
-			n = N[n].next[c - first], res.pb(N[n].end);
-			// count += N[n].nmatches;
+	ll get_link(ll v) {
+		if (t[v].link < 0) {
+			if (!v || !t[v].p) t[v].link = 0;
+			else t[v].link = go(get_link(t[v].p), t[v].pch + first);
 		}
-		return res;
+		return t[v].link;
 	}
-	vector<vi> findAll(vector<string>& pat, string& word) {
-		vi r = find(word);
-		vector<vi> res(SZ(word));
-		fore(i,0,SZ(word))
-			for (ll ind = r[i]; ind != -1; ind = backp[ind])
-				res[i - SZ(pat[ind]) + 1].pb(ind);
-		return res;
+	ll go(ll v, char c) {
+		if (t[v].go[c - first] == -1) {
+			if (t[v].next[c - first] != -1) t[v].go[c - first] = t[v].next[c - first];
+			else t[v].go[c - first] = v == 0 ? 0 : go(get_link(v), c);
+		}
+		return t[v].go[c - first];
 	}
 };
