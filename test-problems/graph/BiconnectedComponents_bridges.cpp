@@ -54,11 +54,6 @@ auto BCC(ll n, const vector<ii>& edges) {
 	fore(u, 0, n) if (!num[u]) dfs(u, -1);
 	fore(u, 0, n) if (nodesComp[u].empty())
 		nodesComp[u].insert(nComps++);
-
-	fore(u, 0, n) if (nodesComp[u].empty()) {
-		nodesComp[u].insert(nComps);
-		nComps++;
-	}
 /// START diff
 	return tuple<ll, vi, vector<set<ll>>>(nComps, edgesComp, nodesComp);
 /// END diff
