@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/1675/
 // Status: ACCEPTED
-// Submission:
+// Submission: https://cses.fi/problemset/result/10944299/
 #include <bits/stdc++.h>
 using namespace std;
 #define fst first
@@ -24,7 +24,7 @@ struct UF {
 		a = find(a), b = find(b);
 		if (a == b) return false;
 		if (e[a] > e[b]) swap(a, b);
-		e[a] += e[b]; e[b] = a;
+		e[a] += e[b], e[b] = a;
 		return true;
 	}
 };
