@@ -22,7 +22,7 @@ struct AhoCorasick {
 	struct Node {
 		array<ll, alpha> next, go; vi leaf; ll p, link, pch;
 		Node(ll p = -1, ll pch = -1) : p(p), link(-1), pch(pch) {
-			fill(ALL(next), -1), go = next;
+			next.fill(-1), go = next;
 		}
 	};
 	vector<Node> t;
