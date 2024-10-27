@@ -1,7 +1,7 @@
 /**
  * Author: Iván Renison
  * Date: 2024-06-14
- * Source: https://github.com/ngthanhtrung23/ACM_Notebook_new/blob/master/DataStructure/LinkCutTree.h
+ * Source: https://github.com/ngthanhtrung23/ACM_Notebook_new/blob/master/DataStructure/LinkCutTreeTree.h
  * Description: Represents a forest of rooted trees with nodes \textbf{indexed from one}.
  * You can add and remove edges (as long as the result is still a forest),
  * make path queries, subtree queries, point updates and select a node as root of its subtree.
