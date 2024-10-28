@@ -11,11 +11,10 @@
  */
 #pragma once
 
-vi topoSort(const vector<vi>& gr) {
-	vi indeg(SZ(gr)), q;
-	for (auto& li : gr) for (ll x : li) indeg[x]++;
-	fore(i,0,SZ(gr)) if (indeg[i] == 0) q.pb(i);
-	for(int j = 0; j < SZ(q); j++) for (ll x : gr[q[j]])
-		if (--indeg[x] == 0) q.pb(x);
+vi topoSort(const vector<vi>& g) {
+	vi d(SZ(g)), q;
+	for (vi& li : g) for (ll x : li) d[x]++;
+	fore(i,0,SZ(g)) if (d[i] == 0) q.pb(i);
+	for(ll j=0;j<SZ(q);j++)for(ll x:g[q[j]])if(--d[x]==0)q.pb(x);
 	return q;
 }
