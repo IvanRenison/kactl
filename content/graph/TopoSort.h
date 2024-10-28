@@ -13,7 +13,7 @@
 
 vi topoSort(const vector<vi>& g) {
 	vi d(SZ(g)), q;
-	for (vi& li : g) for (ll x : li) d[x]++;
+	for (auto& li : g) for (ll x : li) d[x]++;
 	fore(i,0,SZ(g)) if (d[i] == 0) q.pb(i);
 	for(ll j=0;j<SZ(q);j++)for(ll x:g[q[j]])if(--d[x]==0)q.pb(x);
 	return q;
