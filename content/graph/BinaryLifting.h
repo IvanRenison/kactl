@@ -20,7 +20,7 @@ vector<vi> treeJump(vi& P){
 }
 
 ll jmp(vector<vi>& tbl, ll nod, ll steps) {
-	fore(i,0,SZ(tbl)) if (steps&(1<<i)) nod = tbl[i][nod];
+	fore(i,0,SZ(tbl)) if (steps & (1<<i)) nod = tbl[i][nod];
 	return nod;
 }
 
