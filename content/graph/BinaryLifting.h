@@ -12,10 +12,9 @@
 #pragma once
 
 vector<vi> treeJump(vi& P){
-	ll d = SZ(P) < 2 ? 0 : 1 + __lg(SZ(P));
+	ll d = bit_width((unsigned)SZ(P));
 	vector<vi> jmp(d, P);
-	fore(i,1,d) fore(j,0,SZ(P))
-		jmp[i][j] = jmp[i-1][jmp[i-1][j]];
+	fore(i,1,d)fore(j,0,SZ(P)) jmp[i][j] = jmp[i-1][jmp[i-1][j]];
 	return jmp;
 }
 
