@@ -11,9 +11,8 @@
  */
 #pragma once
 
-vector<vi> treeJump(vi& P) {
-	ll on = 1, d = 1;
-	while (on < SZ(P)) on *= 2, d++;
+vector<vi> treeJump(vi& P){
+	ll d = SZ(P) < 2 ? 0 : 1 + __lg(SZ(P));
 	vector<vi> jmp(d, P);
 	fore(i,1,d) fore(j,0,SZ(P))
 		jmp[i][j] = jmp[i-1][jmp[i-1][j]];
