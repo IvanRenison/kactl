@@ -12,18 +12,17 @@ namespace largeAlphabet {
 array<vi, 3> suffixArray(basic_string<ll>& s, ll lim = MAXA + 1) {
 	/// END diff
 	ll n = SZ(s) + 1, k = 0, a, b;
-	vi x(ALL(s)+1), y(n), ws(max(n,lim)), sa(n), lcp(n), rank(n);
+	vi rank(ALL(s)+1), y(n), ws(max(n,lim)), sa(n), lcp(n);
 	iota(ALL(sa), 0);
 	for (ll j = 0, p = 0; p < n; j = max(1ll, j * 2), lim = p) {
 		p = j, iota(ALL(y), n - j), fill(ALL(ws), 0);
-		fore(i, 0, n) if (ws[x[i]]++, sa[i] >= j) y[p++] = sa[i]-j;
+		fore(i,0,n) if (ws[rank[i]]++, sa[i]>=j) y[p++] = sa[i]-j;
 		fore(i, 1, lim) ws[i] += ws[i - 1];
-		for (ll i = n; i--;) sa[--ws[x[y[i]]]] = y[i];
-		swap(x, y), p = 1, x[sa[0]] = 0;
-		fore(i, 1, n) a = sa[i - 1], b = sa[i], x[b] =
+		for (ll i = n; i--;) sa[--ws[rank[y[i]]]] = y[i];
+		swap(rank, y), p = 1, rank[sa[0]] = 0;
+		fore(i, 1, n) a = sa[i - 1], b = sa[i], rank[b] =
 			(y[a] == y[b] && y[a + j] == y[b + j]) ? p - 1 : p++;
 	}
-	fore(i, 1, n) rank[sa[i]] = i;
 	for(ll i = 0, j; i < n - 1; lcp[rank[i++]] = k)
 		for(k && k--, j = sa[rank[i] - 1]; s[i+k] == s[j+k]; k++);
 	return {sa, lcp, rank};
@@ -70,4 +69,5 @@ int main() {
 		assert(lcp == lcp2);
 		assert(rank == rank2);
 	}
+	cout << "Tests passed!" << endl;
 }

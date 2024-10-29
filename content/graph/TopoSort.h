@@ -11,17 +11,11 @@
  */
 #pragma once
 
-vi topoSort(const vector<vi>& gr) {
-	vi indeg(SZ(gr)), ret;
-	for (auto& li : gr) for (ll x : li) indeg[x]++;
-	queue<ll> q; // use priority_queue for lexic. largest ans.
-	fore(i,0,SZ(gr)) if (indeg[i] == 0) q.push(i);
-	while (!q.empty()) {
-		ll i = q.front(); // top() for priority queue
-		ret.pb(i);
-		q.pop();
-		for (ll x : gr[i])
-			if (--indeg[x] == 0) q.push(x);
-	}
-	return ret;
+vi topoSort(const vector<vi>& g) {
+	vi d(SZ(g)), q;
+	for (auto& li : g) for (ll x : li) d[x]++;
+	fore(i,0,SZ(g)) if (!d[i]) q.pb(i);
+	for (ll j = 0; j < SZ(q); j++) for (ll x : g[q[j]])
+		if (!--d[x]) q.pb(x);
+	return q;
 }
