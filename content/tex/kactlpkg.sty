@@ -21,6 +21,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage[normalem]{ulem}
 \usepackage[hidelinks]{hyperref}        % For clickable table of contents
+\usepackage{wrapfig}                    % For correctly adding images in descriptions
 
 % Config commands
 \newcommand{\subtitle}[1]{
@@ -361,3 +362,11 @@
 \newcommand{\bigo}[1] {\ensuremath{\mathcal{O} \left( #1 \right)}}
 
 \newcommand{\hardcolumnbreak}{\vfill\null\columnbreak}
+
+\newcommand{\descriptionimage}[1]{
+	\begin{wrapfigure}{r}{15mm}
+		\vspace{-12mm}
+		\includegraphics[width=15mm]{#1}
+		\vspace{-8mm}
+	\end{wrapfigure}
+}
