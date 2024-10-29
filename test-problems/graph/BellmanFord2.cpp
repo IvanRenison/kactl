@@ -1,5 +1,6 @@
 // Problem: https://open.kattis.com/problems/shortestpath3
 // Status: Accepted
+// Test with shuffled vertices
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -22,7 +23,9 @@ struct Node { ll dist = inf, prev = -1; };
 void bellmanFord(vector<Node>& nodes, vector<Ed>& eds, ll s) {
 	nodes[s].dist = 0;
 	sort(ALL(eds), [](Ed a, Ed b) { return a.s() < b.s(); });
-	ll lim = SZ(nodes) / 2 + 2; // /3+100 with shuffled vertices
+	/// START diff
+	ll lim = SZ(nodes) / 3 + 100; // /3+100 with shuffled vertices
+	/// END diff
 	fore(i,0,lim) for (Ed ed : eds) {
 		Node cur = nodes[ed.a], &dest = nodes[ed.b];
 		if (abs(cur.dist) == inf) continue;
@@ -41,11 +44,18 @@ int main() {
 		cin >> n >> m >> q >> s;
 		if (n == 0) break;
 
+		vi perm(n);
+		iota(ALL(perm), 0);
+		random_shuffle(ALL(perm));
+
+		s = perm[s];
+
 		vector<Node> nodes(n);
 		vector<Ed> eds(m);
 
 		for (auto& [u, v, w] : eds) {
 			cin >> u >> v >> w;
+			u = perm[u], v = perm[v];
 		}
 
 		bellmanFord(nodes, eds, s);
@@ -53,6 +63,7 @@ int main() {
 		while (q--) {
 			ll dest;
 			cin >> dest;
+			dest = perm[dest];
 			if (nodes[dest].dist == inf) {
 				cout << "Impossible\n";
 			} else if (nodes[dest].dist == -inf) {
