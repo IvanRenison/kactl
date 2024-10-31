@@ -3,7 +3,7 @@ DIR=${1:-.}
 GROUP=$2
 
 # use a precompiled header for the template to improve perf
-g++ -Wall -Wfatal-errors -Wconversion -std=c++20 -O2 $DIR/stress-tests/utilities/template.h
+ccache g++ -Wall -Wfatal-errors -Wconversion -std=c++20 -O2 $DIR/stress-tests/utilities/template.h
 trap "rm -f $DIR/stress-tests/utilities/template.h.gch" EXIT
 
 tests="$(find $DIR/stress-tests/$GROUP -name '*.cpp')"
@@ -25,7 +25,7 @@ run_test() {
     # Compile and run the test, capturing all output
     {
         echo "$(basename $test): "
-        g++ -Wall -Wfatal-errors -Wconversion -std=c++20 -O2 $test -o "$TMPDIR/$(basename $test).out" && \
+        ccache g++ -Wall -Wfatal-errors -Wconversion -std=c++20 -O2 "$test" -o "$TMPDIR/$(basename $test).out" && \
         ulimit -s 524288 && "$TMPDIR/$(basename $test).out"
         echo $? > "$outfile.retcode"
 
