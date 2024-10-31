@@ -12,6 +12,7 @@ help:
 	@echo "	make clean		- to clean up the build process"
 	@echo "	make veryclean		- to clean up and remove kactl.pdf"
 	@echo "	make test		- to run all the stress tests in stress-tests/"
+	@echo "	make test-group-<group>	- to run all the stress tests in stress-tests/<group>"
 	@echo "	make test-compiles	- to test compiling all headers"
 	@echo "	make help		- to show this information"
 	@echo "	make showexcluded	- to show files that are not included in the doc"
@@ -42,7 +43,6 @@ test:
 	bash ./doc/scripts/checkInlineContents-stress-test.sh
 	./doc/scripts/run-all.sh .
 
-# New targets for matrix testing
 test-group-%:
 	./doc/scripts/run-stress-tests-group.sh . $*
 
