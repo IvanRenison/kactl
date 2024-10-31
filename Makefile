@@ -33,7 +33,7 @@ veryclean: clean
 	rm -f kactl.pdf test-session.pdf
 	rm -rf snippets
 
-.PHONY: help fast kactl clean veryclean format snippets
+.PHONY: help fast kactl clean veryclean format snippets test test-group-% test-compiles test-style test-test-problems
 
 build:
 	mkdir -p build/
@@ -41,6 +41,10 @@ build:
 test:
 	bash ./doc/scripts/checkInlineContents-stress-test.sh
 	./doc/scripts/run-all.sh .
+
+# New targets for matrix testing
+test-group-%:
+	./doc/scripts/run-stress-tests-group.sh . $*
 
 test-compiles:
 	./doc/scripts/compile-all.sh .

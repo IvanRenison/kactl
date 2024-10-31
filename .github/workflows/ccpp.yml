@@ -7,41 +7,80 @@ on:
     branches: [ "*" ]
 
 jobs:
-  build:
+  build-and-check:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v2
-    - name: Install pdflatex
+
+    # Cache for PDF building and compilation tests
+    - name: Cache build artifacts
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.ccache
+          content/**/*.gch
+          /usr/share/texlive
+          /usr/local/share/texlive
+          ~/.texlive
+        key: ${{ runner.os }}-build-${{ hashFiles('**/*.cpp', '**/*.h', '**/*.tex') }}
+        restore-keys: |
+          ${{ runner.os }}-build-
+
+    # Install dependencies
+    - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install texlive-latex-base texlive-latex-recommended texlive-latex-extra
-    - name: Build pdf
-      run: make kactl
+        sudo apt-get install -y ccache texlive-latex-base texlive-latex-recommended texlive-latex-extra
+        echo "/usr/lib/ccache" >> $GITHUB_PATH
 
-  test:
+    # Configure ccache
+    - name: Configure ccache
+      run: |
+        ccache --max-size=2G
+        ccache --set-config=compression=true
+        ccache -p
+
+    # Run initial checks in parallel
+    - name: Build and check
+      env:
+        CCACHE_COMPRESS: "true"
+        CCACHE_MAXSIZE: "2G"
+        CCACHE_DIR: ~/.ccache
+      run: |
+        # Run all initial checks in parallel
+        make kactl &
+        make test-style &
+        make test-compiles &
+        make test-test-problems &
+        wait
+
+  stress-tests:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-
+    needs: build-and-check
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        test-group: [data-structures, geometry, graph, number-theory, numerical, strings, various]
 
     steps:
     - uses: actions/checkout@v2
 
-    # Cache compilation artifacts
-    - name: Cache compilation artifacts
+    # Cache for stress tests
+    - name: Cache stress test artifacts
       uses: actions/cache@v2
       with:
         path: |
           ~/.ccache
           stress-tests/**/*.gch
           content/contest/template.cpp.gch
-        key: ${{ runner.os }}-compilation-${{ hashFiles('**/*.cpp', '**/*.h') }}
+        key: ${{ runner.os }}-stress-${{ matrix.test-group }}-${{ hashFiles('stress-tests/**/*.cpp', 'stress-tests/**/*.h', 'content/**/*.h') }}
         restore-keys: |
-          ${{ runner.os }}-compilation-
+          ${{ runner.os }}-stress-${{ matrix.test-group }}-
+          ${{ runner.os }}-stress-
 
     # Install ccache
     - name: Install ccache
@@ -57,19 +96,10 @@ jobs:
         ccache --set-config=compression=true
         ccache -p
 
-    # Run tests in parallel with better caching
-    - name: Run compiles
-      run: make test-compiles
-    - name: Run style checks
-      run: make test-style
-    - name: Check test problems
-      run: make test-test-problems
-    - name: Run stress tests
-      run: |
-        # Pre-compile headers in parallel
-        find content/ stress-tests/ -name '*.h' -exec touch {} \;
-        make -j$(nproc) test
+    # Run stress tests for this group
+    - name: Run stress tests (${{ matrix.test-group }})
       env:
         CCACHE_COMPRESS: "true"
         CCACHE_MAXSIZE: "2G"
         CCACHE_DIR: ~/.ccache
+      run: make test-group-${{ matrix.test-group }}
