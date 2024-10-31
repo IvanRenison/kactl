@@ -9,22 +9,58 @@ SCRIPT_DIR=$DIR/doc/scripts
 tests="$(find $DIR/content -name '*.h' | grep -vFf $SCRIPT_DIR/skip_headers)"
 echo "skipped: "
 find $DIR/content -name '*.h' | grep -Ff $SCRIPT_DIR/skip_headers
+
+# Create a temporary directory for test outputs
+TMPDIR=$(mktemp -d)
+trap "rm -rf $TMPDIR" EXIT
+
+# Function to run a single test
+run_test() {
+    local test=$1
+    local outfile=$2
+
+    # Compile the test, capturing output
+    {
+        echo "$(basename $test): "
+        $SCRIPT_DIR/test-compiles.sh $test
+        echo $? > "$outfile.retcode"
+        echo
+    } &> "$outfile.log"
+}
+
+# Run tests in parallel with a maximum of N jobs (N = number of CPU cores)
+N=$(nproc)
+echo "Running compilation tests using $N parallel jobs..."
+
+# Process tests in batches
+count=0
+for test in $tests; do
+    outfile="$TMPDIR/$(basename $test)"
+    run_test "$test" "$outfile" &
+
+    # Limit number of parallel jobs
+    ((++count % N == 0)) && wait
+done
+wait # Wait for remaining jobs
+
+# Process results
 declare -i pass=0
 declare -i fail=0
 failHeaders=""
+
 for test in $tests; do
-    echo "$(basename $test): "
-    $SCRIPT_DIR/test-compiles.sh $test
-    retCode=$?
-    if (($retCode != 0)); then
-        echo $retCode
+    outfile="$TMPDIR/$(basename $test)"
+    retcode=$(<"$outfile.retcode")
+    cat "$outfile.log"
+
+    if (($retcode != 0)); then
         fail+=1
         failHeaders="$failHeaders$test\n"
     else
         pass+=1
     fi
-    echo
 done
+
 echo "$pass/$(($pass+$fail)) tests passed"
 if (($pass == 0)); then
     echo "No tests found (make sure skip_headers doesn't have whitespace lines)"
