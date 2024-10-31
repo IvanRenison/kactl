@@ -42,27 +42,33 @@ jobs:
     timeout-minutes: 15
     steps:
     - uses: actions/checkout@v2
-    - name: Cache compilation
+    - name: Cache ccache
       uses: actions/cache@v2
       with:
-        path: |
-          ~/.ccache
-          content/**/*.gch
-        key: ${{ runner.os }}-compilation-${{ hashFiles('content/**/*.cpp', 'content/**/*.h') }}
+        path: ~/.ccache
+        key: ${{ runner.os }}-ccache-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-compilation-
+          ${{ runner.os }}-ccache-
     - name: Setup ccache
       run: |
         sudo apt-get update && sudo apt-get install -y ccache
-        echo "/usr/lib/ccache" >> $GITHUB_PATH
         ccache --max-size=2G
         ccache --set-config=compression=true
+        ccache --set-config=prefix_command=
+        echo "Using ccache in: $HOME/.ccache"
+        echo "CC='ccache gcc'" >> $GITHUB_ENV
+        echo "CXX='ccache g++'" >> $GITHUB_ENV
+        echo "$(which ccache)" >> $GITHUB_PATH
     - name: Run compilation tests
       env:
         CCACHE_COMPRESS: "true"
         CCACHE_MAXSIZE: "2G"
         CCACHE_DIR: ~/.ccache
-      run: make test-compiles
+        CCACHE_VERBOSE: "1"  # Enable verbose output to debug cache hits/misses
+      run: |
+        ccache -z  # Clear stats
+        make test-compiles
+        ccache -s  # Print stats to verify cache usage
 
   stress-tests:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -74,26 +80,31 @@ jobs:
         test-group: [data-structures, geometry, graph, number-theory, numerical, strings, various]
     steps:
     - uses: actions/checkout@v2
-    - name: Cache stress test artifacts
+    - name: Cache ccache
       uses: actions/cache@v2
       with:
-        path: |
-          ~/.ccache
-          stress-tests/**/*.gch
-          content/contest/template.cpp.gch
-        key: ${{ runner.os }}-stress-${{ matrix.test-group }}-${{ hashFiles('stress-tests/**/*.cpp', 'stress-tests/**/*.h', 'content/**/*.h') }}
+        path: ~/.ccache
+        key: ${{ runner.os }}-ccache-${{ matrix.test-group }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-stress-${{ matrix.test-group }}-
-          ${{ runner.os }}-stress-
+          ${{ runner.os }}-ccache-${{ matrix.test-group }}-
+          ${{ runner.os }}-ccache-
     - name: Setup ccache
       run: |
         sudo apt-get update && sudo apt-get install -y ccache
-        echo "/usr/lib/ccache" >> $GITHUB_PATH
         ccache --max-size=2G
         ccache --set-config=compression=true
+        ccache --set-config=prefix_command=
+        echo "Using ccache in: $HOME/.ccache"
+        echo "CC='ccache gcc'" >> $GITHUB_ENV
+        echo "CXX='ccache g++'" >> $GITHUB_ENV
+        echo "$(which ccache)" >> $GITHUB_PATH
     - name: Run stress tests (${{ matrix.test-group }})
       env:
         CCACHE_COMPRESS: "true"
         CCACHE_MAXSIZE: "2G"
         CCACHE_DIR: ~/.ccache
-      run: make test-group-${{ matrix.test-group }}
+        CCACHE_VERBOSE: "1"  # Enable verbose output to debug cache hits/misses
+      run: |
+        ccache -z  # Clear stats
+        make test-group-${{ matrix.test-group }}
+        ccache -s  # Print stats to verify cache usage
