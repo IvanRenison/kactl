@@ -22,7 +22,6 @@ jobs:
     - name: Build pdf
       run: make kactl
 
-
   test:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
 
@@ -31,6 +30,34 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    # Cache compilation artifacts
+    - name: Cache compilation artifacts
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.ccache
+          stress-tests/**/*.gch
+          content/contest/template.cpp.gch
+        key: ${{ runner.os }}-compilation-${{ hashFiles('**/*.cpp', '**/*.h') }}
+        restore-keys: |
+          ${{ runner.os }}-compilation-
+
+    # Install ccache
+    - name: Install ccache
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ccache
+        echo "/usr/lib/ccache" >> $GITHUB_PATH
+
+    # Configure ccache
+    - name: Configure ccache
+      run: |
+        ccache --max-size=2G
+        ccache --set-config=compression=true
+        ccache -p
+
+    # Run tests in parallel with better caching
     - name: Run compiles
       run: make test-compiles
     - name: Run style checks
@@ -38,4 +65,11 @@ jobs:
     - name: Check test problems
       run: make test-test-problems
     - name: Run stress tests
-      run: make test
+      run: |
+        # Pre-compile headers in parallel
+        find content/ stress-tests/ -name '*.h' -exec touch {} \;
+        make -j$(nproc) test
+      env:
+        CCACHE_COMPRESS: "true"
+        CCACHE_MAXSIZE: "2G"
+        CCACHE_DIR: ~/.ccache
