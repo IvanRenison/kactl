@@ -14,11 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install LaTeX
-      run: |
-        sudo add-apt-repository ppa:apt-fast/stable
-        sudo apt-get update
-        sudo apt-get -y install apt-fast
-        sudo apt-fast install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra
+      run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra
     - name: Build PDF
       run: make kactl
 
