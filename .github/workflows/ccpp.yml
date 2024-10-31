@@ -13,13 +13,10 @@ jobs:
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v2
+    - name: Install LaTeX
+      run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra
     - name: Build PDF
-      uses: xu-cheng/texlive-action@v2
-      with:
-        scheme: full
-        run: |
-          apk add make cpp
-          make kactl
+      run: make kactl
 
   style:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
