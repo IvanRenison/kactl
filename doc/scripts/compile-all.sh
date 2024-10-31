@@ -18,14 +18,21 @@ trap "rm -rf $TMPDIR" EXIT
 run_test() {
     local test=$1
     local outfile=$2
+    local test_tmpdir="$TMPDIR/$(basename "$test")"
+
+    # Create temporary directory for this test
+    mkdir -p "$test_tmpdir"
 
     # Compile the test, capturing output
     {
         echo "$(basename $test): "
-        $SCRIPT_DIR/test-compiles.sh $test
+        $SCRIPT_DIR/test-compiles.sh "$test" "$test_tmpdir"
         echo $? > "$outfile.retcode"
         echo
     } &> "$outfile.log"
+
+    # Cleanup test directory
+    rm -rf "$test_tmpdir"
 }
 
 # Run tests in parallel with a maximum of N jobs (N = number of CPU cores)
@@ -61,7 +68,8 @@ for test in $tests; do
     fi
 done
 
-echo "$pass/$(($pass+$fail)) tests passed"
+total=$((pass + fail))
+echo "$pass/$total tests passed"
 if (($pass == 0)); then
     echo "No tests found (make sure skip_headers doesn't have whitespace lines)"
     exit 1

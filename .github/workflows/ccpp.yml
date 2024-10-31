@@ -7,14 +7,12 @@ on:
     branches: [ "*" ]
 
 jobs:
-  build-pdf:
+  pdf:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v2
-
-    # Cache for PDF building
     - name: Cache LaTeX
       uses: actions/cache@v2
       with:
@@ -25,25 +23,37 @@ jobs:
         key: ${{ runner.os }}-latex-${{ hashFiles('content/**/*.tex') }}
         restore-keys: |
           ${{ runner.os }}-latex-
-
-    # Install LaTeX
     - name: Install LaTeX
       run: |
         sudo apt-get update
         sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra
-
-    # Build PDF
     - name: Build PDF
       run: make kactl
 
-  test-compiles:
+  style:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check style
+      run: make test-style
+
+  test-problems:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check test problems
+      run: make test-test-problems
+
+  compiles:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
     - uses: actions/checkout@v2
-
-    # Cache for compilation
     - name: Cache compilation
       uses: actions/cache@v2
       with:
@@ -53,35 +63,22 @@ jobs:
         key: ${{ runner.os }}-compilation-${{ hashFiles('content/**/*.cpp', 'content/**/*.h') }}
         restore-keys: |
           ${{ runner.os }}-compilation-
-
-    # Install and configure ccache
-    - name: Setup ccache
+    - name: Install ccache
       run: |
         sudo apt-get update
         sudo apt-get install -y ccache
         echo "/usr/lib/ccache" >> $GITHUB_PATH
+    - name: Configure ccache
+      run: |
         ccache --max-size=2G
         ccache --set-config=compression=true
         ccache -p
-
-    # Run compilation tests
-    - name: Test compiles
+    - name: Run compilation tests
       env:
         CCACHE_COMPRESS: "true"
         CCACHE_MAXSIZE: "2G"
         CCACHE_DIR: ~/.ccache
       run: make test-compiles
-
-  check-style-and-problems:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run checks
-      run: |
-        make test-style
-        make test-test-problems
 
   stress-tests:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -93,8 +90,6 @@ jobs:
         test-group: [data-structures, geometry, graph, number-theory, numerical, strings, various]
     steps:
     - uses: actions/checkout@v2
-
-    # Cache for stress tests
     - name: Cache stress test artifacts
       uses: actions/cache@v2
       with:
@@ -106,18 +101,16 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-stress-${{ matrix.test-group }}-
           ${{ runner.os }}-stress-
-
-    # Install and configure ccache
-    - name: Setup ccache
+    - name: Install ccache
       run: |
         sudo apt-get update
         sudo apt-get install -y ccache
         echo "/usr/lib/ccache" >> $GITHUB_PATH
+    - name: Configure ccache
+      run: |
         ccache --max-size=2G
         ccache --set-config=compression=true
         ccache -p
-
-    # Run stress tests for this group
     - name: Run stress tests (${{ matrix.test-group }})
       env:
         CCACHE_COMPRESS: "true"
