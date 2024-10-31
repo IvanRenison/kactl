@@ -7,48 +7,18 @@ on:
     branches: [ "*" ]
 
 jobs:
-  setup-deps:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      cache-key: ${{ steps.cache-key.outputs.value }}
-    steps:
-    - name: Generate cache key
-      id: cache-key
-      run: echo "value=${{ runner.os }}-apt-$(date -u +%Y%m)" >> $GITHUB_OUTPUT
-    - name: Cache apt packages
-      uses: actions/cache@v2
-      with:
-        path: /var/cache/apt/archives
-        key: ${{ steps.cache-key.outputs.value }}
-    - name: Install all dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ccache texlive-latex-base texlive-latex-recommended texlive-latex-extra
-        echo "/usr/lib/ccache" >> $GITHUB_PATH
-
   pdf:
-    needs: setup-deps
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v2
-    - name: Cache apt packages
-      uses: actions/cache@v2
-      with:
-        path: /var/cache/apt/archives
-        key: ${{ needs.setup-deps.outputs.cache-key }}
     - name: Install LaTeX
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra
+      run: sudo apt-get update && sudo apt-get install -y --no-install-recommends texlive-latex-base texlive-latex-recommended texlive-latex-extra
     - name: Build PDF
       run: make kactl
 
   style:
-    needs: setup-deps
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -58,37 +28,20 @@ jobs:
       run: make test-style
 
   test-problems:
-    needs: setup-deps
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v2
-    - name: Cache apt packages
-      uses: actions/cache@v2
-      with:
-        path: /var/cache/apt/archives
-        key: ${{ needs.setup-deps.outputs.cache-key }}
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ccache
-        echo "/usr/lib/ccache" >> $GITHUB_PATH
     - name: Check test problems
       run: make test-test-problems
 
   compiles:
-    needs: setup-deps
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
     - uses: actions/checkout@v2
-    - name: Cache apt packages
-      uses: actions/cache@v2
-      with:
-        path: /var/cache/apt/archives
-        key: ${{ needs.setup-deps.outputs.cache-key }}
     - name: Cache compilation
       uses: actions/cache@v2
       with:
@@ -98,16 +51,12 @@ jobs:
         key: ${{ runner.os }}-compilation-${{ hashFiles('content/**/*.cpp', 'content/**/*.h') }}
         restore-keys: |
           ${{ runner.os }}-compilation-
-    - name: Install ccache
+    - name: Setup ccache
       run: |
-        sudo apt-get update
-        sudo apt-get install -y ccache
+        sudo apt-get update && sudo apt-get install -y ccache
         echo "/usr/lib/ccache" >> $GITHUB_PATH
-    - name: Configure ccache
-      run: |
         ccache --max-size=2G
         ccache --set-config=compression=true
-        ccache -p
     - name: Run compilation tests
       env:
         CCACHE_COMPRESS: "true"
@@ -116,7 +65,6 @@ jobs:
       run: make test-compiles
 
   stress-tests:
-    needs: setup-deps
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -126,11 +74,6 @@ jobs:
         test-group: [data-structures, geometry, graph, number-theory, numerical, strings, various]
     steps:
     - uses: actions/checkout@v2
-    - name: Cache apt packages
-      uses: actions/cache@v2
-      with:
-        path: /var/cache/apt/archives
-        key: ${{ needs.setup-deps.outputs.cache-key }}
     - name: Cache stress test artifacts
       uses: actions/cache@v2
       with:
@@ -142,16 +85,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-stress-${{ matrix.test-group }}-
           ${{ runner.os }}-stress-
-    - name: Install ccache
+    - name: Setup ccache
       run: |
-        sudo apt-get update
-        sudo apt-get install -y ccache
+        sudo apt-get update && sudo apt-get install -y ccache
         echo "/usr/lib/ccache" >> $GITHUB_PATH
-    - name: Configure ccache
-      run: |
         ccache --max-size=2G
         ccache --set-config=compression=true
-        ccache -p
     - name: Run stress tests (${{ matrix.test-group }})
       env:
         CCACHE_COMPRESS: "true"
