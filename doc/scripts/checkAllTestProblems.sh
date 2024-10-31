@@ -11,8 +11,8 @@ trap "rm -rf $TMPDIR" EXIT
 N=$(nproc)
 echo "Running tests using $N parallel jobs..."
 
-# Function to run a single test
-run_test() {
+# Function to test a single problem
+test_test_problem() {
     local file="$1"
     local outfile="$2"
     local start=$(date +%s.%N)
@@ -49,7 +49,7 @@ pids=()
 # Run tests in parallel
 for file in ./test-problems/*/*.cpp; do
     outfile="$TMPDIR/$(basename "$file")"
-    run_test "$file" "$outfile" &
+    test_test_problem "$file" "$outfile" &
     pids+=($!)
 
     # Wait if the number of background jobs reaches the limit

@@ -14,8 +14,8 @@ find $DIR/content -name '*.h' | grep -Ff $SCRIPT_DIR/skip_headers
 TMPDIR=$(mktemp -d)
 trap "rm -rf $TMPDIR" EXIT
 
-# Function to run a single test
-run_test() {
+# Function to test a single compilati
+test_compiles() {
     local test=$1
     local outfile=$2
     local test_tmpdir="$TMPDIR/$(basename "$test")"
@@ -43,7 +43,7 @@ echo "Running compilation tests using $N parallel jobs..."
 count=0
 for test in $tests; do
     outfile="$TMPDIR/$(basename $test)"
-    run_test "$test" "$outfile" &
+    test_compiles "$test" "$outfile" &
 
     # Limit number of parallel jobs
     ((++count % N == 0)) && wait
