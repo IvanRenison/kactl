@@ -31,8 +31,7 @@ template <class T = char> struct SuffixAutomaton {
 	struct State { ll len = 0, l = -1; map<T, ll> t; };
 	vector<State> s{1}; ll last = 0;
 	void extend(T c) {
-		ll k = SZ(s), p = last, q;
-		s.pb({}), s[k].len = s[last].len + 1;
+		ll k=SZ(s), p=last, q; s.pb({}), s[k].len = s[last].len+1;
 		for(;p != -1 && !s[p].t.count(c); p = s[p].l)s[p].t[c] = k;
 		if (p == -1) s[k].l = 0;
 		else {
