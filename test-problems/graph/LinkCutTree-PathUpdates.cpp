@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
 // Status: AC
-// Submission: https://judge.yosupo.jp/submission/243659
+// Submission: https://judge.yosupo.jp/submission/246196
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -20,10 +20,9 @@ struct LinkCutTree {
 	typedef ll T; typedef ll L; // T: data type, L: lazy type
 	static constexpr T tneut = 0; static constexpr L lneut = 0;
 	T f(T a, T b) { return a + b; } // associative & commutative
-	// new st according to lazy
-	T apply(T v, L l, ll len) { return v + l * len; }
-	// cumulative effect of lazy
-	L comb(L a, L b) { return a + b; }
+	T apply(T v, L l, ll len) { // new st according to lazy
+		return v + l * len; }
+	L comb(L a, L b) { return a + b; }//cumulative effect of lazy
 
 	struct Node {
 		ll s = 1; bool rev = 0;

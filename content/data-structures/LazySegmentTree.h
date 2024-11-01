@@ -16,13 +16,11 @@
 #pragma once
 
 typedef ll T; typedef ll L; // T: data type, L: lazy type
-// neutrals
-constexpr static T tneut = 0; constexpr static L lneut = 0;
-T f(T a, T b) { return a + b; } // operation
-// new st according to lazy
-T apply(T v, L l, ll s, ll e) { return v + l * (e - s); }
-// cumulative effect of lazy
-L comb(L a, L b) { return a + b; }
+const T tneut = 0; const L lneut = 0; // neutrals
+T f(T a, T b) { return a + b; } // associative
+T apply(T v, L l, ll s, ll e) { // new st according to lazy
+	return v + l * (e - s); }
+L comb(L a, L b) { return a + b; } // cumulative effect of lazy
 
 struct Tree { // example: range sum with range addition
 	ll n;
