@@ -1,6 +1,7 @@
 #include "../utilities/template.h"
 
 #include "../../content/strings/SuffixAutomaton.h"
+#include "../../content/various/Randin.h"
 
 
 template <typename T>
@@ -20,7 +21,7 @@ void run_tests(const SuffixAutomaton<T> &sa, const basic_string_view<T> &s) {
 	substrings.erase(unique(ALL(substrings)), substrings.end());
 
 	vector<char> terminal(st);
-	for (ll p = sa.last; p != -1; p = sa.s[p].l) {
+	for (ll p = sa.p; p != -1; p = sa.s[p].l) {
 		terminal[p] = 1;
 	}
 
@@ -92,36 +93,45 @@ void run_tests(const SuffixAutomaton<T> &sa, const basic_string_view<T> &s) {
 	ll en = 0;
 	for (auto c : s)
 		en = sa.s[en].t.at(c);
-	// Last represents the whole string
-	assert(en == sa.last);
+	// p represents the whole string
+	assert(en == sa.p);
 }
 
 template <typename T>
-T randin(T a, T b) {  // Random number in [a, b)
-	static random_device rd;
-	static mt19937_64 gen(rd());
-	uniform_int_distribution<T> dis(a, b - 1);
-	return dis(gen);
+void test_type(T lo, T hi) {
+	// Online test
+	{
+		SuffixAutomaton<T> sa;
+		basic_string<T> s;
+		ll n = 300;
+		fore(it, 0, n) {
+			cerr << "Online test " << it << endl;
+			T c = randin(lo, hi);
+			s += c;
+			sa.extend(c);
+			run_tests<T>(sa, s);
+		}
+	}
+	// Offline test
+	{
+		ll times = 50;
+		fore(it, 0, times) {
+			cerr << "Offline test " << it << endl;
+			ll n = randin(1ll, 300ll);
+			SuffixAutomaton<T> sa;
+			basic_string<T> s;
+			fore(_, 0, n) {
+				T c = randin(lo, hi);
+				s += c;
+				sa.extend(c);
+			}
+			run_tests<T>(sa, s);
+		}
+	}
 }
 
 int main() {
-	SuffixAutomaton sa;
-	string s;
-	ll n = 300;
-	fore(_, 0, n) {
-		char c = randin('a', char('z' + 1));
-		s += c;
-		sa.extend(c);
-		run_tests<char>(sa, s);
-	}
-	SuffixAutomaton<ll> sa2;
-	basic_string<ll> s2;
-	fore(_, 0, n) {
-		ll c = randin(0ll, (ll)1e6);
-		s2 += c;
-		sa2.extend(c);
-		run_tests<ll>(sa2, s2);
-	}
-
+	test_type<char>('a', 'z' + 1);
+	test_type<ll>(0, 1e6);
 	cout << "Tests passed!" << endl;
 }
