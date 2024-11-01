@@ -123,5 +123,5 @@ int main() {
 		run_tests<ll>(sa2, s2);
 	}
 
-	cout << "All tests passed." << endl;
+	cout << "Tests passed!" << endl;
 }
