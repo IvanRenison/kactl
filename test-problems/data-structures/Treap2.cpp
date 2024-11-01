@@ -1,6 +1,6 @@
 // Problem: https://judge.yosupo.jp/problem/range_set_range_composite
 // Status: TLE
-// Submission: https://judge.yosupo.jp/submission/243655
+// Submission:
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -38,17 +38,13 @@ struct T {
 	}
 };
 typedef optional<T> L; // T: data type, L: lazy type
-// neutrals
-const T tneut;
-const L lneut;
-T f(T a, T b) { return a * b; } // operation
-// new st according to lazy
-T apply(T v, L l, ll len) {
+const T tneut; const L lneut; // neutrals
+T f(T a, T b) { return a * b; } // associative
+T apply(T v, L l, ll len) { // new st according to lazy
 	if (!l) return v;
 	else return *l^len;
 }
-// cumulative effect of lazy
-L comb(L a, L b) {
+L comb(L a, L b) { // cumulative effect of lazy
 	if (!b) return a;
 	else return b;
 }

@@ -1,5 +1,6 @@
 // Problem: https://www.spoj.com/problems/HORRIBLE/
 // Status: accepted
+// Test usage as normal lazy segment tree
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -17,11 +18,10 @@ typedef vector<ll> vi;
 /// content/data-structures/Treap.h
 typedef ll T; typedef ll L; // T: data type, L: lazy type
 const T tneut = 0; const L lneut = 0; // neutrals
-T f(T a, T b) { return a + b; } // operation
-// new st according to lazy
-T apply(T v, L l, ll len) { return v + l * len; }
-// cumulative effect of lazy
-L comb(L a, L b) { return a + b; }
+T f(T a, T b) { return a + b; } // associative
+T apply(T v, L l, ll len) { // new st according to lazy
+	return v + l * len; }
+L comb(L a, L b) { return a + b; } // cumulative effect of lazy
 
 struct Node {
 	Node *l = 0, *r = 0;
