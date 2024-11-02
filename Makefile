@@ -2,6 +2,11 @@ LATEXCMD = pdflatex -shell-escape -output-directory build/
 export TEXINPUTS=.:content/tex/:
 export max_print_line = 1048576
 
+# Extract the job count from MAKEFLAGS
+JOBS ?= $(shell echo $(MAKEFLAGS) | sed -n 's/.*-j\([0-9][0-9]*\).*/\1/p')
+JOBS ?= 1  # Default to 1 if no -j flag with a number is found
+export JOBS
+
 help:
 	@echo "This makefile builds KACTL (KTH Algorithm Competition Template Library)"
 	@echo ""
