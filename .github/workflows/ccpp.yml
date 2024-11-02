@@ -16,7 +16,7 @@ jobs:
     - name: Install LaTeX
       run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra
     - name: Build PDF
-      run: make kactl
+      run: make -j$(nproc) kactl
 
   style:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -25,7 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Check style
-      run: make test-style
+      run: make -j$(nproc) test-style
 
   test-problems:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -34,7 +34,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Check test problems
-      run: make test-test-problems
+      run: make -j$(nproc) test-test-problems
 
   compiles:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -43,7 +43,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run compilation tests
-      run: make test-compiles
+      run: make -j$(nproc) test-compiles
 
   stress-tests:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -56,4 +56,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run stress tests (${{ matrix.test-group }})
-      run: make test-group-${{ matrix.test-group }}
+      run: make -j$(nproc) test-group-${{ matrix.test-group }}

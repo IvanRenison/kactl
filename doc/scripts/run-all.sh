@@ -35,8 +35,8 @@ run_test() {
     } &> "$outfile.log"
 }
 
-# Run tests in parallel with a maximum of N jobs (N = number of CPU cores)
-N=$(nproc)
+# Run tests in parallel with jobs from make
+N=${JOBS:-1}
 echo "Running tests using $N parallel jobs..."
 
 # Process tests in batches

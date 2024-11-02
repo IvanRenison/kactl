@@ -7,8 +7,8 @@
 TMPDIR=$(mktemp -d)
 trap "rm -rf $TMPDIR" EXIT
 
-# Number of parallel jobs
-N=$(nproc)
+# Number of parallel jobs from make, fallback to 1
+N=${JOBS:-1}
 echo "Running tests using $N parallel jobs..."
 
 # Function to test a single problem

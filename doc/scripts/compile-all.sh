@@ -14,7 +14,7 @@ find $DIR/content -name '*.h' | grep -Ff $SCRIPT_DIR/skip_headers
 TMPDIR=$(mktemp -d)
 trap "rm -rf $TMPDIR" EXIT
 
-# Function to test a single compilati
+# Function to test a single compilation
 test_compiles() {
     local test=$1
     local outfile=$2
@@ -35,8 +35,8 @@ test_compiles() {
     rm -rf "$test_tmpdir"
 }
 
-# Run tests in parallel with a maximum of N jobs (N = number of CPU cores)
-N=$(nproc)
+# Run tests in parallel with jobs from make
+N=${JOBS:-1}
 echo "Running compilation tests using $N parallel jobs..."
 
 # Process tests in batches
