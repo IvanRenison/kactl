@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 DIR=${1:-.}
-GROUP=$2
+GROUP=${2:-}  # Optional group parameter
 
 # use a precompiled header for the template to improve perf
 g++ -Wall -Wfatal-errors -Wconversion -std=c++20 -O2 $DIR/stress-tests/utilities/template.h
 trap "rm -f $DIR/stress-tests/utilities/template.h.gch" EXIT
 
-tests="$(find $DIR/stress-tests/$GROUP -name '*.cpp')"
+# If GROUP is provided, search in that subdirectory, otherwise search all
+if [ -n "$GROUP" ]; then
+    tests="$(find $DIR/stress-tests/$GROUP -name '*.cpp')"
+else
+    tests="$(find $DIR/stress-tests -name '*.cpp')"
+fi
+
 declare -i total=$(echo "$tests" | wc -l)
 declare -i pass=0
 declare -i fail=0
@@ -38,7 +44,11 @@ run_test() {
 
 # Run tests in parallel with jobs from make
 N=${JOBS:-1}
-echo "Running $GROUP tests using $N parallel jobs..."
+if [ -n "$GROUP" ]; then
+    echo "Running $GROUP tests using $N parallel jobs..."
+else
+    echo "Running all tests using $N parallel jobs..."
+fi
 
 # Process tests in batches
 count=0

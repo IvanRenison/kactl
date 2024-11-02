@@ -46,10 +46,10 @@ build:
 
 test:
 	bash ./doc/scripts/checkInlineContents-stress-test.sh
-	./doc/scripts/run-all.sh .
+	./doc/scripts/run-stress-tests.sh .
 
 test-group-%:
-	./doc/scripts/run-stress-tests-group.sh . $*
+	./doc/scripts/run-stress-tests.sh . $*
 
 test-compiles:
 	./doc/scripts/compile-all.sh .
