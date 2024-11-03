@@ -7,35 +7,53 @@ on:
     branches: [ "*" ]
 
 jobs:
-  build:
+  pdf:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v2
-    - name: Install pdflatex
-      run: |
-        sudo apt-get update
-        sudo apt-get install texlive-latex-base texlive-latex-recommended texlive-latex-extra
-    - name: Build pdf
-      run: make kactl
+    - name: Install LaTeX
+      run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra
+    - name: Build PDF
+      run: make -j$(nproc) kactl
 
-
-  test:
+  style:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
+    timeout-minutes: 5
     steps:
     - uses: actions/checkout@v2
-    - name: Run compiles
-      run: make test-compiles
-    - name: Run style checks
-      run: make test-style
+    - name: Check style
+      run: make -j$(nproc) test-style
+
+  test-problems:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v2
     - name: Check test problems
-      run: make test-test-problems
-    - name: Run stress tests
-      run: make test
+      run: make -j$(nproc) test-test-problems
+
+  compiles:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run compilation tests
+      run: make -j$(nproc) test-compiles
+
+  stress-tests:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        test-group: [data-structures, geometry, graph, number-theory, numerical, strings, various]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run stress tests (${{ matrix.test-group }})
+      run: make -j$(nproc) test-group-${{ matrix.test-group }}

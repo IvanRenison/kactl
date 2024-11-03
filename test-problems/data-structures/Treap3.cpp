@@ -1,6 +1,6 @@
 // Problem: https://cses.fi/problemset/task/2072
 // Status: ACCEPTED
-// Submission: https://cses.fi/problemset/result/10910813/
+// Submission: https://cses.fi/problemset/result/11044522/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -20,11 +20,10 @@ typedef vector<ll> vi;
 // We are not interested  in queries
 typedef char T; typedef ll L; // T: data type, L: lazy type
 const T tneut = 0; const L lneut = 0; // neutrals
-T f(T a, T b) { return a; } // operation
-// new st according to lazy
-T apply(T v, L l, ll len) { return v; }
-// cumulative effect of lazy
-L comb(L a, L b) { return a; }
+T f(T a, T b) { return a; } // associative
+T apply(T v, L l, ll len) { // new st according to lazy
+	return v; }
+L comb(L a, L b) { return a; } // cumulative effect of lazy
 /// END diff
 struct Node {
 	Node *l = 0, *r = 0;
