@@ -1,0 +1,31 @@
+\begin{tikzpicture}[->, node distance=1.6cm, inner sep=0.5pt]
+
+	\node[state, initial] (empty) {};
+	\node[state, right of=empty, yshift=-3mm] (a) {a};
+	\node[state, right of=empty, yshift=10mm] (b) {b};
+	\node[state, right of=b, yshift=-3mm] (bc) {bc};
+	\node[state, right of=a] (ab) {ab};
+	\node[state, right of=ab, yshift=2mm] (abc) {abc};
+	\node[state, right of=abc, yshift=2mm] (abcb) {abcb};
+	\node[state, right of=abcb, accepting] (abcbc) {abcbc};
+
+	\tikzset{label/.style={midway, fill=white, inner sep=0pt}}
+
+	\draw[solid, bend left] (empty) to node[label] {b} (b);
+	\draw[solid, bend right=15] (empty) to node[label] {a} (a);
+	\draw[solid, bend left=8] (empty) to node[label] {c} (bc);
+	\draw[solid] (b) to node[label] {c} (bc);
+	\draw[solid, bend left=5] (bc) to node[label] {b} (abcb);
+	\draw[solid] (a) to node[label] {b} (ab);
+	\draw[solid] (ab) to node[label] {c} (abc);
+	\draw[solid] (abc) to node[label] {b} (abcb);
+	\draw[solid] (abcb) to node[label] {c} (abcbc);
+
+	\draw[dotted] (a) to (empty);
+	\draw[dotted] (b) to (empty);
+	\draw[dotted, bend left=8] (bc) to (empty);
+	\draw[dotted, bend right] (ab) to (a);
+	\draw[dotted] (abc) to (bc);
+	\draw[dotted, bend right=20] (abcb) to (b);
+	\draw[dotted, bend right=20] (abcbc) to (bc);
+\end{tikzpicture}
