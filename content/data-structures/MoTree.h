@@ -37,7 +37,7 @@ struct MoTree {
 		for (ll qi : s) fore(e,0,2) {
 			ll &a = pos[e], b = e ? Q[qi].fst : Q[qi].snd, i = 0;
 #define step(c)in[c]?(del(a,e),in[a]=0):(add(c,e),in[c]=1),a=c;
-			while (L[a] < L[b] || R[b] < R[a]) I[i++]=b,b=par[b];
+			while (L[a] < L[b] || R[b] < R[a]) b = par[I[i++] = b];
 			while (a != b) step(par[a]);
 			while (i--) step(I[i]);
 			if (e) res[qi] = calc();
