@@ -26,8 +26,8 @@ struct MoQueries {
 	T calc() { return 0; }
 	ii k(ii &x) { return {x.fst/B, x.snd ^ -(x.fst/B&1)};} // SQ
 	vector<T> solve(ll n, vector<ii> &qs) {
-		ll l=0,r=0,q=SZ(qs); //,rx,ry,k,s;
-		vi p(q); //,o(q);
+		ll l = 0, r = 0, q = SZ(qs); //, rx, ry, k, s;
+		vi p(q); //, o(q);
 		iota(ALL(p), 0);
 	//fore(i, 0, q) {
 	//	auto [x, y] = qs[i];
