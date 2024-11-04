@@ -14,14 +14,12 @@
 #pragma once
 
 vi edgeColoring(ll N, vector<ii> eds) {
-	vi cc(N + 1), ret(SZ(eds)), fan(N), free(N), loc;
+	vi cc(N + 1), ret, fan(N), free(N), loc;
 	for (auto [u, v] : eds) ++cc[u], ++cc[v];
-	ll u, v, ncols = *max_element(ALL(cc)) + 1;
+	ll ncols = *max_element(ALL(cc)) + 1;
 	vector<vi> adj(N, vi(ncols, -1));
-	for (ii e : eds) {
-		tie(u, v) = e;
-		fan[0] = v;
-		loc.assign(ncols, 0);
+	for (auto [u, v] : eds) {
+		fan[0] = v, loc.assign(ncols, 0);
 		ll at = u, end = u, d, c = free[u], ind = 0, i = 0;
 		while (d = free[v], !loc[d] && (v = adj[u][d]) != -1)
 			loc[d] = ++ind, cc[ind] = d, fan[ind] = v;
@@ -30,17 +28,14 @@ vi edgeColoring(ll N, vector<ii> eds) {
 			swap(adj[at][cd], adj[end = at][cd ^ c ^ d]);
 		while (adj[fan[i]][d] != -1) {
 			ll left = fan[i], right = fan[++i], e = cc[i];
-			adj[u][e] = left;
-			adj[left][e] = u;
-			adj[right][e] = -1;
-			free[right] = e;
+			adj[u][e] = left, adj[left][e] = u;
+			adj[right][e] = -1, free[right] = e;
 		}
-		adj[u][d] = fan[i];
-		adj[fan[i]][d] = u;
+		adj[u][d] = fan[i], adj[fan[i]][d] = u;
 		for (ll y : {fan[0], u, end})
 			for (ll& z = free[y] = 0; adj[y][z] != -1; z++);
 	}
-	fore(i,0,SZ(eds))
-		for (tie(u, v) = eds[i]; adj[u][ret[i]] != v;) ++ret[i];
+	for (auto [u, v] : eds)
+		ret.pb(find(ALL(adj[u]), v) - adj[u].begin());
 	return ret;
 }
