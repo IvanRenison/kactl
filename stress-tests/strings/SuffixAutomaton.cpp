@@ -95,6 +95,13 @@ void run_tests(const SuffixAutomaton<T> &sa, const basic_string_view<T> &s) {
 		en = sa.s[en].t.at(c);
 	// p represents the whole string
 	assert(en == sa.p);
+
+	// DAG
+	fore(u, 0, SZ(sa.s)) {
+		for (auto &[c, v] : sa.s[u].t) {
+			assert(sa.s[v].len > sa.s[u].len);
+		}
+	}
 }
 
 template <typename T>
@@ -105,7 +112,6 @@ void test_type(T lo, T hi) {
 		basic_string<T> s;
 		ll n = 300;
 		fore(it, 0, n) {
-			cerr << "Online test " << it << endl;
 			T c = randin(lo, hi);
 			s += c;
 			sa.extend(c);
@@ -116,7 +122,6 @@ void test_type(T lo, T hi) {
 	{
 		ll times = 50;
 		fore(it, 0, times) {
-			cerr << "Offline test " << it << endl;
 			ll n = randin(1ll, 300ll);
 			SuffixAutomaton<T> sa;
 			basic_string<T> s;
