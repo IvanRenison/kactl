@@ -39,7 +39,7 @@ veryclean: clean
 	rm -f kactl.pdf test-session.pdf
 	rm -rf snippets
 
-.PHONY: help fast kactl clean veryclean format snippets test test-group-% test-compiles test-style test-test-problems
+.PHONY: help fast kactl clean veryclean format snippets test test-group-% test-compiles test-style test-test-problems test-stress-contents
 
 build:
 	mkdir -p build/
@@ -65,6 +65,9 @@ test-style:
 
 test-test-problems:
 	bash ./doc/scripts/checkAllTestProblems.sh
+
+test-stress-contents:
+	bash ./doc/scripts/checkInlineContents-stress-test.sh
 
 showexcluded: build
 	grep -RoPh '^\s*\\kactlimport(\[[^]]*\])?{\K.*' content/ | sed 's/.$$//' > build/headers_included

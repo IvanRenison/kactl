@@ -49,7 +49,7 @@ vector<ii> pruferCodeToTree(vi &pruferCode) {
 vector<ii> genRandomTree(ll n) {
 	if (n == 1) return {};
 	vi pruferCode;
-	for (ll i=0; i<n-2; i++) {
+	fore(i, 0, n-2) {
 		pruferCode.pb(rand()%(n-1) + 1);
 	}
 	auto edges = pruferCodeToTree(pruferCode);

@@ -9,30 +9,21 @@
  * Returns a list of (par, orig\_index) representing a tree rooted at 0.
  * The root points to itself.
  * Time: $O(|X| \log |X|)$
- * Status: Tested at CodeForces
+ * Status: stress tested
  */
 #pragma once
 
 #include "LCA.h"
 
-typedef vector<ii> vii;
-vii compressTree(LCA& lca, const vi& subset) {
+vector<ii> compressTree(LCA& lca, vi X) {
 	static vi rev; rev.resize(SZ(lca.time));
-	vi li = subset, &T = lca.time;
-	auto cmp = [&](ll a, ll b) { return T[a] < T[b]; };
-	sort(ALL(li), cmp);
-	ll m = SZ(li)-1;
-	fore(i,0,m) {
-		ll a = li[i], b = li[i+1];
-		li.pb(lca.lca(a, b));
-	}
-	sort(ALL(li), cmp);
-	li.erase(unique(ALL(li)), li.end());
-	fore(i,0,SZ(li)) rev[li[i]] = i;
-	vii ret = {{{0, li[0]}}};
-	fore(i,0,SZ(li)-1) {
-		ll a = li[i], b = li[i+1];
-		ret.pb({rev[lca.lca(a, b)], b});
-	}
+	auto cmp = [&](ll a,ll b){ return lca.time[a]<lca.time[b]; };
+	sort(ALL(X), cmp);
+	fore(i,0,SZ(X)-1) X.pb(lca.lca(X[i], X[i+1]));
+	sort(ALL(X), cmp), X.erase(unique(ALL(X)), X.end());
+	fore(i,0,SZ(X)) rev[X[i]] = i;
+	vector<ii> ret = {{{0, X[0]}}};
+	fore(i,0,SZ(X)-1)
+		ret.pb({rev[lca.lca(X[i], X[i+1])], X[i+1]});
 	return ret;
 }
