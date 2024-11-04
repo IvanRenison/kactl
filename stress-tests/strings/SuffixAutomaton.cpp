@@ -107,32 +107,31 @@ void run_tests(const SuffixAutomaton<T> &sa, const basic_string_view<T> &s) {
 template <typename T>
 void test_type(T lo, T hi) {
 	// Online test
-	{
+	fore(_, 0, 20) {
+		T maxhi = randin<T>(lo, hi+1);
 		SuffixAutomaton<T> sa;
 		basic_string<T> s;
-		ll n = 300;
+		ll n = 150;
 		fore(it, 0, n) {
-			T c = randin(lo, hi);
+			T c = randin(lo, maxhi);
 			s += c;
 			sa.extend(c);
 			run_tests<T>(sa, s);
 		}
 	}
 	// Offline test
-	{
-		ll times = 50;
-		fore(it, 0, times) {
+		fore(it, 0, 50) {
+			T maxhi = randin<T>(lo, hi+1);
 			ll n = randin(1ll, 300ll);
 			SuffixAutomaton<T> sa;
 			basic_string<T> s;
 			fore(_, 0, n) {
-				T c = randin(lo, hi);
+				T c = randin(lo, maxhi);
 				s += c;
 				sa.extend(c);
 			}
 			run_tests<T>(sa, s);
 		}
-	}
 }
 
 int main() {
