@@ -62,10 +62,10 @@ struct MoQueries {
 	}
 	T calc() { return ans; }
 	/// END diff
-	ii k(ii &x){return ii(x.fst/B, x.snd ^ -(x.fst/B&1));}// SQ
+	ii k(ii &x) { return {x.fst/B, x.snd ^ -(x.fst/B&1)};} // SQ
 	vector<T> solve(ll n, vector<ii> &qs) {
-		ll l=0,r=0,q=SZ(qs); //,rx,ry,k,s;
-		vi p(q); //,o(q);
+		ll l = 0, r = 0, q = SZ(qs); //, rx, ry, k, s;
+		vi p(q); //, o(q);
 		iota(ALL(p), 0);
 	//fore(i, 0, q) {
 	//	auto [x, y] = qs[i];
@@ -121,12 +121,12 @@ struct MoQueries {
 			ans = ans - pws[sz] * a[pos];
 	}
 	T calc() { return ans; }
-	// ii k(ii &x){return ii(x.fst/B, x.snd ^ -(x.fst/B&1));}// SQ
+	// ii k(ii &x) { return {x.fst/B, x.snd ^ -(x.fst/B&1)};} // SQ
 	/// END diff
 	vector<T> solve(ll n, vector<ii> &qs) {
 		/// START diff
-		ll l=0,r=0,q=SZ(qs),rx,ry,k,s;
-		vi p(q),o(q);
+		ll l = 0, r = 0, q = SZ(qs), rx, ry, k, s;
+		vi p(q), o(q);
 		/// END diff
 		iota(ALL(p), 0);
 		/// START diff
