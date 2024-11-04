@@ -24,7 +24,7 @@ struct MoQueries {
 	void add(ll pos, bool end, ll qid) {}
 	void rem(ll pos, bool end, ll qid) {}
 	T calc() { return 0; }
-	ii k(ii &x){return ii(x.fst/B, x.snd ^ -(x.fst/B&1));}// SQ
+	ii k(ii &x) { return {x.fst/B, x.snd ^ -(x.fst/B&1)};} // SQ
 	vector<T> solve(ll n, vector<ii> &qs) {
 		ll l=0,r=0,q=SZ(qs); //,rx,ry,k,s;
 		vi p(q); //,o(q);
