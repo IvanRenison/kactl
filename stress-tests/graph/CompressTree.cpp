@@ -3,7 +3,7 @@
 #include "../../content/graph/LCA.h"
 #include "../../content/graph/CompressTree.h"
 
-vii SlowCompressTree(LCA& lca, const vi& subset) {
+vector<ii> SlowCompressTree(LCA& lca, const vi& subset) {
 	set<ll> nodes(ALL(subset));
 	fore(i, 0, SZ(subset)) {
 		fore(j, i + 1, SZ(subset)) {
@@ -21,7 +21,7 @@ vii SlowCompressTree(LCA& lca, const vi& subset) {
 		nodeToIndex[sortedNodes[i]] = i;
 	}
 
-	vii tree;
+	vector<ii> tree;
 	tree.pb({0, sortedNodes[0]});
 
 	fore(i, 1, SZ(sortedNodes)) {
@@ -33,7 +33,7 @@ vii SlowCompressTree(LCA& lca, const vi& subset) {
 	return tree;
 }
 
-bool compareEdges(const vii& edges1, const vii& edges2) {
+bool compareEdges(const vector<ii>& edges1, const vector<ii>& edges2) {
 	set<ii> set1, set2;
 	for (const auto& [u, v] : edges1) {
 		set1.insert(minmax(u, v));
@@ -49,7 +49,7 @@ int main() {
 
 	fore(_, 0, 1000) {
 		ll n = rand() % 100 + 1;
-		vii edges = genRandomTree(n);
+		vector<ii> edges = genRandomTree(n);
 		vector<vi> adj(n);
 		for (auto [u, v] : edges) {
 			adj[u].pb(v), adj[v].pb(u);

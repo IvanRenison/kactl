@@ -15,15 +15,14 @@
 
 #include "LCA.h"
 
-typedef vector<ii> vii;
-vii compressTree(LCA& lca, vi X) {
+vector<ii> compressTree(LCA& lca, vi X) {
 	static vi rev; rev.resize(SZ(lca.time));
 	auto cmp = [&](ll a,ll b){ return lca.time[a]<lca.time[b]; };
 	sort(ALL(X), cmp);
 	fore(i,0,SZ(X)-1) X.pb(lca.lca(X[i], X[i+1]));
 	sort(ALL(X), cmp), X.erase(unique(ALL(X)), X.end());
 	fore(i,0,SZ(X)) rev[X[i]] = i;
-	vii ret = {{{0, X[0]}}};
+	vector<ii> ret = {{{0, X[0]}}};
 	fore(i,0,SZ(X)-1)
 		ret.pb({rev[lca.lca(X[i], X[i+1])], X[i+1]});
 	return ret;
