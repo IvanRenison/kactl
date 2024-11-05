@@ -24,8 +24,8 @@ struct PalindromicTree {
 		else {
 			ll q = ns[p].link;
 			while (s[i - ns[q].len - 1] != s[i]) q = ns[q].link;
-			q = max(1ll, ns[q].to[c]), last = ns[p].to[c] = SZ(ns);
-			ns.pb({ns[p].len + 2, q, 1});
+			last = ns[p].to[c] = SZ(ns);
+			ns.pb({ns[p].len + 2, max(1ll, ns[q].to[c]), 1});
 		}
 	}
 };
