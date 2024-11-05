@@ -31,9 +31,9 @@ vi match(const string& s, const string& pat) {
 const ll alpha = 26;
 vector<vi> buildAutomaton(string &s) {
 	vector<vi> wh(SZ(s) + 2, vi(alpha));
-  ll lps = 0; wh[0][s[0] - 'a'] = 1;
-  fore(i, 1, SZ(s) + 1) {
-    fore(j, 0, alpha) wh[i][j] = wh[lps][j];
-    if(i<SZ(s)) wh[i][s[i]-'a'] = i+1, lps = wh[lps][s[i]-'a'];
-  }
+	ll lps = 0; wh[0][s[0] - 'a'] = 1;
+	fore(i, 1, SZ(s) + 1) {
+		fore(j, 0, alpha) wh[i][j] = wh[lps][j];
+		if(i<SZ(s)) wh[i][s[i]-'a'] = i+1, lps = wh[lps][s[i]-'a'];
+	}
 }
