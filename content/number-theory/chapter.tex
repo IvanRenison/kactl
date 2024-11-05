@@ -47,10 +47,11 @@
 	Primitive roots exist modulo any prime power $p^a$, except for $p = 2, a > 2$, and there are $\phi(\phi(p^a))$ many.
 	For $p = 2, a > 2$, the group $\mathbb Z_{2^a}^\times$ is instead isomorphic to $\mathbb Z_2 \times \mathbb Z_{2^{a-2}}$.
 
-\section{Estimates}
-	$\sum_{d|n} d = O(n \log \log n)$.
+\section{Highly composite numbers}
+The number of divisors of $n$ is $O(\log(\log(n)))$. Max number of divisors up to $10^n$ (n, number of divisors, number):
+\import{hcn.tex}
 
-	The number of divisors of $n$ is at most around 100 for $n < 5e4$, 500 for $n < 1e7$, 2000 for $n < 1e10$, 200\,000 for $n < 1e19$.
+$\sum_{d|n} d = O(n \log \log n)$.
 
 \section{Mobius Function}
 \[

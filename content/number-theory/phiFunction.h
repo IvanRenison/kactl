@@ -10,7 +10,9 @@
  *
  * $\sum_{d|n} \phi(d) = n$, $\sum_{1\leq k \leq n, \gcd(k,n)=1} k = n \phi(n)/2, n>1$
  *
- * \textbf{Euler's thm}: $a,n$ coprime $\Rightarrow a^{\phi(n)} \equiv 1 \pmod{n}$.
+ * \textbf{Euler's}: $a,n$ coprime $\Rightarrow a^{\phi(n)} \equiv 1 \pmod{n}, a^{m} \equiv a^{m \bmod{\phi(n)}} \pmod{n}$.
+ *
+ * \textbf{Generalization}: $m \geq \log_2(n) \Rightarrow x^m \equiv x^{\phi(n) + (m \bmod{\phi(n)})} \pmod{n}$.
  *
  * \textbf{Fermat's little thm}: $p$ prime $\Rightarrow a^{p-1} \equiv 1 \pmod{p}$ $\forall a$.
  * Status: Tested

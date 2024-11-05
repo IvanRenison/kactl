@@ -2,6 +2,13 @@
 
 \section{Permutations}
 	\subsection{Factorial}
+		Legendre's formula: the exponent of $p$ in the factorization of $n!$ is
+		\[ \nu_{p}(n!) = \sum_{i=1}^{\infty} \left\lfloor \frac{n}{p^i} \right\rfloor = \frac{n - s_{p}(n)}{p-1} \]
+		where $s_{p}(n)$ is the sum of the digits of $n$ in base $p$.
+
+		Wilson's: $n>1$ is prime iff $(n-1)! \equiv -1 \pmod{n}$.
+
+		\[ n! \sim \sqrt{2\pi n} \left(\frac{n}{e}\right)^n \]
 		\import{factorial.tex}
 		\kactlimport{IntPerm.h}
 
@@ -38,6 +45,12 @@
 		Let $n,m$ be non-negative integers and $p$ a prime. Write $n=n_kp^k+...+n_1p+n_0$ and $m=m_kp^k+...+m_1p+m_0$. Then $\binom{n}{m} \equiv \prod_{i=0}^k\binom{n_i}{m_i} \pmod{p}$.
 
 	\subsection{Binomials}
+		Kummer's theorem: the exponent of $p$ in $\binom{n}{k}$ is the number of carries when adding $k$ and $n-k$ in base $p$, or, equivalently
+		\[ \nu_{p}\left(\binom{n}{k}\right) = \frac{s_p(k)+s_p(n-k)-s_p(n)}{p-1} \]
+		where $s_p(n)$ is the sum of the digits of $n$ in base $p$. Therefore $\binom{n}{k}$ is odd iff $k$ is a submask of $n$.
+		\[ \binom{n}{k} = \frac{n}{k} \binom{n-1}{k-1} = \prod_{i=1}^{k} \frac{n+1-i}{i} = \binom{n-1}{k-1} + \binom{n-1}{k} \]
+		\[ \sum_{i=0}^{k} \binom{n+i}{i} = \binom{n+k+1}{k}, \quad \sum_{i=0}^{n} \binom{i}{k} = \binom{n+1}{k+1} \]
+		\[ \sum_{k=0}^{n} \binom{n}{k}^2 = \binom{2n}{n}, \quad \sum_{k=0}^{n} k \binom{n}{k} = n2^{n-1} \]
 		\kactlimport{multinomial.h}
 
 \section{General purpose numbers}
@@ -82,6 +95,10 @@
 		$1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, \dots$. For $p$ prime,
 		\[ B(p^m+n)\equiv mB(n)+B(n+1) \pmod{p} \]
 
+	\subsection{Fibonacci numbers}
+		\[ F_{2n+1} = F_{n+1}^{2} + F_{n}^{2}, \quad F_{2n} = F_{n+1}^{2} - F_{n-1}^{2}, \quad \sum_{i=1}^{n} F_{i} = F_{n+2} - 1 \]
+		\[ F_{n+i} F_{n+j} - F_{n} F_{n+i+j} = (-1)^n F_{i} F_{j} \]
+
 	\subsection{Labeled unrooted trees}
 		\# on $n$ vertices: $n^{n-2}$ \\
 		\# on $k$ existing trees of size $n_i$: $n_1n_2\cdots n_k n^{k-2}$ \\
@@ -90,6 +107,7 @@
 	\subsection{Catalan numbers}
 		\[ C_n=\frac{1}{n+1}\binom{2n}{n}= \binom{2n}{n}-\binom{2n}{n+1} = \frac{(2n)!}{(n+1)!n!} \]
 		\[ C_0=1,\ C_{n+1} = \frac{2(2n+1)}{n+2}C_n,\ C_{n+1}=\sum C_iC_{n-i} \]
+		\[ C_n \sim \frac{4^{n}}{n^{3/2} \sqrt{\pi}} \]
 		${C_n = 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, \dots}$
 		\begin{itemize}[noitemsep]
 			\item sub-diagonal monotone paths in an $n\times n$ grid.
@@ -99,3 +117,6 @@
 			\item ways a convex polygon with $n+2$ sides can be cut into triangles by connecting vertices with straight lines.
 			\item permutations of $[n]$ with no 3-term increasing subseq.
 		\end{itemize}
+
+	\section{Game theory}
+		\textbf{Misere nim:} Second player wins iff (some heap size is greater than 1 and xor is 0) or (all heap sizes are 1 and $n$ is odd).

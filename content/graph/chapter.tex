@@ -61,8 +61,19 @@
 		Remove the $i$th row and column and take the determinant; this yields the number of directed spanning trees rooted at $i$
 		(if $G$ is undirected, remove any row/column).
 
-	\subsection{Erdős–Gallai theorem}
+	\subsection{Erdős-Gallai theorem}
 		% Source: https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gallai_theorem
 		% Test: stress-tests/graph/erdos-gallai.cpp
 		A simple graph with node degrees $d_1 \ge \dots \ge d_n$ exists iff $d_1 + \dots + d_n$ is even and for every $k = 1\dots n$,
 		\[ \sum _{i=1}^{k}d_{i}\leq k(k-1)+\sum _{i=k+1}^{n}\min(d_{i},k). \]
+
+	\subsection{Theorems}
+	\textbf{Tutte's theorem:} A graph $(V, E)$ has a perfect matching iff for all $U \subseteq V$, the subgraph induced by $V \setminus U$ has at most $|U|$ components with an odd number of vertices.
+
+	\textbf{Petersens theorem:} Every cubic, bridgeless graph contains a perfect matching.
+
+	\textbf{Dilworth's theorem:} In a finite poset, the maximum size of an antichain equals the minimum number of chains needed to partition the poset.
+
+	\textbf{König's theorem:} In a bipartite graph, the number of edges in a maximum matching equals the number of vertices in a minimum vertex cover.
+
+	\textbf{Hall's theorem:} A bipartite graph $(X, Y, E)$ has an $X$-saturating matching iff for all $W \subseteq X$, $|N(W)| \ge |W|$, i.e. it has as many neighbors as elements.
