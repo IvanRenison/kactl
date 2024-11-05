@@ -14,7 +14,7 @@
  *
  * \textbf{Generalization}: $m \geq \log_2(n) \Rightarrow x^m \equiv x^{\phi(n) + (m \bmod{\phi(n)})} \pmod{n}$.
  *
- * \textbf{Fermat's little thm}: $p$ prime $\Rightarrow a^{p-1} \equiv 1 \pmod{p}$ $\forall a$.
+ * \textbf{Fermat's little thm}: $p$ prime $\Rightarrow \forall a : a^{p-1} \equiv 1 \pmod{p}$.
  * Status: Tested
  */
 #pragma once
