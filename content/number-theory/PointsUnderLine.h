@@ -8,7 +8,7 @@
  * $x, y > 0$, and \texttt{g} returns the number of lattice
  * points $(x, y)$ such that $ax + by \leq c$, $0 < x \leq X$
  * and $0 < y \leq Y$.
- * Status: untested
+ * Status: stress-tested
  */
 
 #pragma once
