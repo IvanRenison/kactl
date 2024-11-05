@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "../../stress-tests/utilities/template.h"
-
 struct PalindromicTree {
 	static const ll alpha = 26;
 	struct Node {
