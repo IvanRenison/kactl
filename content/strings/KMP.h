@@ -26,9 +26,9 @@ vi match(const string& s, const string& pat) {
 	fore(i,SZ(p)-SZ(s),SZ(p))
 		if (p[i] == SZ(pat)) res.pb(i - 2 * SZ(pat));
 	return res;
-}
+} // Until here is KMP
 
-const ll alpha = 26;
+const ll alpha = 26; // KMP automatom
 vector<vi> buildAutomaton(string &s) {
 	vector<vi> wh(SZ(s) + 2, vi(alpha));
 	ll lps = 0; wh[0][s[0] - 'a'] = 1;
