@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-# Source code preprocessor for KACTL build process.
+# Source code preprocessor for KACTL++ build process.
 # License: CC0
 
 import sys

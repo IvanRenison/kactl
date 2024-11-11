@@ -8,11 +8,11 @@ JOBS ?= 1  # Default to 1 if no -j flag with a number is found
 export JOBS
 
 help:
-	@echo "This makefile builds KACTL (KTH Algorithm Competition Template Library)"
+	@echo "This makefile builds KACTL++"
 	@echo ""
 	@echo "Available commands are:"
-	@echo "	make fast		- to build KACTL, quickly (only runs LaTeX once)"
-	@echo "	make kactl		- to build KACTL"
+	@echo "	make fast		- to build KACTL++, quickly (only runs LaTeX once)"
+	@echo "	make kactl		- to build KACTL++"
 	@echo "	make snippets	- to build VSCode snippets"
 	@echo "	make clean		- to clean up the build process"
 	@echo "	make veryclean		- to clean up and remove kactl.pdf"

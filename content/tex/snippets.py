@@ -5,7 +5,7 @@ import json
 import re
 import os
 
-# Creates VSCode JSON snippets out of kactl code
+# Creates VSCode JSON snippets out of KACTL++ code
 # running this file directly combines all of the snippets into one
 # build() is called from the preprocessor to build the individual file snippets
 

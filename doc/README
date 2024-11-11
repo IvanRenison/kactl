@@ -1,11 +1,11 @@
 **************************************************
 * Introduction                                   *
 **************************************************
-This file should contain a general introduction to modifying the KACTL:
+This file should contain a general introduction to modifying the KACTL++:
 
 The general file structure, where to find/place code, tests and documentation.
 
-How to build the KACTL, including prerequisites.
+How to build the KACTL++, including prerequisites.
 
 How to modify the .tex files to add new chapters, new files, change title etc.
 
@@ -36,9 +36,9 @@ but should (could?) work with other versions too.
 
 
 **************************************************
-* Building the KACTL                             *
+* Building the KACTL++                           *
 **************************************************
-To build the KACTL should be a simple step. Just navigate to the root folder for this project and type 'make kactl' (and do your normal Voodoo dance that you do to get an accepted submission). If the build process fails, then it's time to start improving your Voodoo dance, but in the meantime, have a look the debug section below.
+To build the KACTL++ should be a simple step. Just navigate to the root folder for this project and type 'make kactl' (and do your normal Voodoo dance that you do to get an accepted submission). If the build process fails, then it's time to start improving your Voodoo dance, but in the meantime, have a look the debug section below.
 
 **************************************************
 * Debug the build process                        *
@@ -68,6 +68,6 @@ Also, don't forget to write tests for the code before including it!
 
 
 **************************************************
-* Modifying the KACTL edition                    *
+* Modifying the KACTL++ edition                  *
 **************************************************
 The edition name and date can be modified from the file build/kactl.tex, and are set with the commands \date{2009-04-11} respectively \edition{Edition name}.
