@@ -74,7 +74,7 @@ showexcluded: build
 	find ./content -not -path "./content/tex/*" \( -name "*.h" -o -name "*.cpp" -o -name "*.py" -o -name "*.java" \) | grep -vFf build/headers_included
 
 snippets:
-	find content/ -type f -name "*.*" ! -name "*.tex" ! -name "*.txt" ! -name "*.pdf" ! -path "*/tex/*" ! -path "*/contest/*" -print0 \
+	find content/ -type f -name "*.h" ! -path "*/tex/*" ! -path "*/contest/*" -print0 \
 		| xargs -0 -n 1 -I{} sh -c \
 			'python3 content/tex/preprocessor.py -s -i {} > /dev/null || exit 0'
 	python3 content/tex/snippets.py
